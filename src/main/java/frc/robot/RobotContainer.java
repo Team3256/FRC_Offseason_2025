@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.InternalButton;
@@ -32,10 +31,6 @@ import frc.robot.sim.SimMechs;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.ManipulatorSide;
 import frc.robot.subsystems.Superstructure.StructureState;
-import frc.robot.subsystems.algaearm.AlgaeArm;
-import frc.robot.subsystems.algaearm.AlgaeArmTalonFX;
-import frc.robot.subsystems.algaerollers.AlgaeRoller;
-import frc.robot.subsystems.algaerollers.AlgaeRollerIOTalonFX;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmIOSim;
 import frc.robot.subsystems.arm.ArmIOTalonFX;
@@ -58,7 +53,6 @@ import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.utils.MappedXboxController;
 import frc.robot.utils.autoaim.AutoAim;
-import frc.robot.utils.autoaim.CoralTargets;
 import java.util.List;
 
 /**
@@ -85,15 +79,13 @@ public class RobotContainer {
       new Elevator(true, Utils.isSimulation() ? new ElevatorIOSim() : new ElevatorIOTalonFX());
 
   private final Arm arm = new Arm(true, Utils.isSimulation() ? new ArmIOSim() : new ArmIOTalonFX());
-  private final AlgaeRoller algaeRoller = new AlgaeRoller(true, new AlgaeRollerIOTalonFX());
   private final EndEffector endEffector =
       new EndEffector(
           true, Utils.isSimulation() ? new EndEffectorIOSim() : new EndEffectorIOTalonFX());
 
   private final Climb climb = new Climb(true, new ClimbIOTalonFX());
-  private final AlgaeArm algaeArm = new AlgaeArm(true, new AlgaeArmTalonFX());
   private final Superstructure superstructure =
-      new Superstructure(elevator, endEffector, arm, algaeArm, algaeRoller);
+      new Superstructure(elevator, endEffector, arm);
   private final LED leds = new LED();
 
   private final Vision vision =
@@ -143,7 +135,6 @@ public class RobotContainer {
             elevator,
             arm,
             endEffector,
-            algaeArm,
             drivetrain);
     configureChoreoAutoChooser();
     CommandScheduler.getInstance().registerSubsystem(drivetrain);
@@ -233,10 +224,6 @@ public class RobotContainer {
         .b("Home everything")
         .onTrue(superstructure.setState(StructureState.PREHOME));
 
-    // dealgae states
-    m_operatorController.a("Dealgae L2").onTrue(superstructure.setState(StructureState.DEALGAE_L2));
-    m_operatorController.y("Dealgae L3").onTrue(superstructure.setState(StructureState.DEALGAE_L3));
-
     // reef states
     m_operatorController.povUp("L4 Preset").onTrue(superstructure.setState(StructureState.L4));
     m_operatorController.povRight("L3 Preset").onTrue(superstructure.setState(StructureState.L3));
@@ -256,26 +243,9 @@ public class RobotContainer {
         .rightTrigger("Score Coral")
         .onTrue(superstructure.setState(StructureState.SCORE_CORAL));
 
-    // outtake algae
-    m_operatorController
-        .leftTrigger("Score Algae")
-        .onTrue(superstructure.setState(StructureState.SCORE_ALGAE));
-
-    // set state BARGE
-    new Trigger(() -> -m_operatorController.getLeftY() > .5)
-        .onTrue(superstructure.setState(StructureState.BARGE));
-
-    // set state PROCESSOR
-    new Trigger(() -> -m_operatorController.getLeftY() < -.5)
-        .onTrue(superstructure.setState(StructureState.PROCESSOR));
-
     // set state CLIMB
     new Trigger(() -> m_operatorController.getLeftX() > .5)
         .onTrue(superstructure.setState(StructureState.CLIMB));
-
-    // set state GROUND ALGAE
-    new Trigger(() -> m_operatorController.getLeftX() < -.5)
-        .onTrue(superstructure.setState(StructureState.GROUND_ALGAE));
 
     // climb out
     new Trigger(() -> m_operatorController.getRightX() > .5)
@@ -343,7 +313,7 @@ public class RobotContainer {
                     .withRotationalRate(-m_driverController.getTriggerAxes() * MaxAngularRate)));
 
     m_driverController
-        .leftBumper("Brake / Slow Mode")
+        .leftBumper("Brake")
         .whileTrue(
             drivetrain.applyRequest(
                 () ->
@@ -378,7 +348,7 @@ public class RobotContainer {
                 .withTimeout(aziTimeout));
 
     m_driverController
-        .povUp("Processor Close, Climb Facing cage")
+        .povUp("Climb Facing cage")
         .onTrue(
             drivetrain
                 .applyRequest(
@@ -390,7 +360,7 @@ public class RobotContainer {
                 .withTimeout(aziTimeout));
 
     m_driverController
-        .povDown("Processor Far, Climb Facing DS")
+        .povDown("Climb Facing DS")
         .onTrue(
             drivetrain
                 .applyRequest(
@@ -402,137 +372,48 @@ public class RobotContainer {
                                 processorFar)) // doubles as climb from opposite side facing DS
                 .withTimeout(aziTimeout));
 
-    // Azimuth Barge Close
-    new Trigger(() -> (m_driverController.getRightY() < -0.3))
-        .onTrue(
-            drivetrain
-                .applyRequest(
-                    () ->
-                        azimuth
-                            .withVelocityY(-m_driverController.getLeftX() * MaxSpeed)
-                            .withVelocityX(-m_driverController.getLeftY() * MaxSpeed)
-                            .withTargetDirection(bargeClose))
-                .withTimeout(aziTimeout));
-
-    // Azimuth Barge Far
-    new Trigger(() -> (m_driverController.getRightY() > 0.3))
-        .onTrue(
-            drivetrain
-                .applyRequest(
-                    () ->
-                        azimuth
-                            .withVelocityY(-m_driverController.getLeftX() * MaxSpeed)
-                            .withVelocityX(-m_driverController.getLeftY() * MaxSpeed)
-                            .withTargetDirection(bargeFar))
-                .withTimeout(aziTimeout));
-
-    // barge auto align - don't use
-    m_driverController
-        .rightBumper("Auto Align Barge Close")
-        .whileTrue(
-            drivetrain.pidXLocked(
-                () -> bargeCloseX,
-                () -> -m_driverController.getLeftX() * MaxSpeed,
-                () -> -m_driverController.getTriggerAxes() * MaxAngularRate));
-
-    m_driverController
-        .a("Auto Align Barge Far")
-        .whileTrue(
-            drivetrain.pidXLocked(
-                () -> bargeFarX,
-                () -> -m_driverController.getLeftX() * MaxSpeed,
-                () -> -m_driverController.getTriggerAxes() * MaxAngularRate));
-
-    // sets the heading to wherever the robot is facing
-    // do this with the elevator side of the robot facing YOU
     m_driverController.y("Zero Heading").onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-    // Auto Align Reef, Left Handed Target (Absolute)
-    new Trigger(
-            () ->
-                ((superstructure.getState() != StructureState.GROUND_ALGAE)
-                        && (superstructure.getState() != StructureState.PROCESSOR)
-                        && (superstructure.getState()) != StructureState.BARGE)
-                    && (m_driverController.povLeft().getAsBoolean()))
-        .whileTrue(
-            Commands.parallel(
-                drivetrain.pidToPose(
-                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, true))));
-
-    // Auto Align Reef, Right Handed Target (Absolute)
-    new Trigger(
-            () ->
-                ((superstructure.getState() != StructureState.GROUND_ALGAE)
-                        && (superstructure.getState() != StructureState.PROCESSOR)
-                        && (superstructure.getState()) != StructureState.BARGE)
-                    && (m_driverController.povRight().getAsBoolean()))
-        .whileTrue(
-            Commands.parallel(
-                drivetrain.pidToPose(
-                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, false))));
-
-    // Run LEDs simultaneously with Auto Align
-    m_driverController
-        .povLeft()
-        .negate()
-        .and(m_driverController.povRight().negate())
-        .and(m_driverController.a().negate())
-        .and(m_driverController.rightBumper().negate())
-        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(false)));
-    m_driverController
-        .povRight()
-        .or(m_driverController.povLeft())
-        .or(m_driverController.a())
-        .or(m_driverController.rightBumper())
-        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(true)));
+    // auto align stuff, complete coral ground first
+//
+//    new Trigger(
+//            () ->
+//                ((superstructure.getState() != StructureState.GROUND_ALGAE) //switch to ground coral later
+//                    && (m_driverController.povLeft().getAsBoolean()))
+//        .whileTrue(
+//            Commands.parallel(
+//                drivetrain.pidToPose(
+//                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, true)))));
+//
+//    new Trigger(
+//            () ->
+//                ((superstructure.getState() != StructureState.GROUND_ALGAE) //switch to ground coral later
+//                    && (m_driverController.povRight().getAsBoolean()))
+//        .whileTrue(
+//            Commands.parallel(
+//                drivetrain.pidToPose(
+//                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, false)))));
+//
+//
+//    // Run LEDs simultaneously with Auto Align
+//    m_driverController
+//        .povLeft()
+//        .negate()
+//        .and(m_driverController.povRight().negate())
+//        .and(m_driverController.a().negate())
+//        .and(m_driverController.rightBumper().negate())
+//        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(false)));
+//    m_driverController
+//        .povRight()
+//        .or(m_driverController.povLeft())
+//        .or(m_driverController.a())
+//        .or(m_driverController.rightBumper())
+//        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(true)));
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }
 
   public void periodic() {
-    /*
-    // Logger.recordOutput(
-    // "Stick Angle Radians",
-    // Math.atan2(m_driverController.getRightY(), m_driverController.getRightX()));
-    // Logger.recordOutput(
-    // "AutoAim/Targets/Coral",
-    // Stream.of(CoralTargets.values())
-    // .map((target) -> CoralTargets.getRobotTargetLocation(target.location))
-    // .toArray(Pose2d[]::new));
-    // // Log locations of all autoaim targets
-    // Logger.recordOutput(
-    // "AutoAim/Targets/Algae",
-    // Stream.of(AlgaeIntakeTargets.values())
-    // .map((target) -> AlgaeIntakeTargets.getRobotTargetLocation(target.location))
-    // .toArray(Pose2d[]::new));
-    //
-    // Logger.recordOutput(
-    // "AutoAim/Targets/SourceIntakes",
-    // Stream.of(SourceIntakeTargets.values())
-    // .map((target) -> SourceIntakeTargets.getRobotTargetLocation(target.location))
-    // .toArray(Pose2d[]::new));
-    //
-    // Logger.recordOutput(
-    // "AutoAim/CoralTarget",
-    // CoralTargets.getClosestTarget(drivetrain.getState().Pose));
-    // Logger.recordOutput(
-    // "AutoAim/LeftHandedCoralTarget",
-    // CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, true));
-    // Logger.recordOutput(
-    // "AutoAim/RightHandedCoralTarget",
-    // CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, false));
-    // Logger.recordOutput(
-    // "AutoAim/NameOfLHCoralTarget",
-    // CoralTargets.getHandedClosestTargetE(drivetrain.getState().Pose,
-    // true).name());
-    // Logger.recordOutput(
-    // "AutoAim/NameOfRHCoralTarget",
-    // CoralTargets.getHandedClosestTargetE(drivetrain.getState().Pose,
-    // false).name());
-    // Logger.recordOutput(
-    // "AutoAim/AlgaeIntakeTarget",
-    // AlgaeIntakeTargets.getClosestTarget(drivetrain.getState().Pose));
-    */
     superstructure.periodic();
   }
 }
