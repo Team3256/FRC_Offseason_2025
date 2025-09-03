@@ -62,10 +62,7 @@ public class Superstructure {
   private final EndEffector endEffector;
   private final Arm arm;
 
-  public Superstructure(
-      Elevator elevator,
-      EndEffector endEffector,
-      Arm arm) {
+  public Superstructure(Elevator elevator, EndEffector endEffector, Arm arm) {
     this.elevator = elevator;
     this.endEffector = endEffector;
     this.arm = arm;
@@ -90,10 +87,7 @@ public class Superstructure {
         .onTrue(elevator.toReefLevel(0))
         .onTrue(arm.toReefLevel(0, () -> true));
 
-    stateTriggers
-        .get(StructureState.CLIMB)
-        .onTrue(elevator.toHome())
-        .onTrue(arm.toClimb());
+    stateTriggers.get(StructureState.CLIMB).onTrue(elevator.toHome()).onTrue(arm.toClimb());
 
     // L2 and L3 are same arm position so they are put together, once again no safety limits
     stateTriggers.get(StructureState.L2).onTrue(elevator.toReefLevel(1));

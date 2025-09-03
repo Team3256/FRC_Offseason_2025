@@ -84,8 +84,7 @@ public class RobotContainer {
           true, Utils.isSimulation() ? new EndEffectorIOSim() : new EndEffectorIOTalonFX());
 
   private final Climb climb = new Climb(true, new ClimbIOTalonFX());
-  private final Superstructure superstructure =
-      new Superstructure(elevator, endEffector, arm);
+  private final Superstructure superstructure = new Superstructure(elevator, endEffector, arm);
   private final LED leds = new LED();
 
   private final Vision vision =
@@ -375,40 +374,44 @@ public class RobotContainer {
     m_driverController.y("Zero Heading").onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
     // auto align stuff, complete coral ground first
-//
-//    new Trigger(
-//            () ->
-//                ((superstructure.getState() != StructureState.GROUND_ALGAE) //switch to ground coral later
-//                    && (m_driverController.povLeft().getAsBoolean()))
-//        .whileTrue(
-//            Commands.parallel(
-//                drivetrain.pidToPose(
-//                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, true)))));
-//
-//    new Trigger(
-//            () ->
-//                ((superstructure.getState() != StructureState.GROUND_ALGAE) //switch to ground coral later
-//                    && (m_driverController.povRight().getAsBoolean()))
-//        .whileTrue(
-//            Commands.parallel(
-//                drivetrain.pidToPose(
-//                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, false)))));
-//
-//
-//    // Run LEDs simultaneously with Auto Align
-//    m_driverController
-//        .povLeft()
-//        .negate()
-//        .and(m_driverController.povRight().negate())
-//        .and(m_driverController.a().negate())
-//        .and(m_driverController.rightBumper().negate())
-//        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(false)));
-//    m_driverController
-//        .povRight()
-//        .or(m_driverController.povLeft())
-//        .or(m_driverController.a())
-//        .or(m_driverController.rightBumper())
-//        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(true)));
+    //
+    //    new Trigger(
+    //            () ->
+    //                ((superstructure.getState() != StructureState.GROUND_ALGAE) //switch to ground
+    // coral later
+    //                    && (m_driverController.povLeft().getAsBoolean()))
+    //        .whileTrue(
+    //            Commands.parallel(
+    //                drivetrain.pidToPose(
+    //                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose,
+    // true)))));
+    //
+    //    new Trigger(
+    //            () ->
+    //                ((superstructure.getState() != StructureState.GROUND_ALGAE) //switch to ground
+    // coral later
+    //                    && (m_driverController.povRight().getAsBoolean()))
+    //        .whileTrue(
+    //            Commands.parallel(
+    //                drivetrain.pidToPose(
+    //                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose,
+    // false)))));
+    //
+    //
+    //    // Run LEDs simultaneously with Auto Align
+    //    m_driverController
+    //        .povLeft()
+    //        .negate()
+    //        .and(m_driverController.povRight().negate())
+    //        .and(m_driverController.a().negate())
+    //        .and(m_driverController.rightBumper().negate())
+    //        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(false)));
+    //    m_driverController
+    //        .povRight()
+    //        .or(m_driverController.povLeft())
+    //        .or(m_driverController.a())
+    //        .or(m_driverController.rightBumper())
+    //        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(true)));
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }
