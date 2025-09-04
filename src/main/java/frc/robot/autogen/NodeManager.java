@@ -19,7 +19,6 @@ import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.subsystems.endeffector.EndEffector;
-import frc.robot.subsystems.endeffector.EndEffectorConstants;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import java.util.ArrayList;
 
@@ -65,7 +64,7 @@ public class NodeManager {
               Commands.waitUntil(elevator.reachedPosition.and(arm.reachedPosition))
                   .andThen(
                       endEffector
-                          .setCoralVoltage(() -> EndEffectorConstants.l4Voltage)
+                          .setL4Voltage()
                           .until(routine.observe(endEffector.coralBeamBreak))
                           .andThen(arm.toHome().alongWith(elevator.toHome())));
           preloadTraj.done().toggleOnTrue(scoreCmd);
