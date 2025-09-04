@@ -23,28 +23,27 @@ import java.util.Map;
 import org.littletonrobotics.junction.Logger;
 
 public class Superstructure {
-  public static enum StructureState {
-    IDLE,
-    L4,
-    L3,
-    L2,
-    L1,
-    DEALGAE_L3,
-    DEALGAE_L2,
-    PRESOURCE,
-    SOURCE,
+  public enum StructureState {
     BARGE,
-    SCORE_ALGAE,
-    CLIMB,
-    PROCESSOR,
-    SCORE_CORAL,
-    PREHOME,
-    HOME,
     CANCEL_ALL,
-    AUTO
+    CLIMB,
+    DEALGAE_L2,
+    DEALGAE_L3,
+    HOME,
+    IDLE,
+    L1,
+    L2,
+    L3,
+    L4,
+    PREHOME,
+    PRESOURCE,
+    PROCESSOR,
+    SCORE_ALGAE,
+    SCORE_CORAL,
+    SOURCE
   }
 
-  public static enum ManipulatorSide {
+  public enum ManipulatorSide {
     LEFT,
     RIGHT
   }
@@ -92,8 +91,6 @@ public class Superstructure {
         .onTrue(elevator.toReefLevel(0))
         .onTrue(arm.toReefLevel(0, () -> true));
 
-    stateTriggers.get(StructureState.CLIMB).onTrue(elevator.toHome()).onTrue(arm.toClimb());
-
     // L2 and L3 are same arm position so they are put together, once again no safety limits
     stateTriggers.get(StructureState.L2).onTrue(elevator.toReefLevel(1));
     stateTriggers.get(StructureState.L3).onTrue(elevator.toReefLevel(2));
@@ -124,12 +121,11 @@ public class Superstructure {
         .and(prevStateTriggers.get(StructureState.L4))
         .onTrue(endEffector.setL4Voltage(rightManipulatorSide));
 
-    // Dealgae levels, no safety limits (yet, since they might need to be retuned)
+    // Dealgae levels
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .onTrue(elevator.toDealgaeLevel(0))
         .onTrue(arm.toDealgaeLevel(0, () -> true));
-
     stateTriggers
         .get(StructureState.DEALGAE_L3)
         .onTrue(elevator.toDealgaeLevel(1))
@@ -154,20 +150,30 @@ public class Superstructure {
         .and(endEffector.coralBeamBreak)
         .onTrue(this.setState(StructureState.PREHOME));
 
-    // Random filler for now
+    // Barge level
     stateTriggers
         .get(StructureState.BARGE)
         .onTrue(elevator.toBargePosition())
         .onTrue(arm.toBargeLevel(rightManipulatorSide));
 
+    // Processor state
     stateTriggers
         .get(StructureState.PROCESSOR)
         .onTrue(elevator.toProcessorPosition())
         .and(elevator.reachedPosition)
-        .debounce(.04) // wait two loop times
+        .debounce(.04)
         .onTrue(arm.toProcessorLevel());
 
+    // Outtake
     stateTriggers.get(StructureState.SCORE_ALGAE).onTrue(endEffector.setAlgaeOuttakeVoltage());
+
+    // Climb State
+    stateTriggers
+        .get(StructureState.CLIMB)
+        .onTrue(elevator.toHome())
+        .and(elevator.isSafeForArm)
+        .debounce(.04)
+        .onTrue(arm.toClimb());
 
     // Turn coral motor off (helpful for transitioning from SCORE_CORAL), do not turn algae motor
     // off since you might be holding one
@@ -175,12 +181,10 @@ public class Superstructure {
 
     // Different version of prehome specifically for transitioning from SOURCE, because the arm
     // needs to move a specific direction
-
     stateTriggers
         .get(StructureState.PREHOME)
         .and(prevStateTriggers.get(StructureState.SCORE_ALGAE))
         .onTrue(endEffector.algaeOff());
-
     stateTriggers
         .get(StructureState.PREHOME)
         .and(prevStateTriggers.get(StructureState.SCORE_CORAL))
@@ -202,14 +206,6 @@ public class Superstructure {
     // state.
     // As a safety feature, the HOME state is only valid if the previous state was PREHOME ensuring
     // that you don't skip steps.
-
-    //    stateTriggers
-    //        .get(StructureState.IDLE)
-    //        .or(stateTriggers.get(StructureState.HOME))
-    //        .and(endEffector.algaeBeamBreak.negate())
-    //            .debounce(.025)
-    //        .onTrue(endEffector.off());
-
     stateTriggers
         .get(StructureState.HOME)
         .and(prevStateTriggers.get(StructureState.PREHOME))
@@ -219,15 +215,13 @@ public class Superstructure {
         .and(elevator.reachedPosition)
         .onTrue(this.setState(StructureState.IDLE));
 
+    // Kills all subsystems
     stateTriggers
         .get(StructureState.CANCEL_ALL)
         .onTrue(elevator.off())
         .onTrue(arm.off())
         .onTrue(endEffector.algaeOff())
         .onTrue(endEffector.coralOff());
-
-    //    RobotModeTriggers.teleop().toggleOnTrue(this.setState(StructureState.IDLE));
-    //    RobotModeTriggers.autonomous().whileTrue(this.setState(StructureState.AUTO));
   }
 
   public Trigger coralBeamBreak() {
