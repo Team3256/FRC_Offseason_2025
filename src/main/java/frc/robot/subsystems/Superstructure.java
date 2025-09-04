@@ -19,6 +19,7 @@ import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.subsystems.endeffector.EndEffector;
+import frc.robot.subsystems.endeffector.EndEffectorConstants;
 import frc.robot.utils.LoggedTracer;
 import java.util.HashMap;
 import java.util.Map;
@@ -132,17 +133,17 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L1))
-        .onTrue(endEffector.setL1Velocity(rightManipulatorSide));
+        .onTrue(endEffector.setCoralVelocity(() -> EndEffectorConstants.l1Velocity));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L2).or(prevStateTriggers.get(StructureState.L3)))
-        .onTrue(endEffector.setL2L3Velocity(rightManipulatorSide));
+        .onTrue(endEffector.setCoralVelocity(() -> EndEffectorConstants.l2l3Velocity));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
-        .onTrue(endEffector.setL4Voltage(rightManipulatorSide));
+        .onTrue(endEffector.setCoralVoltage(() -> EndEffectorConstants.l4Voltage));
 
-    // Dealgae levels, no safety limits (yet, since they might need to be retuned)
+    // Dealgae
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .onTrue(elevator.toDealgaeLevel(0))
@@ -208,7 +209,6 @@ public class Superstructure {
         .and(endEffector.algaeBeamBreak)
         .debounce(.03)
         .onTrue(this.setState(StructureState.PREHOME));
-    ;
 
     stateTriggers
         .get(StructureState.SCORE_ALGAE)

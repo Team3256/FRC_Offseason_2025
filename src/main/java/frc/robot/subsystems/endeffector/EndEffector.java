@@ -59,33 +59,6 @@ public class EndEffector extends DisableSubsystem {
     return this.run(() -> endEffectorIO.setAlgaeVelocity(velocity.get()));
   }
 
-  public Command setL1Velocity(BooleanSupplier rightSide) {
-    return setCoralVelocity(
-            () ->
-                rightSide.getAsBoolean()
-                    ? EndEffectorConstants.l1Velocity
-                    : EndEffectorConstants.l1Velocity.times(-1))
-        .withName("setL1Velocity");
-  }
-
-  public Command setL2L3Velocity(BooleanSupplier rightSide) {
-    return setCoralVelocity(
-            () ->
-                rightSide.getAsBoolean()
-                    ? EndEffectorConstants.l2l3Velocity
-                    : EndEffectorConstants.l2l3Velocity.times(-1))
-        .withName("setL2L3Velocity");
-  }
-
-  public Command setL4Voltage(BooleanSupplier rightSide) {
-    return setCoralVoltage(
-            () ->
-                rightSide.getAsBoolean()
-                    ? EndEffectorConstants.l4Voltage
-                    : EndEffectorConstants.l4Voltage * -1)
-        .withName("setL4Voltage");
-  }
-
   public Command setSourceVelocity() {
     return setCoralVelocity(() -> EndEffectorConstants.sourceVelocity)
         .withName("setSourceVelocity");
