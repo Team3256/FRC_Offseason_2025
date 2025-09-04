@@ -53,7 +53,7 @@ public class Superstructure {
     RIGHT
   }
 
-  private ManipulatorSide manipulatorSide = ManipulatorSide.RIGHT;
+  private ManipulatorSide manipulatorSide;
 
   private StructureState state = StructureState.IDLE;
   private StructureState prevState = StructureState.IDLE;
@@ -61,9 +61,6 @@ public class Superstructure {
   private Map<StructureState, Trigger> stateTriggers = new HashMap<StructureState, Trigger>();
 
   private Map<StructureState, Trigger> prevStateTriggers = new HashMap<StructureState, Trigger>();
-
-  private final Trigger rightManipulatorSide =
-      new Trigger(() -> this.manipulatorSide == ManipulatorSide.RIGHT);
 
   private final Timer stateTimer = new Timer();
 
@@ -119,7 +116,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.L2)
         .or(stateTriggers.get(StructureState.L3))
-        .onTrue(arm.toReefLevel(1, () -> true));
+        .onTrue(arm.toReefLevel(1, () -> (this.manipulatorSide == ManipulatorSide.RIGHT)));
 
     // L4 reef level, no safety limits
     stateTriggers
@@ -127,7 +124,7 @@ public class Superstructure {
         .onTrue(elevator.toReefLevel(3))
         .and(elevator.reachedPosition)
         .debounce(.03)
-        .onTrue(arm.toReefLevel(2, rightManipulatorSide));
+        .onTrue(arm.toReefLevel(2, () -> (this.manipulatorSide == ManipulatorSide.RIGHT)));
 
     // Scoring coral, depending on previous state it changes endEffector velocity
     stateTriggers
@@ -147,13 +144,13 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .onTrue(elevator.toDealgaeLevel(0))
-        .onTrue(arm.toDealgaeLevel(0, () -> true))
+        .onTrue(arm.toDealgaeLevel(0, () -> (this.manipulatorSide == ManipulatorSide.RIGHT)))
         .onTrue(algaeArm.toPartialDeploy());
 
     stateTriggers
         .get(StructureState.DEALGAE_L3)
         .onTrue(elevator.toDealgaeLevel(1))
-        .onTrue(arm.toDealgaeLevel(1, rightManipulatorSide));
+        .onTrue(arm.toDealgaeLevel(1, () -> (this.manipulatorSide == ManipulatorSide.RIGHT)));
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .or(stateTriggers.get(StructureState.DEALGAE_L3))
@@ -178,7 +175,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.BARGE)
         .onTrue(elevator.toBargePosition())
-        .onTrue(arm.toBargeLevel(rightManipulatorSide));
+        .onTrue(arm.toBargeLevel(() -> (this.manipulatorSide == ManipulatorSide.RIGHT)));
 
     stateTriggers
         .get(StructureState.PROCESSOR)
@@ -274,9 +271,6 @@ public class Superstructure {
         .onTrue(arm.off())
         .onTrue(endEffector.algaeOff())
         .onTrue(endEffector.coralOff());
-
-    //    RobotModeTriggers.teleop().toggleOnTrue(this.setState(StructureState.IDLE));
-    //    RobotModeTriggers.autonomous().whileTrue(this.setState(StructureState.AUTO));
   }
 
   public Trigger coralBeamBreak() {
