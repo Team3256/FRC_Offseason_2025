@@ -19,6 +19,7 @@ import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.subsystems.endeffector.EndEffector;
+import frc.robot.subsystems.endeffector.EndEffectorConstants;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class NodeManager {
               Commands.waitUntil(elevator.reachedPosition.and(arm.reachedPosition))
                   .andThen(
                       endEffector
-                          .setL4Voltage(() -> true)
+                          .setCoralVoltage(() -> EndEffectorConstants.l4Voltage)
                           .until(routine.observe(endEffector.coralBeamBreak))
                           .andThen(arm.toHome().alongWith(elevator.toHome())));
           preloadTraj.done().toggleOnTrue(scoreCmd);
@@ -102,7 +103,7 @@ public class NodeManager {
                   .toggleOnTrue(arm.toReefLevel(0, () -> true).alongWith(elevator.toReefLevel(0)));
               scoreCmd =
                   endEffector
-                      .setL1Velocity(() -> true)
+                      .setCoralVelocity(() -> EndEffectorConstants.l1Velocity)
                       .until(endEffector.coralBeamBreak)
                       .andThen(arm.toHome().alongWith(elevator.toHome()));
               scoringTraj.done().onTrue(scoreCmd);
@@ -113,7 +114,7 @@ public class NodeManager {
                   .toggleOnTrue(arm.toReefLevel(1, () -> true).alongWith(elevator.toReefLevel(1)));
               scoreCmd =
                   endEffector
-                      .setL2L3Velocity(() -> true)
+                      .setCoralVelocity(() -> EndEffectorConstants.l2l3Velocity)
                       .until(endEffector.coralBeamBreak)
                       .andThen(arm.toHome().alongWith(elevator.toHome()));
               scoringTraj.done().onTrue(scoreCmd);
@@ -124,7 +125,7 @@ public class NodeManager {
                   .toggleOnTrue(arm.toReefLevel(1, () -> true).alongWith(elevator.toReefLevel(2)));
               scoreCmd =
                   endEffector
-                      .setL2L3Velocity(() -> true)
+                      .setCoralVelocity(() -> EndEffectorConstants.l2l3Velocity)
                       .until(endEffector.coralBeamBreak)
                       .andThen(arm.toHome().alongWith(elevator.toHome()));
               scoringTraj.done().onTrue(scoreCmd);
@@ -135,7 +136,7 @@ public class NodeManager {
                   .toggleOnTrue(arm.toReefLevel(2, () -> true).alongWith(elevator.toReefLevel(3)));
               scoreCmd =
                   endEffector
-                      .setL4Voltage(() -> true)
+                      .setCoralVoltage(() -> EndEffectorConstants.l4Voltage)
                       .until(endEffector.coralBeamBreak)
                       .andThen(arm.toHome().alongWith(elevator.toHome()));
               scoringTraj.done().onTrue(scoreCmd);

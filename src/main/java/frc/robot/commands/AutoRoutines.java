@@ -22,6 +22,7 @@ import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.subsystems.endeffector.EndEffector;
+import frc.robot.subsystems.endeffector.EndEffectorConstants;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import frc.robot.utils.autoaim.CoralTargets;
 import frc.robot.utils.autoaim.SourceIntakeTargets;
@@ -418,7 +419,7 @@ public class AutoRoutines {
     }
 
     public Command scoreL4() {
-      return m_endEffector.setL4Voltage(() -> true);
+      return m_endEffector.setCoralVoltage(() -> EndEffectorConstants.l4Voltage);
     }
 
     public Command goToSource() {
