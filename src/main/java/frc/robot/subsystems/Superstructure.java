@@ -53,7 +53,7 @@ public class Superstructure {
     RIGHT
   }
 
-  private ManipulatorSide manipulatorSide;
+  private ManipulatorSide manipulatorSide = ManipulatorSide.RIGHT;
 
   private StructureState state = StructureState.IDLE;
   private StructureState prevState = StructureState.IDLE;
