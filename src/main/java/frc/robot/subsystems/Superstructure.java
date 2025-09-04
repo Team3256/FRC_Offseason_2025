@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.algaerollers.AlgaeRoller;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorConstants;
@@ -67,14 +66,11 @@ public class Superstructure {
   private final Elevator elevator;
   private final EndEffector endEffector;
   private final Arm arm;
-  private final AlgaeRoller algaeRoller;
 
-  public Superstructure(
-      Elevator elevator, EndEffector endEffector, Arm arm, AlgaeRoller algaeRoller) {
+  public Superstructure(Elevator elevator, EndEffector endEffector, Arm arm) {
     this.elevator = elevator;
     this.endEffector = endEffector;
     this.arm = arm;
-    this.algaeRoller = algaeRoller;
 
     stateTimer.start();
 
@@ -94,8 +90,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.L1)
         .onTrue(elevator.toReefLevel(0))
-        .onTrue(arm.toReefLevel(0, () -> true))
-        .onTrue(algaeRoller.setL1Voltage());
+        .onTrue(arm.toReefLevel(0, () -> true));
 
     stateTriggers.get(StructureState.CLIMB).onTrue(elevator.toHome()).onTrue(arm.toClimb());
 
@@ -172,10 +167,7 @@ public class Superstructure {
         .debounce(.04) // wait two loop times
         .onTrue(arm.toProcessorLevel());
 
-    stateTriggers
-        .get(StructureState.SCORE_ALGAE)
-        .onTrue(endEffector.setAlgaeOuttakeVoltage())
-        .onTrue(algaeRoller.setProcessorVoltage());
+    stateTriggers.get(StructureState.SCORE_ALGAE).onTrue(endEffector.setAlgaeOuttakeVoltage());
 
     // Turn coral motor off (helpful for transitioning from SCORE_CORAL), do not turn algae motor
     // off since you might be holding one
@@ -223,7 +215,6 @@ public class Superstructure {
         .and(prevStateTriggers.get(StructureState.PREHOME))
         .onTrue(elevator.toHome())
         .onTrue(arm.toHome())
-        .onTrue(algaeRoller.off())
         .and(arm.reachedPosition)
         .and(elevator.reachedPosition)
         .onTrue(this.setState(StructureState.IDLE));
