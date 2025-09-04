@@ -56,6 +56,9 @@ public class Superstructure {
   private final Trigger rightManipulatorSide =
       new Trigger(() -> this.manipulatorSide == ManipulatorSide.RIGHT);
 
+  private final Trigger leftManipulatorSide =
+      new Trigger(() -> this.manipulatorSide == ManipulatorSide.LEFT);
+
   private final Timer stateTimer = new Timer();
 
   private final Elevator elevator;
@@ -103,21 +106,40 @@ public class Superstructure {
         .onTrue(elevator.toReefLevel(3))
         .and(elevator.reachedPosition)
         .debounce(.03)
-        .onTrue(arm.toReefLevel(2, rightManipulatorSide));
+        .onTrue(arm.toReefLevel(2, () -> true));
 
     // Scoring coral, depending on previous state it changes endEffector velocity
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L1))
-        .onTrue(endEffector.setL1Velocity(rightManipulatorSide));
+        .and(rightManipulatorSide)
+        .onTrue(endEffector.setL1Velocity(() -> true));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L2).or(prevStateTriggers.get(StructureState.L3)))
-        .onTrue(endEffector.setL2L3Velocity(rightManipulatorSide));
+        .and(rightManipulatorSide)
+        .onTrue(endEffector.setL2L3Velocity(() -> true));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
-        .onTrue(endEffector.setL4Voltage(rightManipulatorSide));
+        .and(rightManipulatorSide)
+        .onTrue(endEffector.setL4Voltage(() -> true));
+
+    stateTriggers
+        .get(StructureState.SCORE_CORAL)
+        .and(prevStateTriggers.get(StructureState.L1))
+        .and(leftManipulatorSide)
+        .onTrue(endEffector.setL1Velocity(() -> false));
+    stateTriggers
+        .get(StructureState.SCORE_CORAL)
+        .and(prevStateTriggers.get(StructureState.L2).or(prevStateTriggers.get(StructureState.L3)))
+        .and(leftManipulatorSide)
+        .onTrue(endEffector.setL2L3Velocity(() -> false));
+    stateTriggers
+        .get(StructureState.SCORE_CORAL)
+        .and(prevStateTriggers.get(StructureState.L4))
+        .and(leftManipulatorSide)
+        .onTrue(endEffector.setL4Voltage(() -> false));
 
     // Arm needs to wrap 180, so elevator has to be safe before we fully move
     stateTriggers
@@ -163,13 +185,6 @@ public class Superstructure {
     // As a safety feature, the HOME state is only valid if the previous state was PREHOME ensuring
     // that you don't skip steps.
 
-    //    stateTriggers
-    //        .get(StructureState.IDLE)
-    //        .or(stateTriggers.get(StructureState.HOME))
-    //        .and(endEffector.algaeBeamBreak.negate())
-    //            .debounce(.025)
-    //        .onTrue(endEffector.off());
-
     stateTriggers
         .get(StructureState.HOME)
         .and(prevStateTriggers.get(StructureState.PREHOME))
@@ -185,9 +200,6 @@ public class Superstructure {
         .onTrue(arm.off())
         .onTrue(endEffector.algaeOff())
         .onTrue(endEffector.coralOff());
-
-    //    RobotModeTriggers.teleop().toggleOnTrue(this.setState(StructureState.IDLE));
-    //    RobotModeTriggers.autonomous().whileTrue(this.setState(StructureState.AUTO));
   }
 
   public Trigger coralBeamBreak() {
