@@ -130,17 +130,17 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L1))
-        .onTrue(endEffector.setCoralVelocity(() -> EndEffectorConstants.l1Velocity));
+        .onTrue(endEffector.setL1Velocity());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L2).or(prevStateTriggers.get(StructureState.L3)))
-        .onTrue(endEffector.setCoralVelocity(() -> EndEffectorConstants.l2l3Velocity));
+        .onTrue(endEffector.setL2L3Velocity());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
-        .onTrue(endEffector.setCoralVoltage(() -> EndEffectorConstants.l4Voltage));
+        .onTrue(endEffector.setL4Voltage());
 
-    // Dealgae
+    // Dealgae Levels
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .onTrue(elevator.toDealgaeLevel(0))

@@ -103,7 +103,7 @@ public class NodeManager {
                   .toggleOnTrue(arm.toReefLevel(0, () -> true).alongWith(elevator.toReefLevel(0)));
               scoreCmd =
                   endEffector
-                      .setCoralVelocity(() -> EndEffectorConstants.l1Velocity)
+                      .setL1Velocity()
                       .until(endEffector.coralBeamBreak)
                       .andThen(arm.toHome().alongWith(elevator.toHome()));
               scoringTraj.done().onTrue(scoreCmd);
@@ -114,7 +114,7 @@ public class NodeManager {
                   .toggleOnTrue(arm.toReefLevel(1, () -> true).alongWith(elevator.toReefLevel(1)));
               scoreCmd =
                   endEffector
-                      .setCoralVelocity(() -> EndEffectorConstants.l2l3Velocity)
+                      .setL2L3Velocity()
                       .until(endEffector.coralBeamBreak)
                       .andThen(arm.toHome().alongWith(elevator.toHome()));
               scoringTraj.done().onTrue(scoreCmd);
@@ -125,7 +125,7 @@ public class NodeManager {
                   .toggleOnTrue(arm.toReefLevel(1, () -> true).alongWith(elevator.toReefLevel(2)));
               scoreCmd =
                   endEffector
-                      .setCoralVelocity(() -> EndEffectorConstants.l2l3Velocity)
+                      .setL2L3Velocity()
                       .until(endEffector.coralBeamBreak)
                       .andThen(arm.toHome().alongWith(elevator.toHome()));
               scoringTraj.done().onTrue(scoreCmd);
@@ -136,7 +136,7 @@ public class NodeManager {
                   .toggleOnTrue(arm.toReefLevel(2, () -> true).alongWith(elevator.toReefLevel(3)));
               scoreCmd =
                   endEffector
-                      .setCoralVoltage(() -> EndEffectorConstants.l4Voltage)
+                          .setL4Voltage()
                       .until(endEffector.coralBeamBreak)
                       .andThen(arm.toHome().alongWith(elevator.toHome()));
               scoringTraj.done().onTrue(scoreCmd);

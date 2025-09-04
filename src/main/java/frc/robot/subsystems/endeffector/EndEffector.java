@@ -50,6 +50,18 @@ public class EndEffector extends DisableSubsystem {
     return this.run(() -> endEffectorIO.setCoralVelocity(velocity.get()));
   }
 
+  public Command setL1Velocity() {
+    return this.run(() -> endEffectorIO.setCoralVelocity(EndEffectorConstants.l1Velocity));
+  }
+
+  public Command setL2L3Velocity() {
+    return this.run(() -> endEffectorIO.setCoralVelocity(EndEffectorConstants.l2l3Velocity));
+  }
+
+  public Command setL4Voltage() {
+    return this.run(() -> endEffectorIO.setCoralVoltage(EndEffectorConstants.l4Voltage));
+  }
+
   public Command setAlgaeVoltage(double voltage) {
     return this.run(() -> endEffectorIO.setAlgaeVoltage(voltage));
   }

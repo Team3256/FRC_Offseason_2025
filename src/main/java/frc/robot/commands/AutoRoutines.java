@@ -419,7 +419,7 @@ public class AutoRoutines {
     }
 
     public Command scoreL4() {
-      return m_endEffector.setCoralVoltage(() -> EndEffectorConstants.l4Voltage);
+      return m_endEffector.setL4Voltage();
     }
 
     public Command goToSource() {
