@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.InternalButton;
@@ -56,7 +55,6 @@ import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.utils.MappedXboxController;
 import frc.robot.utils.autoaim.AutoAim;
-import frc.robot.utils.autoaim.CoralTargets;
 import java.util.List;
 
 /**
@@ -440,44 +438,46 @@ public class RobotContainer {
     m_driverController.y("Zero Heading").onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
     // put this back after completing ground coral
-//    // Auto Align Reef, Left Handed Target (Absolute)
-//    new Trigger(
-//            () ->
-//                ((superstructure.getState() != StructureState.GROUND_ALGAE)
-//                        && (superstructure.getState() != StructureState.PROCESSOR)
-//                        && (superstructure.getState()) != StructureState.BARGE)
-//                    && (m_driverController.povLeft().getAsBoolean()))
-//        .whileTrue(
-//            Commands.parallel(
-//                drivetrain.pidToPose(
-//                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, true))));
-//
-//    // Auto Align Reef, Right Handed Target (Absolute)
-//    new Trigger(
-//            () ->
-//                ((superstructure.getState() != StructureState.GROUND_ALGAE)
-//                        && (superstructure.getState() != StructureState.PROCESSOR)
-//                        && (superstructure.getState()) != StructureState.BARGE)
-//                    && (m_driverController.povRight().getAsBoolean()))
-//        .whileTrue(
-//            Commands.parallel(
-//                drivetrain.pidToPose(
-//                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, false))));
-//
-//    // Run LEDs simultaneously with Auto Align
-//    m_driverController
-//        .povLeft()
-//        .negate()
-//        .and(m_driverController.povRight().negate())
-//        .and(m_driverController.a().negate())
-//        .and(m_driverController.rightBumper().negate())
-//        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(false)));
-//    m_driverController
-//        .povRight()
-//        .or(m_driverController.povLeft())
-//        .or(m_driverController.a())
-//        .or(m_driverController.rightBumper())
-//        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(true)));
+    //    // Auto Align Reef, Left Handed Target (Absolute)
+    //    new Trigger(
+    //            () ->
+    //                ((superstructure.getState() != StructureState.GROUND_ALGAE)
+    //                        && (superstructure.getState() != StructureState.PROCESSOR)
+    //                        && (superstructure.getState()) != StructureState.BARGE)
+    //                    && (m_driverController.povLeft().getAsBoolean()))
+    //        .whileTrue(
+    //            Commands.parallel(
+    //                drivetrain.pidToPose(
+    //                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose,
+    // true))));
+    //
+    //    // Auto Align Reef, Right Handed Target (Absolute)
+    //    new Trigger(
+    //            () ->
+    //                ((superstructure.getState() != StructureState.GROUND_ALGAE)
+    //                        && (superstructure.getState() != StructureState.PROCESSOR)
+    //                        && (superstructure.getState()) != StructureState.BARGE)
+    //                    && (m_driverController.povRight().getAsBoolean()))
+    //        .whileTrue(
+    //            Commands.parallel(
+    //                drivetrain.pidToPose(
+    //                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose,
+    // false))));
+    //
+    //    // Run LEDs simultaneously with Auto Align
+    //    m_driverController
+    //        .povLeft()
+    //        .negate()
+    //        .and(m_driverController.povRight().negate())
+    //        .and(m_driverController.a().negate())
+    //        .and(m_driverController.rightBumper().negate())
+    //        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(false)));
+    //    m_driverController
+    //        .povRight()
+    //        .or(m_driverController.povLeft())
+    //        .or(m_driverController.a())
+    //        .or(m_driverController.rightBumper())
+    //        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(true)));
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }

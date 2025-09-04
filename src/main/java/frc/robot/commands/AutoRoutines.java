@@ -198,7 +198,8 @@ public class AutoRoutines {
     final AutoTrajectory SourceToD = routine.trajectory(sourceToL42Traj);
 
     routine.active().onTrue(preloadF.resetOdometry().andThen(preloadF.cmd()));
-    //preloadF.atTimeBeforeEnd(.7).onTrue(m_algaeArm.toHome()); TODO: make this coral ground to home
+    // preloadF.atTimeBeforeEnd(.7).onTrue(m_algaeArm.toHome()); TODO: make this coral ground to
+    // home
     preloadF.atTimeBeforeEnd(.8).onTrue(m_autoCommands.goToL4());
     preloadF
         .done()
@@ -276,7 +277,7 @@ public class AutoRoutines {
     final AutoTrajectory Barge2ToH = routine.trajectory("Barge2-H");
 
     routine.active().onTrue(MidToG.resetOdometry().andThen(MidToG.cmd()));
-    //MidToG.atTimeBeforeEnd(.7).onTrue(m_algaeArm.toHome()); TODO: make this coral ground to home
+    // MidToG.atTimeBeforeEnd(.7).onTrue(m_algaeArm.toHome()); TODO: make this coral ground to home
 
     MidToG.atTimeBeforeEnd(.5).onTrue(m_autoCommands.goToL4());
     MidToG.done()
