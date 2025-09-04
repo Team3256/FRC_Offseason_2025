@@ -100,7 +100,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.L1)
         .onTrue(elevator.toReefLevel(0))
-        .onTrue(arm.toReefLevel(0, () -> true))
+        .onTrue(arm.toReefLevel(0, () -> (this.manipulatorSide == ManipulatorSide.RIGHT)))
         .onTrue(algaeArm.toL1())
         .onTrue(algaeRoller.setL1Voltage());
 
