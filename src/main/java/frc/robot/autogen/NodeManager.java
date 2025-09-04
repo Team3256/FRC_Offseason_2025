@@ -136,7 +136,7 @@ public class NodeManager {
                   .toggleOnTrue(arm.toReefLevel(2, () -> true).alongWith(elevator.toReefLevel(3)));
               scoreCmd =
                   endEffector
-                          .setL4Voltage()
+                      .setL4Voltage()
                       .until(endEffector.coralBeamBreak)
                       .andThen(arm.toHome().alongWith(elevator.toHome()));
               scoringTraj.done().onTrue(scoreCmd);
