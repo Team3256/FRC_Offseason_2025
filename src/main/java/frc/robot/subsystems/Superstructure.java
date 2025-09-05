@@ -54,6 +54,9 @@ public class Superstructure {
 
   private ManipulatorSide manipulatorSide = ManipulatorSide.RIGHT;
 
+  private final Trigger rightManipulatorSide =
+      new Trigger(() -> this.manipulatorSide == ManipulatorSide.RIGHT);
+
   private StructureState state = StructureState.IDLE;
   private StructureState prevState = StructureState.IDLE;
 
@@ -145,7 +148,6 @@ public class Superstructure {
         .onTrue(elevator.toDealgaeLevel(0))
         .onTrue(arm.toDealgaeLevel(0, () -> (this.manipulatorSide == ManipulatorSide.RIGHT)))
         .onTrue(algaeArm.toPartialDeploy());
-
     stateTriggers
         .get(StructureState.DEALGAE_L3)
         .onTrue(elevator.toDealgaeLevel(1))
