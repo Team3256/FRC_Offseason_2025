@@ -102,7 +102,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.L1)
         .onTrue(elevator.toReefLevel(0))
-        .onTrue(arm.toReefLevel(0, () -> (this.manipulatorSide == ManipulatorSide.RIGHT)))
+        .onTrue(arm.toReefLevel(0, rightManipulatorSide))
         .onTrue(algaeArm.toL1())
         .onTrue(algaeRoller.setL1Voltage());
 
@@ -118,7 +118,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.L2)
         .or(stateTriggers.get(StructureState.L3))
-        .onTrue(arm.toReefLevel(1, () -> (this.manipulatorSide == ManipulatorSide.RIGHT)));
+        .onTrue(arm.toReefLevel(1, rightManipulatorSide));
 
     // L4 reef level, no safety limits
     stateTriggers
@@ -126,7 +126,7 @@ public class Superstructure {
         .onTrue(elevator.toReefLevel(3))
         .and(elevator.reachedPosition)
         .debounce(.03)
-        .onTrue(arm.toReefLevel(2, () -> (this.manipulatorSide == ManipulatorSide.RIGHT)));
+        .onTrue(arm.toReefLevel(2, rightManipulatorSide));
 
     // Scoring coral, depending on previous state it changes endEffector velocity
     stateTriggers
@@ -146,12 +146,12 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .onTrue(elevator.toDealgaeLevel(0))
-        .onTrue(arm.toDealgaeLevel(0, () -> (this.manipulatorSide == ManipulatorSide.RIGHT)))
+        .onTrue(arm.toDealgaeLevel(0, rightManipulatorSide))
         .onTrue(algaeArm.toPartialDeploy());
     stateTriggers
         .get(StructureState.DEALGAE_L3)
         .onTrue(elevator.toDealgaeLevel(1))
-        .onTrue(arm.toDealgaeLevel(1, () -> (this.manipulatorSide == ManipulatorSide.RIGHT)));
+        .onTrue(arm.toDealgaeLevel(1, rightManipulatorSide));
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .or(stateTriggers.get(StructureState.DEALGAE_L3))
@@ -176,7 +176,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.BARGE)
         .onTrue(elevator.toBargePosition())
-        .onTrue(arm.toBargeLevel(() -> (this.manipulatorSide == ManipulatorSide.RIGHT)));
+        .onTrue(arm.toBargeLevel(rightManipulatorSide));
 
     stateTriggers
         .get(StructureState.PROCESSOR)
