@@ -161,19 +161,11 @@ public class Superstructure {
         .get(StructureState.PROCESSOR)
         .onTrue(elevator.toProcessorPosition())
         .and(elevator.reachedPosition)
-        .debounce(.04)
+        .debounce(.04) // wait 2 loop times
         .onTrue(arm.toProcessorLevel());
 
     // Outtake
     stateTriggers.get(StructureState.SCORE_ALGAE).onTrue(endEffector.setAlgaeOuttakeVoltage());
-
-    // Climb State
-    stateTriggers
-        .get(StructureState.CLIMB)
-        .onTrue(elevator.toHome())
-        .and(elevator.isSafeForArm)
-        .debounce(.04)
-        .onTrue(arm.toClimb());
 
     // Turn coral motor off (helpful for transitioning from SCORE_CORAL), do not turn algae motor
     // off since you might be holding one
