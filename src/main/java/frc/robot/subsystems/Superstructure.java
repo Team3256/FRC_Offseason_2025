@@ -26,7 +26,6 @@ public class Superstructure {
   public enum StructureState {
     BARGE,
     CANCEL_ALL,
-    CLIMB,
     DEALGAE_L2,
     DEALGAE_L3,
     HOME,
@@ -222,10 +221,6 @@ public class Superstructure {
 
   public Trigger algaeBeamBreak() {
     return endEffector.algaeBeamBreak;
-  }
-
-  public Trigger climbState() {
-    return stateTriggers.get(StructureState.CLIMB);
   }
 
   // call manually

@@ -54,8 +54,6 @@ public final class ArmConstants {
 
   public static final Angle homePosition = Rotations.of(.285);
 
-  public static final Angle climbPosition = Rotations.of(.4);
-
   public static final double safeRightPosition = .37;
   public static final double safeLeftPosition = .25;
 

@@ -34,9 +34,6 @@ import frc.robot.subsystems.Superstructure.StructureState;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmIOSim;
 import frc.robot.subsystems.arm.ArmIOTalonFX;
-import frc.robot.subsystems.climb.Climb;
-import frc.robot.subsystems.climb.ClimbConstants;
-import frc.robot.subsystems.climb.ClimbIOTalonFX;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
@@ -83,7 +80,6 @@ public class RobotContainer {
       new EndEffector(
           true, Utils.isSimulation() ? new EndEffectorIOSim() : new EndEffectorIOTalonFX());
 
-  private final Climb climb = new Climb(true, new ClimbIOTalonFX());
   private final Superstructure superstructure = new Superstructure(elevator, endEffector, arm);
   private final LED leds = new LED();
 
@@ -175,7 +171,6 @@ public class RobotContainer {
         .and(autoAlignedTrigger.negate())
         .and(autoAlignRunning.negate())
         .whileTrue(leds.animate(IndicatorAnimation.AlgaeIntaken));
-    superstructure.climbState().whileTrue(leds.animate(IndicatorAnimation.Climb));
     autoAlignedTrigger.whileTrue(
         Commands.run(
                 () -> {
@@ -258,20 +253,6 @@ public class RobotContainer {
     // set state PROCESSOR
     new Trigger(() -> -m_operatorController.getLeftY() < -.5)
         .onTrue(superstructure.setState(StructureState.PROCESSOR));
-
-    // set state CLIMB
-    new Trigger(() -> m_operatorController.getLeftX() > .5)
-        .onTrue(superstructure.setState(StructureState.CLIMB));
-
-    // climb out
-    new Trigger(() -> m_operatorController.getRightX() > .5)
-        .onTrue(climb.setVoltage(ClimbConstants.kUpVoltage))
-        .or(new Trigger(() -> m_operatorController.getRightX() < -.5))
-        .onFalse(climb.setVoltage(0));
-
-    // pull climb in
-    new Trigger(() -> m_operatorController.getRightX() < -.5)
-        .onTrue(climb.setVoltage(ClimbConstants.kDownVoltage));
 
     // elevator manual up
     new Trigger(() -> -m_operatorController.getRightY() > .5)
