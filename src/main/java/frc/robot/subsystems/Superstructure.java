@@ -88,8 +88,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.L1)
         .onTrue(elevator.toReefLevel(0))
-        .onTrue(arm.toReefLevel(0, rightManipulatorSide))
-
+        .onTrue(arm.toReefLevel(0, rightManipulatorSide));
 
     // L2 and L3 are same arm position so they are put together, once again no safety limits
     stateTriggers.get(StructureState.L2).onTrue(elevator.toReefLevel(1));
@@ -121,12 +120,11 @@ public class Superstructure {
         .and(prevStateTriggers.get(StructureState.L4))
         .onTrue(endEffector.setL4Voltage());
 
-
     // Dealgae Levels
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .onTrue(elevator.toDealgaeLevel(0))
-        .onTrue(arm.toDealgaeLevel(0, rightManipulatorSide))
+        .onTrue(arm.toDealgaeLevel(0, rightManipulatorSide));
 
     stateTriggers
         .get(StructureState.DEALGAE_L3)
@@ -165,7 +163,6 @@ public class Superstructure {
         .and(elevator.reachedPosition)
         .debounce(.04) // wait 2 loop times
         .onTrue(arm.toProcessorLevel());
-
 
     // Outtake
     stateTriggers.get(StructureState.SCORE_ALGAE).onTrue(endEffector.setAlgaeOuttakeVoltage());
