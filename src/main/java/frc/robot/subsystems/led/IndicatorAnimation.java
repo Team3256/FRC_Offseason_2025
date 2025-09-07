@@ -10,7 +10,6 @@ package frc.robot.subsystems.led;
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.LarsonAnimation;
 // import com.ctre.phoenix.led.RainbowAnimation;
-import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 
 // size calculation for LarsonAnimation:
@@ -22,8 +21,7 @@ public enum IndicatorAnimation {
   AutoAlignRunning(new StrobeAnimation(255, 0, 255, 255, 0.05, 300)), // Or, alternatively:
   AutoAligned(new StrobeAnimation(0, 255, 0, 255, .2, 300)),
   CoralIntaken(new StrobeAnimation(0, 0, 255, 255, .2, 300)),
-  AlgaeIntaken(new StrobeAnimation(255, 0, 0, 255, .2, 300)),
-  Climb(new RainbowAnimation(255, 10, 300));
+  AlgaeIntaken(new StrobeAnimation(255, 0, 0, 255, .2, 300));
 
   private Animation curAnimation;
 

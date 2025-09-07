@@ -108,10 +108,6 @@ public class Arm extends DisableSubsystem {
         .withName("toDealgaeLevel_" + level);
   }
 
-  public Command toClimb() {
-    return this.setPosition(() -> ArmConstants.climbPosition, true, () -> 0).withName("toClimb");
-  }
-
   public Command toProcessorLevel() {
     return this.setPosition(() -> ArmConstants.processorRightPosition, true, () -> 0)
         .withName("toProcessorLevel");
