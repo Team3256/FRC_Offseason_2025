@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.InternalButton;
@@ -32,16 +31,9 @@ import frc.robot.sim.SimMechs;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.ManipulatorSide;
 import frc.robot.subsystems.Superstructure.StructureState;
-import frc.robot.subsystems.algaearm.AlgaeArm;
-import frc.robot.subsystems.algaearm.AlgaeArmTalonFX;
-import frc.robot.subsystems.algaerollers.AlgaeRoller;
-import frc.robot.subsystems.algaerollers.AlgaeRollerIOTalonFX;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmIOSim;
 import frc.robot.subsystems.arm.ArmIOTalonFX;
-import frc.robot.subsystems.climb.Climb;
-import frc.robot.subsystems.climb.ClimbConstants;
-import frc.robot.subsystems.climb.ClimbIOTalonFX;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
@@ -58,7 +50,6 @@ import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import frc.robot.utils.MappedXboxController;
 import frc.robot.utils.autoaim.AutoAim;
-import frc.robot.utils.autoaim.CoralTargets;
 import java.util.List;
 
 /**
@@ -85,15 +76,11 @@ public class RobotContainer {
       new Elevator(true, Utils.isSimulation() ? new ElevatorIOSim() : new ElevatorIOTalonFX());
 
   private final Arm arm = new Arm(true, Utils.isSimulation() ? new ArmIOSim() : new ArmIOTalonFX());
-  private final AlgaeRoller algaeRoller = new AlgaeRoller(true, new AlgaeRollerIOTalonFX());
   private final EndEffector endEffector =
       new EndEffector(
           true, Utils.isSimulation() ? new EndEffectorIOSim() : new EndEffectorIOTalonFX());
 
-  private final Climb climb = new Climb(true, new ClimbIOTalonFX());
-  private final AlgaeArm algaeArm = new AlgaeArm(true, new AlgaeArmTalonFX());
-  private final Superstructure superstructure =
-      new Superstructure(elevator, endEffector, arm, algaeArm, algaeRoller);
+  private final Superstructure superstructure = new Superstructure(elevator, endEffector, arm);
   private final LED leds = new LED();
 
   private final Vision vision =
@@ -143,7 +130,6 @@ public class RobotContainer {
             elevator,
             arm,
             endEffector,
-            algaeArm,
             drivetrain);
     configureChoreoAutoChooser();
     CommandScheduler.getInstance().registerSubsystem(drivetrain);
@@ -185,7 +171,6 @@ public class RobotContainer {
         .and(autoAlignedTrigger.negate())
         .and(autoAlignRunning.negate())
         .whileTrue(leds.animate(IndicatorAnimation.AlgaeIntaken));
-    superstructure.climbState().whileTrue(leds.animate(IndicatorAnimation.Climb));
     autoAlignedTrigger.whileTrue(
         Commands.run(
                 () -> {
@@ -268,24 +253,6 @@ public class RobotContainer {
     // set state PROCESSOR
     new Trigger(() -> -m_operatorController.getLeftY() < -.5)
         .onTrue(superstructure.setState(StructureState.PROCESSOR));
-
-    // set state CLIMB
-    new Trigger(() -> m_operatorController.getLeftX() > .5)
-        .onTrue(superstructure.setState(StructureState.CLIMB));
-
-    // set state GROUND ALGAE
-    new Trigger(() -> m_operatorController.getLeftX() < -.5)
-        .onTrue(superstructure.setState(StructureState.GROUND_ALGAE));
-
-    // climb out
-    new Trigger(() -> m_operatorController.getRightX() > .5)
-        .onTrue(climb.setVoltage(ClimbConstants.kUpVoltage))
-        .or(new Trigger(() -> m_operatorController.getRightX() < -.5))
-        .onFalse(climb.setVoltage(0));
-
-    // pull climb in
-    new Trigger(() -> m_operatorController.getRightX() < -.5)
-        .onTrue(climb.setVoltage(ClimbConstants.kDownVoltage));
 
     // elevator manual up
     new Trigger(() -> -m_operatorController.getRightY() > .5)
@@ -447,44 +414,47 @@ public class RobotContainer {
     // do this with the elevator side of the robot facing YOU
     m_driverController.y("Zero Heading").onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-    // Auto Align Reef, Left Handed Target (Absolute)
-    new Trigger(
-            () ->
-                ((superstructure.getState() != StructureState.GROUND_ALGAE)
-                        && (superstructure.getState() != StructureState.PROCESSOR)
-                        && (superstructure.getState()) != StructureState.BARGE)
-                    && (m_driverController.povLeft().getAsBoolean()))
-        .whileTrue(
-            Commands.parallel(
-                drivetrain.pidToPose(
-                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, true))));
-
-    // Auto Align Reef, Right Handed Target (Absolute)
-    new Trigger(
-            () ->
-                ((superstructure.getState() != StructureState.GROUND_ALGAE)
-                        && (superstructure.getState() != StructureState.PROCESSOR)
-                        && (superstructure.getState()) != StructureState.BARGE)
-                    && (m_driverController.povRight().getAsBoolean()))
-        .whileTrue(
-            Commands.parallel(
-                drivetrain.pidToPose(
-                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose, false))));
-
-    // Run LEDs simultaneously with Auto Align
-    m_driverController
-        .povLeft()
-        .negate()
-        .and(m_driverController.povRight().negate())
-        .and(m_driverController.a().negate())
-        .and(m_driverController.rightBumper().negate())
-        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(false)));
-    m_driverController
-        .povRight()
-        .or(m_driverController.povLeft())
-        .or(m_driverController.a())
-        .or(m_driverController.rightBumper())
-        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(true)));
+    // put this back after completing ground coral
+    //    // Auto Align Reef, Left Handed Target (Absolute)
+    //    new Trigger(
+    //            () ->
+    //                ((superstructure.getState() != StructureState.GROUND_ALGAE)
+    //                        && (superstructure.getState() != StructureState.PROCESSOR)
+    //                        && (superstructure.getState()) != StructureState.BARGE)
+    //                    && (m_driverController.povLeft().getAsBoolean()))
+    //        .whileTrue(
+    //            Commands.parallel(
+    //                drivetrain.pidToPose(
+    //                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose,
+    // true))));
+    //
+    //    // Auto Align Reef, Right Handed Target (Absolute)
+    //    new Trigger(
+    //            () ->
+    //                ((superstructure.getState() != StructureState.GROUND_ALGAE)
+    //                        && (superstructure.getState() != StructureState.PROCESSOR)
+    //                        && (superstructure.getState()) != StructureState.BARGE)
+    //                    && (m_driverController.povRight().getAsBoolean()))
+    //        .whileTrue(
+    //            Commands.parallel(
+    //                drivetrain.pidToPose(
+    //                    () -> CoralTargets.getHandedClosestTarget(drivetrain.getState().Pose,
+    // false))));
+    //
+    //    // Run LEDs simultaneously with Auto Align
+    //    m_driverController
+    //        .povLeft()
+    //        .negate()
+    //        .and(m_driverController.povRight().negate())
+    //        .and(m_driverController.a().negate())
+    //        .and(m_driverController.rightBumper().negate())
+    //        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(false)));
+    //    m_driverController
+    //        .povRight()
+    //        .or(m_driverController.povLeft())
+    //        .or(m_driverController.a())
+    //        .or(m_driverController.rightBumper())
+    //        .onTrue(new InstantCommand(() -> autoAlignRunning.setPressed(true)));
 
     drivetrain.registerTelemetry(logger::telemeterize);
   }

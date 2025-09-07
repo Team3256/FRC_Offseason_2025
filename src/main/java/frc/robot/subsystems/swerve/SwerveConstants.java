@@ -27,7 +27,7 @@ public final class SwerveConstants {
   public static final Rotation2d sourceLeft1 = new Rotation2d(0.559);
   public static final Rotation2d sourceRight2 = new Rotation2d(2.46091);
 
-  // climb and processor - close preset doubles as climb target facing cage, same for far presets
+  // processor
   public static final Rotation2d processorClose = new Rotation2d(0);
   public static final Rotation2d processorFar = new Rotation2d(Math.PI);
 

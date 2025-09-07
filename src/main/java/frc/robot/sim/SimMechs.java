@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Constants;
 import frc.robot.subsystems.arm.ArmConstants;
-import frc.robot.subsystems.climb.ClimbConstants;
 import frc.robot.subsystems.elevator.ElevatorConstants;
 
 public final class SimMechs {
@@ -61,12 +60,6 @@ public final class SimMechs {
           new MechanismLigament2d(
               "Coral End Effector Flywheel", .1, 0.0, 2.5, new Color8Bit(Color.kYellow)));
 
-  private final MechanismRoot2d climbRoot =
-      mech.getRoot("Climb", Constants.SimulationConstants.kDrivebaseWidth.in(Meters) / 2, 1);
-
-  private final MechanismLigament2d climbViz =
-      climbRoot.append(
-          new MechanismLigament2d("Climb", ClimbConstants.sim.climbLength.in(Meters), 180));
   private static SimMechs instance = null;
 
   private SimMechs() {}
@@ -84,10 +77,6 @@ public final class SimMechs {
 
   public void updateElevator(Distance height) {
     elevatorViz.setLength(height.in(Meters) / 4);
-  }
-
-  public void updateClimb(Angle angle) {
-    climbViz.setAngle(angle.in(Degrees));
   }
 
   public void publishToNT() {
