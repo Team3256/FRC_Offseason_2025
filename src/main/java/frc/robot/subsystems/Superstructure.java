@@ -49,15 +49,15 @@ public class Superstructure {
 
   private ManipulatorSide manipulatorSide = ManipulatorSide.RIGHT;
 
+  private final Trigger rightManipulatorSide =
+      new Trigger(() -> this.manipulatorSide == ManipulatorSide.RIGHT);
+
   private StructureState state = StructureState.IDLE;
   private StructureState prevState = StructureState.IDLE;
 
   private Map<StructureState, Trigger> stateTriggers = new HashMap<StructureState, Trigger>();
 
   private Map<StructureState, Trigger> prevStateTriggers = new HashMap<StructureState, Trigger>();
-
-  private final Trigger rightManipulatorSide =
-      new Trigger(() -> this.manipulatorSide == ManipulatorSide.RIGHT);
 
   private final Timer stateTimer = new Timer();
 
@@ -88,7 +88,8 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.L1)
         .onTrue(elevator.toReefLevel(0))
-        .onTrue(arm.toReefLevel(0, () -> true));
+        .onTrue(arm.toReefLevel(0, rightManipulatorSide))
+
 
     // L2 and L3 are same arm position so they are put together, once again no safety limits
     stateTriggers.get(StructureState.L2).onTrue(elevator.toReefLevel(1));
@@ -96,7 +97,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.L2)
         .or(stateTriggers.get(StructureState.L3))
-        .onTrue(arm.toReefLevel(1, () -> true));
+        .onTrue(arm.toReefLevel(1, rightManipulatorSide));
 
     // L4 reef level, no safety limits
     stateTriggers
@@ -110,21 +111,23 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L1))
-        .onTrue(endEffector.setL1Velocity(rightManipulatorSide));
+        .onTrue(endEffector.setL1Velocity());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L2).or(prevStateTriggers.get(StructureState.L3)))
-        .onTrue(endEffector.setL2L3Velocity(rightManipulatorSide));
+        .onTrue(endEffector.setL2L3Velocity());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
-        .onTrue(endEffector.setL4Voltage(rightManipulatorSide));
+        .onTrue(endEffector.setL4Voltage());
 
-    // Dealgae levels
+
+    // Dealgae Levels
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .onTrue(elevator.toDealgaeLevel(0))
-        .onTrue(arm.toDealgaeLevel(0, () -> true));
+        .onTrue(arm.toDealgaeLevel(0, rightManipulatorSide))
+
     stateTriggers
         .get(StructureState.DEALGAE_L3)
         .onTrue(elevator.toDealgaeLevel(1))
@@ -162,6 +165,7 @@ public class Superstructure {
         .and(elevator.reachedPosition)
         .debounce(.04) // wait 2 loop times
         .onTrue(arm.toProcessorLevel());
+
 
     // Outtake
     stateTriggers.get(StructureState.SCORE_ALGAE).onTrue(endEffector.setAlgaeOuttakeVoltage());
