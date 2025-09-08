@@ -21,7 +21,7 @@ public class GroundIntakeRollersConstants {
   final String kCANrangeCANbus = "canivore";
 
   public static final int kIntakeRollerMotorID = 46;
-  public static final double kIntakeIntakeVoltage = 12;
+  public static final double kIntakeRollerMotorVoltage = 12;
 
   public static double updateFrequency = 50;
   public static boolean kIntakeMotionMagic = false;
