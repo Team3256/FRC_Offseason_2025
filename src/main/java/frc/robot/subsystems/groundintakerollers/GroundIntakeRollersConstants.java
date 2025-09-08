@@ -1,3 +1,10 @@
+// Copyright (c) 2025 FRC 3256
+// https://github.com/Team3256
+//
+// Use of this source code is governed by a 
+// license that can be found in the LICENSE file at
+// the root directory of this project.
+
 package frc.robot.subsystems.groundintakerollers;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -10,16 +17,16 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class GroundIntakeRollersConstants {
 
-    final int kCANrangeId = 0;
-    final String kCANrangeCANbus = "canivore";
+  final int kCANrangeId = 0;
+  final String kCANrangeCANbus = "canivore";
 
-    public static final int kIntakeRollerMotorID = 46;
-    public static final double kIntakeIntakeVoltage = 12;
+  public static final int kIntakeRollerMotorID = 46;
+  public static final double kIntakeIntakeVoltage = 12;
 
-    public static double updateFrequency = 50;
-    public static boolean kIntakeMotionMagic = false;
+  public static double updateFrequency = 50;
+  public static boolean kIntakeMotionMagic = false;
 
-    public static final TalonFXConfiguration motorConfigs =
+  public static final TalonFXConfiguration motorConfigs =
       new TalonFXConfiguration()
           .withSlot0(new Slot0Configs().withKS(0).withKV(0.1).withKP(1).withKI(0).withKD(0))
           .withMotorOutput(
@@ -35,15 +42,6 @@ public class GroundIntakeRollersConstants {
               new CurrentLimitsConfigs()
                   .withStatorCurrentLimitEnable(true)
                   .withStatorCurrentLimit(120));
-    public static int flashConfigRetries = 5;
-    public static double kIntakeRedirectVoltage = 5;
-
-    
-
-
-
-
-
-
-    
+  public static int flashConfigRetries = 5;
+  public static double kIntakeRedirectVoltage = 5;
 }
