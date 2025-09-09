@@ -7,10 +7,14 @@
 
 package frc.robot.subsystems.groundintakerollers;
 
+import org.littletonrobotics.junction.AutoLog;
+
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 public interface GroundIntakeRollersIO {
+  
+  @AutoLog
   public static class GroundIntakeIOInputs {
     public double intakeRollerMotorVoltage = 0.0;
     public double intakeRollerMotorVelocity = 0.0;
