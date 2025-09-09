@@ -113,6 +113,11 @@ public class Arm extends DisableSubsystem {
         .withName("toProcessorLevel");
   }
 
+  public Command toScoringPosition(int level) {
+    return this.setPosition(() -> ArmConstants.scoringPositions[level], true, () -> 0)
+        .withName("toScoringPosition_" + level);
+  }
+
   @AutoLogOutput
   public boolean isSafePosition() {
     return (armIOAutoLogged.armMotorPosition + 5) % 1 >= ArmConstants.safeLeftPosition
