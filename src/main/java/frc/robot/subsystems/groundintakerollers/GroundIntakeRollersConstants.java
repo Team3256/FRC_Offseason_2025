@@ -13,17 +13,21 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class GroundIntakeRollersConstants {
 
-  // Constants used in CANrange construction
-  final int kCANrangeId = 0;
-  final String kCANrangeCANbus = "canivore";
+ // Constants used in CANrange construction
+ public static final int kCANrangeId = 0;
+ public static final String kCANrangeCANbus = "canivore";
+ 
+ 
+ // Configure the CANrange for basic use
+ public static final CANrangeConfiguration canRangeConfigs = new CANrangeConfiguration();
+ 
 
-  // Configure the CANrange for basic use
-  CANrangeConfiguration configs = new CANrangeConfiguration();
 
   public static final int kIntakeRollerMotorID = 46;
   public static final double kIntakeRollerMotorVoltage = 12;
