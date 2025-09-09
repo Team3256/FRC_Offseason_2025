@@ -9,7 +9,6 @@ package frc.robot.subsystems.arm;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -62,11 +61,8 @@ public class ArmIOTalonFX implements ArmIO {
 
     //    armMotor.optimizeBusUtilization();
     //    cancoder.optimizeBusUtilization();
-  }
-
-  @Override
-  public void updateInputs(ArmIOInputs inputs) {
-    BaseStatusSignal.refreshAll(
+    PhoenixUtil.registerSignals(
+        false,
         armMotorVoltage,
         armMotorVelocity,
         armMotorPosition,
@@ -75,6 +71,10 @@ public class ArmIOTalonFX implements ArmIO {
         cancoderAbsolutePosition,
         cancoderPosition,
         cancoderVelocity);
+  }
+
+  @Override
+  public void updateInputs(ArmIOInputs inputs) {
     inputs.armMotorVoltage = armMotorVoltage.getValue().in(Volt);
     inputs.armMotorVelocity = armMotorVelocity.getValue().in(RotationsPerSecond);
     inputs.armMotorPosition = armMotorPosition.getValue().in(Rotations);

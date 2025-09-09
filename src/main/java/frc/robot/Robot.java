@@ -18,10 +18,12 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.utils.LoggedTracer;
 import frc.robot.utils.NT4PublisherNoFMS;
+import frc.robot.utils.PhoenixUtil;
 import java.io.File;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
@@ -114,25 +116,7 @@ public class Robot extends LoggedRobot {
         Logger.addDataReceiver(new NT4Publisher());
       }
     }
-
-    // See "Deterministic Timestamps" in the "Understanding Data Flow" page
-    // Disabling deterministic timestamps disallows replay
-
-    // Logger.disableDeterministicTimestamps();
-
-    // Disabling deterministic timestamps (uncommenting the previous line of code)
-    // should only be used when all of the following are true:
-    // (quoting from
-    // https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/docs/DATA-FLOW.md#solution-3)
-    // 1. The control logic depends on the exact timestamp within a single loop
-    // cycle, like a high precision control loop that is significantly affected by
-    // the precise time that it is executed within each (usually 20ms) loop cycle.
-    // 2. The sensor values used in the loop cannot be associated with timestamps in
-    // an IO implementation. See solution #1.
-    // 3. The IO (sensors, actuators, etc) involved in the loop are sufficiently
-    // low-latency that the exact timestamp on the RIO is significant. For example,
-    // CAN motor controllers are limited by the rate of their CAN frames, so the
-    // extra precision on the RIO is insignificant in most cases.
+    LoggedPowerDistribution.getInstance(50, ModuleType.kRev); // Example: PDH on CAN ID 50
 
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME); // Set a metadata value
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -141,15 +125,7 @@ public class Robot extends LoggedRobot {
     Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
     Logger.recordMetadata("SerialNumber", RobotController.getSerialNumber());
 
-    // Start logging! No more data receivers, replay sources, or metadata values may
-    // be added.
     Logger.start();
-
-    // The reason why we log build time and other project metadata
-    // is so we can easily identify the version of the currently
-    // deployed code on the robot
-    // It's also recommended ala
-    // https://github.com/Mechanical-Advantage/AdvantageKit/blob/main/docs/INSTALLATION.md#gversion-plugin-git-metadata
   }
 
   /**
@@ -168,7 +144,10 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods. This must be called from the
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
+
     LoggedTracer.reset();
+    PhoenixUtil.refreshAll();
+    LoggedTracer.record("Phoenix Refresh");
     CommandScheduler.getInstance().run();
     m_robotContainer.periodic();
   }
