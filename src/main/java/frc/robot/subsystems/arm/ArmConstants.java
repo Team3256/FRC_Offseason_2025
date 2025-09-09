@@ -101,6 +101,8 @@ public final class ArmConstants {
 
   public static final Angle groundAlgaeRightPosition = Rotations.of(.62);
 
+  public static final Angle[] scoringPositions = {Rotations.of(.32), Rotations.of(.56), Rotations.of(.67)};
+
   public static final class Sim {
     public static final double simGearing = 142.22;
 
