@@ -76,13 +76,8 @@ public class EndEffectorIOTalonFX implements EndEffectorIO {
         coralMotorSupplyCurrent,
         coralBeamBreak,
         algaeBeamBreak);
-    algaeMotor.optimizeBusUtilization(4, 0.100);
-    coralMotor.optimizeBusUtilization(4, 0.100);
-  }
-
-  @Override
-  public void updateInputs(EndEffectorIOInputs inputs) {
-    BaseStatusSignal.refreshAll(
+    PhoenixUtil.registerSignals(
+        false,
         algaeMotorVoltage,
         algaeMotorVelocity,
         algaeMotorStatorCurrent,
@@ -93,6 +88,12 @@ public class EndEffectorIOTalonFX implements EndEffectorIO {
         coralMotorSupplyCurrent,
         coralBeamBreak,
         algaeBeamBreak);
+    algaeMotor.optimizeBusUtilization(4, 0.100);
+    coralMotor.optimizeBusUtilization(4, 0.100);
+  }
+
+  @Override
+  public void updateInputs(EndEffectorIOInputs inputs) {
     inputs.algaeMotorVoltage = algaeMotorVoltage.getValueAsDouble();
     inputs.algaeMotorVelocity = algaeMotorVelocity.getValueAsDouble();
     inputs.algaeMotorStatorCurrent = algaeMotorStatorCurrent.getValueAsDouble();
