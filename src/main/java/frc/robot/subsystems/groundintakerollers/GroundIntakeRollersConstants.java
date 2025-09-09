@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems.groundintakerollers;
 
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
@@ -17,8 +18,12 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class GroundIntakeRollersConstants {
 
+  // Constants used in CANrange construction
   final int kCANrangeId = 0;
   final String kCANrangeCANbus = "canivore";
+
+  // Configure the CANrange for basic use
+  CANrangeConfiguration configs = new CANrangeConfiguration();
 
   public static final int kIntakeRollerMotorID = 46;
   public static final double kIntakeRollerMotorVoltage = 12;

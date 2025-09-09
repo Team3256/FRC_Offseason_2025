@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems.groundintakerollers;
 
-import com.ctre.phoenix6.CANBus;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -19,6 +17,7 @@ public interface GroundIntakeRollersIO {
     public double intakeRollerMotorStatorCurrent = 0.0;
     public double intakeRollerMotorSupplyCurrent = 0.0;
     public double intakeRollerMotorTemperature = 0.0;
+    public double canRangeDistance = 0.0;
   }
 
   public default void updateInputs(GroundIntakeIOInputs inputs) {}

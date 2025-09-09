@@ -7,4 +7,98 @@
 
 package frc.robot.subsystems.groundintakerollers;
 
-public class GroundIntakeRollersIOTalonFX {}
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.hardware.CANrange;
+import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Temperature;
+import edu.wpi.first.units.measure.Voltage;
+import frc.robot.utils.PhoenixUtil;
+
+public class GroundIntakeRollersIOTalonFX implements GroundIntakeRollersIO {
+  private final TalonFX intakeMotor =
+      new TalonFX(GroundIntakeRollersConstants.kIntakeRollerMotorID);
+  private final CANrange canRange = new CANrange(GroundIntakeRollersConstants.kIntakeRollerMotorID);
+  final VelocityVoltage intakeRequest = new VelocityVoltage(0).withSlot(0);
+  final MotionMagicVelocityVoltage motionMagicIntakeRequest =
+      new MotionMagicVelocityVoltage(0).withSlot(0);
+  private final VoltageOut intakeVoltageReq = new VoltageOut(0);
+
+  private final StatusSignal<Voltage> intakeRollerMotorVoltage = intakeMotor.getMotorVoltage();
+  private final StatusSignal<AngularVelocity> intakeRollerMotorVelocity = intakeMotor.getVelocity();
+  private final StatusSignal<Current> intakeRollerMotorStatorCurrent =
+      intakeMotor.getStatorCurrent();
+  private final StatusSignal<Current> intakeRollerMotorSupplyCurrent =
+      intakeMotor.getSupplyCurrent();
+  private final StatusSignal<Temperature> intakeRollerMotorTemperature =
+      intakeMotor.getDeviceTemp();
+  private final StatusSignal<Distance> canRangeDistance = canRange.getDistance();
+
+  public GroundIntakeRollersIOTalonFX() {
+    PhoenixUtil.applyMotorConfigs(
+        intakeMotor,
+        GroundIntakeRollersConstants.motorConfigs,
+        GroundIntakeRollersConstants.flashConfigRetries);
+    PhoenixUtil.applyCanRangeConfigs(
+        canRange,
+        GroundIntakeRollersConstants.canRangeConfigs,
+        GroundIntakeRollersConstants.flashConfigRetries);
+
+    BaseStatusSignal.setUpdateFrequencyForAll(
+        GroundIntakeRollersConstants.updateFrequency,
+        intakeRollerMotorVoltage,
+        intakeRollerMotorVelocity,
+        intakeRollerMotorStatorCurrent,
+        intakeRollerMotorSupplyCurrent,
+        intakeRollerMotorTemperature);
+    intakeMotor.optimizeBusUtilization();
+  }
+
+  @Override
+  public void updateInputs(GroundIntakeIOInputs inputs) {
+    BaseStatusSignal.refreshAll(
+        intakeRollerMotorVoltage,
+        intakeRollerMotorVelocity,
+        intakeRollerMotorStatorCurrent,
+        intakeRollerMotorSupplyCurrent,
+        intakeRollerMotorTemperature,
+        canRangeDistance);
+    inputs.intakeRollerMotorVoltage = intakeRollerMotorVoltage.getValueAsDouble();
+    inputs.intakeRollerMotorVelocity = intakeRollerMotorVelocity.getValueAsDouble();
+    inputs.intakeRollerMotorStatorCurrent = intakeRollerMotorStatorCurrent.getValueAsDouble();
+    inputs.intakeRollerMotorSupplyCurrent = intakeRollerMotorSupplyCurrent.getValueAsDouble();
+    inputs.intakeRollerMotorTemperature = intakeRollerMotorTemperature.getValueAsDouble();
+    inputs.canRangeDistance = canRangeDistance.getValueAsDouble();
+  }
+
+  @Override
+  public void setIntakeRollerVoltage(double voltage) {
+    intakeMotor.setVoltage(voltage);
+  }
+
+  @Override
+  public void setIntakeRollerVelocity(double velocity) {
+    if (GroundIntakeRollersConstants.kIntakeMotionMagic) {
+      intakeMotor.setControl(motionMagicIntakeRequest.withVelocity(velocity));
+    } else {
+      intakeMotor.setControl(intakeRequest.withVelocity(velocity));
+    }
+  }
+
+  @Override
+  public void off() {
+    intakeMotor.setControl(new NeutralOut());
+  }
+
+  @Override
+  public TalonFX getIntakeRollerMotor() {
+    return intakeMotor;
+  }
+}
