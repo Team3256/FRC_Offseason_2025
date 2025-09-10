@@ -270,7 +270,8 @@ public class PhoenixUtil {
     DriverStation.reportError(
         "Failed to apply config for candi after " + numTries + " attempts", false);
     return false;
-  
+  }
+
   private static BaseStatusSignal[] canivoreSignals = new BaseStatusSignal[0];
 
   private static BaseStatusSignal[] rioSignals = new BaseStatusSignal[0];
