@@ -26,8 +26,7 @@ public class GroundIntakeRollersIOTalonFX implements GroundIntakeRollersIO {
       new TalonFX(GroundIntakeRollersConstants.kIntakeRollerMotorID);
   private final CANrange canRange = new CANrange(GroundIntakeRollersConstants.kIntakeRollerMotorID);
   final VelocityVoltage intakeRequest = new VelocityVoltage(0).withSlot(0);
-  final MotionMagicVelocityVoltage motionMagicIntakeRequest =
-      new MotionMagicVelocityVoltage(0).withSlot(0);
+
 
   private final StatusSignal<Voltage> intakeRollerMotorVoltage = intakeMotor.getMotorVoltage();
   private final StatusSignal<AngularVelocity> intakeRollerMotorVelocity = intakeMotor.getVelocity();
@@ -86,9 +85,6 @@ public class GroundIntakeRollersIOTalonFX implements GroundIntakeRollersIO {
 
   @Override
   public void setVelocity(double velocity) {
-    if (GroundIntakeRollersConstants.kIntakeMotionMagic) {
-      intakeMotor.setControl(motionMagicIntakeRequest.withVelocity(velocity));
-    } else {
       intakeMotor.setControl(intakeRequest.withVelocity(velocity));
     }
   }
