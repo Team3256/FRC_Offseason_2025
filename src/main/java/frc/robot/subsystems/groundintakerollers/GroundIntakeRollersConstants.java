@@ -9,7 +9,6 @@ package frc.robot.subsystems.groundintakerollers;
 
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -37,15 +36,10 @@ public class GroundIntakeRollersConstants {
               new MotorOutputConfigs()
                   .withNeutralMode(NeutralModeValue.Brake)
                   .withInverted(InvertedValue.Clockwise_Positive))
-          .withMotionMagic(
-              new MotionMagicConfigs()
-                  .withMotionMagicAcceleration(120)
-                  .withMotionMagicCruiseVelocity(60)
-                  .withMotionMagicJerk(1200))
           .withCurrentLimits(
-              new CurrentLimitsConfigs()s
+              new CurrentLimitsConfigs()
                   .withStatorCurrentLimitEnable(true)
-                  .withStatorCurrentLimit(120));
+                  .withStatorCurrentLimit(60));
   public static int flashConfigRetries = 5;
 
   public static final int motorCoralStall = 40;
