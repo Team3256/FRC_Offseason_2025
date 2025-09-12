@@ -20,7 +20,6 @@ public class GroundIntakeRollersConstants {
 
   // Constants used in CANrange construction
   public static final int kCANrangeId = 0;
-  public static final String kCANrangeCANbus = "canivore";
 
   // Configure the CANrange for basic use
   public static final CANrangeConfiguration canRangeConfigs = new CANrangeConfiguration();
@@ -44,12 +43,11 @@ public class GroundIntakeRollersConstants {
                   .withMotionMagicCruiseVelocity(60)
                   .withMotionMagicJerk(1200))
           .withCurrentLimits(
-              new CurrentLimitsConfigs()
+              new CurrentLimitsConfigs()s
                   .withStatorCurrentLimitEnable(true)
                   .withStatorCurrentLimit(120));
   public static int flashConfigRetries = 5;
 
-
-  public static final int motorCoralStall = 40; 
+  public static final int motorCoralStall = 40;
   public static final double coralIntakeIn = 0.2;
 }
