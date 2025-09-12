@@ -59,19 +59,18 @@ public class GroundIntakeRollersIOTalonFX implements GroundIntakeRollersIO {
         intakeRollerMotorSupplyCurrent,
         intakeRollerMotorTemperature,
         canRangeDistance);
-    // PhoenixUtil.re
+    PhoenixUtil.registerSignals(false, intakeRollerMotorVoltage,
+    intakeRollerMotorVelocity,
+    intakeRollerMotorStatorCurrent,
+    intakeRollerMotorSupplyCurrent,
+    intakeRollerMotorTemperature,
+    canRangeDistance);
     intakeMotor.optimizeBusUtilization();
   }
 
   @Override
   public void updateInputs(GroundIntakeRollersIOInputs inputs) {
-    BaseStatusSignal.refreshAll(
-        intakeRollerMotorVoltage,
-        intakeRollerMotorVelocity,
-        intakeRollerMotorStatorCurrent,
-        intakeRollerMotorSupplyCurrent,
-        intakeRollerMotorTemperature,
-        canRangeDistance);
+
     inputs.intakeRollerMotorVoltage = intakeRollerMotorVoltage.getValueAsDouble();
     inputs.intakeRollerMotorVelocity = intakeRollerMotorVelocity.getValueAsDouble();
     inputs.intakeRollerMotorStatorCurrent = intakeRollerMotorStatorCurrent.getValueAsDouble();
@@ -79,6 +78,7 @@ public class GroundIntakeRollersIOTalonFX implements GroundIntakeRollersIO {
     inputs.intakeRollerMotorTemperature = intakeRollerMotorTemperature.getValueAsDouble();
     inputs.canRangeDistance = canRangeDistance.getValueAsDouble();
   }
+
 
   @Override
   public void setIntakeRollerVoltage(double voltage) {
