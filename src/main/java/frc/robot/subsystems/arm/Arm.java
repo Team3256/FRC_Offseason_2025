@@ -114,7 +114,13 @@ public class Arm extends DisableSubsystem {
   }
 
   public Command toScoringPosition(int level, BooleanSupplier rightSide) {
-    return this.setPosition(() ->rightSide.getAsBoolean() ?  ArmConstants.reefRightScoringPosition[level] : ArmConstants.reefLeftScoringPosition[level], true, () -> 0)
+    return this.setPosition(
+            () ->
+                rightSide.getAsBoolean()
+                    ? ArmConstants.reefRightScoringPosition[level]
+                    : ArmConstants.reefLeftScoringPosition[level],
+            true,
+            () -> 0)
         .withName("toScoringPosition_" + level);
   }
 
