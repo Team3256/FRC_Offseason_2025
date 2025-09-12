@@ -48,7 +48,7 @@ public class GroundIntakeRollersConstants {
                   .withStatorCurrentLimitEnable(true)
                   .withStatorCurrentLimit(120));
   public static int flashConfigRetries = 5;
-  public static double kIntakeRedirectVoltage = 5;
+
 
   public static final int motorCoralStall = 40; 
   public static final double coralIntakeIn = 0.2;

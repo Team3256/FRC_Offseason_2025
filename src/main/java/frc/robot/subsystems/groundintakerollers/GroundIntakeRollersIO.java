@@ -24,9 +24,9 @@ public interface GroundIntakeRollersIO {
 
   public default void updateInputs(GroundIntakeRollersIOInputs inputs) {}
 
-  public default void setIntakeRollerVoltage(double voltage) {}
+  public default void setVoltage(double voltage) {}
 
-  public default void setIntakeRollerVelocity(double velocity) {}
+  public default void setVelocity(double velocity) {}
 
   public default TalonFX getIntakeRollerMotor() {
     return new TalonFX(0);

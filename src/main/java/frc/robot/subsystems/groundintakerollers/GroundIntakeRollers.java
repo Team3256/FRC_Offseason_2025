@@ -43,12 +43,12 @@ public class GroundIntakeRollers extends DisableSubsystem {
   }
 
   public Command setVoltage(double voltage) {
-    return this.run(() -> groundIntakeRollersIO.setIntakeRollerVoltage(voltage))
+    return this.run(() -> groundIntakeRollersIO.setVoltage(voltage))
         .finallyDo(groundIntakeRollersIO::off);
   }
 
   public Command setVelocity(double velocity) {
-    return this.run(() -> groundIntakeRollersIO.setIntakeRollerVelocity(velocity))
+    return this.run(() -> groundIntakeRollersIO.setVelocity(velocity))
         .finallyDo(groundIntakeRollersIO::off);
   }
 
