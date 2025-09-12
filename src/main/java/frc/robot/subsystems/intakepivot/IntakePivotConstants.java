@@ -15,8 +15,9 @@ import com.ctre.phoenix6.signals.*;
 public final class IntakePivotConstants {
   public static final int pivotMotorId = 42;
 
-  public static final double pivotGearRatio = 0; // idk this for now but im going to include it just in case 
-  public static final boolean kUseFOC = false; //do we need this??????
+  public static final double pivotGearRatio =
+      1; // idk this for now but im going to include it just in case
+  public static final boolean kUseFOC = false; // do we need this??????
   public static final boolean kUseMotionMagic = true; // idk if pivot needs motion magic
   public static final int flashConfigRetries = 5;
 
@@ -43,17 +44,5 @@ public final class IntakePivotConstants {
               new CurrentLimitsConfigs()
                   .withStatorCurrentLimitEnable(true)
                   .withStatorCurrentLimit(80))
-          .withFeedback(
-              new FeedbackConfigs()
-                  .withSensorToMechanismRatio(1.33333)
-                  .withRotorToSensorRatio(69.9999975));
-
-  public static final CANcoderConfiguration cancoderConfiguration =
-      new CANcoderConfiguration()
-          .withMagnetSensor(
-              new MagnetSensorConfigs()
-                  .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
-                  .withMagnetOffset(-0.6601640625)
-                  .withAbsoluteSensorDiscontinuityPoint(Rotations.of(1)));
-
+          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(pivotGearRatio));
 }

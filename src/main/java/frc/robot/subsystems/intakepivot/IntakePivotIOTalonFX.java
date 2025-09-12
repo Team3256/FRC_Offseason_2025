@@ -14,7 +14,6 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -36,7 +35,6 @@ public class IntakePivotIOTalonFX implements IntakePivotIO {
   private final StatusSignal<Angle> pivotMotorPosition = pivotMotor.getPosition();
   private final StatusSignal<Current> pivotMotorStatorCurrent = pivotMotor.getStatorCurrent();
   private final StatusSignal<Current> pivotMotorSupplyCurrent = pivotMotor.getSupplyCurrent();
-
 
   public IntakePivotIOTalonFX() {
 
@@ -80,8 +78,8 @@ public class IntakePivotIOTalonFX implements IntakePivotIO {
   }
 
   @Override
-  public void setVoltage(Voltage voltage) {
-    pivotMotor.setVoltage(voltage.in(Volt));
+  public void setVoltage(double voltage) {
+    pivotMotor.setVoltage(voltage);
   }
 
   @Override
