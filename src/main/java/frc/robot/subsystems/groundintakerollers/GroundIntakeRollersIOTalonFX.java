@@ -87,7 +87,7 @@ public class GroundIntakeRollersIOTalonFX implements GroundIntakeRollersIO {
   public void setVelocity(double velocity) {
       intakeMotor.setControl(intakeRequest.withVelocity(velocity));
     }
-  }
+
 
   @Override
   public void off() {
