@@ -34,12 +34,12 @@ public final class ArmConstants {
   // L1, L2-L3 (since same arm angle), L4
   // "arm level 0" is L1, "arm level 1" is L2-L3, "arm level 2" is L4
   // 3 sig figs of acc
-  public static final Angle[] reefRightPositions = {
+  public static final Angle[] reefRightPrepPositions = {
     Rotations.of(0.32), Rotations.of(0.316), Rotations.of(0.3408)
   };
 
   // @deprecated
-  public static final Angle[] reefLeftPositions = {
+  public static final Angle[] reefLeftPrepPositions = {
     Rotations.of(0.18), Rotations.of(0.18), Rotations.of(0.157)
   };
 
@@ -101,9 +101,12 @@ public final class ArmConstants {
 
   public static final Angle groundAlgaeRightPosition = Rotations.of(.62);
 
-  public static final Angle[] scoringPositions = {
+  public static final Angle[] reefRightScoringPosition = {
     Rotations.of(.32), Rotations.of(.56), Rotations.of(.67)
   };
+    public static final Angle[] reefLeftScoringPosition = {
+            Rotations.of(0.18), Rotations.of(0.18), Rotations.of(0.157)
+    };
 
   public static final class Sim {
     public static final double simGearing = 142.22;

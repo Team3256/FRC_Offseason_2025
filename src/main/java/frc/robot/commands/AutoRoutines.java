@@ -415,7 +415,7 @@ public class AutoRoutines {
     }
 
     public Command scoreL4() {
-      return m_endEffector.setL4Voltage();
+      return m_endEffector.setCoralOuttakeVoltage();
     }
 
     public Command goToSource() {

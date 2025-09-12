@@ -110,19 +110,28 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L1))
-        .onTrue(endEffector.setL1Velocity());
+        .onTrue(endEffector.setCoralOuttakeVoltage());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L2))
-        .onTrue(arm.toScoringPosition(1));
+        .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
+        .and(arm.reachedPosition)
+        .debounce(.02)
+        .onTrue(endEffector.setCoralOuttakeVoltage());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L3))
-        .onTrue(arm.toScoringPosition(2));
+        .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
+        .and(arm.reachedPosition)
+        .debounce(.02)
+        .onTrue(endEffector.setCoralOuttakeVoltage());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
-        .onTrue(arm.toScoringPosition(3));
+        .onTrue(arm.toScoringPosition(2, rightManipulatorSide))
+        .and(arm.reachedPosition)
+        .debounce(.02)
+        .onTrue(endEffector.setCoralOuttakeVoltage());
 
     // Dealgae Levels
     stateTriggers
