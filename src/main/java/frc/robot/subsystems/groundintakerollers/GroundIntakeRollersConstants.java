@@ -27,7 +27,6 @@ public class GroundIntakeRollersConstants {
   public static final double kIntakeRollerMotorVoltage = 12;
 
   public static double updateFrequency = 50;
-  public static boolean kIntakeMotionMagic = false;
 
   public static final TalonFXConfiguration motorConfigs =
       new TalonFXConfiguration()
