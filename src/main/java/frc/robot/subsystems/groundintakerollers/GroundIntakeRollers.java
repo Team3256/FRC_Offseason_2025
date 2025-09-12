@@ -10,9 +10,23 @@ package frc.robot.subsystems.groundintakerollers;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.utils.DisableSubsystem;
+import frc.robot.utils.LoggedTracer;
+import org.littletonrobotics.junction.Logger;
 
 public class GroundIntakeRollers extends DisableSubsystem {
   private final GroundIntakeRollersIO groundIntakeRollersIO;
+  private final GroundIntakeRollersIOInputsAutoLogged intakeIOAutoLogged =
+      new GroundIntakeRollersIOInputsAutoLogged();
+
+  public final Trigger motorStalled =
+      new Trigger(
+          () ->
+              (intakeIOAutoLogged.intakeRollerMotorStatorCurrent
+                  > GroundIntakeRollersConstants.motorCoralStall));
+
+  public final Trigger coralIntakeIn =
+      new Trigger(
+          () -> (intakeIOAutoLogged.canRangeDistance < GroundIntakeRollersConstants.coralIntakeIn));
 
   public GroundIntakeRollers(boolean disabled, GroundIntakeRollersIO groundIntakeRollersIO) {
     super(disabled);
@@ -22,7 +36,10 @@ public class GroundIntakeRollers extends DisableSubsystem {
   @Override
   public void periodic() {
     super.periodic();
-    // add logging later??
+    groundIntakeRollersIO.updateInputs(intakeIOAutoLogged);
+    Logger.processInputs("GroundIntake", intakeIOAutoLogged);
+
+    LoggedTracer.record("GroundIntake");
   }
 
   public Command setVoltage(double voltage) {
@@ -30,7 +47,7 @@ public class GroundIntakeRollers extends DisableSubsystem {
         .finallyDo(groundIntakeRollersIO::off);
   }
 
-  public Command setVelocity(double velocity, double passthroughVelocity) {
+  public Command setVelocity(double velocity) {
     return this.run(() -> groundIntakeRollersIO.setIntakeRollerVelocity(velocity))
         .finallyDo(groundIntakeRollersIO::off);
   }
@@ -39,12 +56,9 @@ public class GroundIntakeRollers extends DisableSubsystem {
     return this.runOnce(groundIntakeRollersIO::off);
   }
 
-  public Command intakeIn(Trigger canTrigger) {
-    return this.run(
-            () ->
-                groundIntakeRollersIO.setIntakeRollerVoltage(
-                    GroundIntakeRollersConstants.kIntakeRollerMotorVoltage))
-        .until(canTrigger)
+  public Command intakeCoral() {
+    return setVoltage(GroundIntakeRollersConstants.kIntakeRollerMotorVoltage)
+        .until(motorStalled)
         .finallyDo(groundIntakeRollersIO::off);
   }
 }

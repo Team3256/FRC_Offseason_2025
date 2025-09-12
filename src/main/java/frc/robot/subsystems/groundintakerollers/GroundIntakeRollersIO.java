@@ -12,9 +12,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface GroundIntakeRollersIO {
-
   @AutoLog
-  public static class GroundIntakeIOInputs {
+  public static class GroundIntakeRollersIOInputs {
     public double intakeRollerMotorVoltage = 0.0;
     public double intakeRollerMotorVelocity = 0.0;
     public double intakeRollerMotorStatorCurrent = 0.0;
@@ -23,7 +22,7 @@ public interface GroundIntakeRollersIO {
     public double canRangeDistance = 0.0;
   }
 
-  public default void updateInputs(GroundIntakeIOInputs inputs) {}
+  public default void updateInputs(GroundIntakeRollersIOInputs inputs) {}
 
   public default void setIntakeRollerVoltage(double voltage) {}
 

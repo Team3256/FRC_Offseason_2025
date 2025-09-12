@@ -57,12 +57,14 @@ public class GroundIntakeRollersIOTalonFX implements GroundIntakeRollersIO {
         intakeRollerMotorVelocity,
         intakeRollerMotorStatorCurrent,
         intakeRollerMotorSupplyCurrent,
-        intakeRollerMotorTemperature);
+        intakeRollerMotorTemperature,
+        canRangeDistance);
+    // PhoenixUtil.re
     intakeMotor.optimizeBusUtilization();
   }
 
   @Override
-  public void updateInputs(GroundIntakeIOInputs inputs) {
+  public void updateInputs(GroundIntakeRollersIOInputs inputs) {
     BaseStatusSignal.refreshAll(
         intakeRollerMotorVoltage,
         intakeRollerMotorVelocity,
