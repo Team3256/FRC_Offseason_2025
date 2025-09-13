@@ -90,6 +90,12 @@ public final class ArmConstants {
                   .withSensorToMechanismRatio(1.33333)
                   .withRotorToSensorRatio(69.9999975));
 
+  public static final TalonFXConfiguration simMotorConfigs = motorConfigs.withFeedback(
+          new FeedbackConfigs()
+                  .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor)
+                    .withSensorToMechanismRatio(142.22)
+  );
+
   public static final CANcoderConfiguration cancoderConfiguration =
       new CANcoderConfiguration()
           .withMagnetSensor(
@@ -115,8 +121,8 @@ public final class ArmConstants {
     public static final Mass armMass = Kilograms.of(2);
     public static final double jkGMetersSquared = 1.2922967095;
 
-    public static final Rotation2d minAngle = Rotation2d.fromDegrees(0);
-    public static final Rotation2d maxAngle = Rotation2d.fromDegrees(360);
-    public static final Rotation2d startingAngle = Rotation2d.fromDegrees(0.25);
+    public static final Rotation2d minAngle = Rotation2d.fromDegrees(-720);
+    public static final Rotation2d maxAngle = Rotation2d.fromDegrees(720);
+    public static final Rotation2d startingAngle = Rotation2d.fromDegrees(90);
   }
 }

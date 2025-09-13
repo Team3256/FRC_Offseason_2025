@@ -73,12 +73,12 @@ public final class EndEffectorConstants {
   public static final int candiID = 21;
 
   public static final class SimulationConstants {
-    public static double coralGearingRatio = 1.0;
-    public static double coralMomentOfInertia = 0.0001;
+    public static double coralGearingRatio = 1;
+    public static double coralMomentOfInertia = 1;
     public static double algaeGearingRatio = 1.0;
-    public static double algaeMomentOfInertia = 0.0001;
+    public static double algaeMomentOfInertia = 1;
     // Scale down the angular velocity so we can actually see what is happening
-    public static double kAngularVelocityScalar = 0.05;
+    public static double kAngularVelocityScalar = 5;
   }
 
   public static double updateFrequency = 50.0;
