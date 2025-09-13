@@ -24,8 +24,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sim.SimMechs;
 import frc.robot.subsystems.endeffector.EndEffectorConstants;
 import frc.robot.subsystems.endeffector.EndEffectorIOTalonFX;
-import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIO.GroundIntakeIOInputs;
-
 import org.littletonrobotics.junction.LoggedRobot;
 
 public class GroundIntakeRollersIOSim extends GroundIntakeRollersIOTalonFX {
@@ -49,21 +47,20 @@ private final TalonFXSimState motorSim;
 
 
 
-
   @Override
-  public void updateInputs(GroundIntakeIOInputs inputs) {
+  public void updateInputs(GroundIntakeRollersIOInputs inputs) {
 
     // Update battery voltage
     motorSim.setSupplyVoltage(RobotController.getBatteryVoltage());
 
     // Update physics models
-    rollerSimModel.setInput(rollerSimModel.getMotorVoltage());
+    rollerSimModel.setInput(motorSim.getMotorVoltage());
     rollerSimModel.update(LoggedRobot.defaultPeriodSecs);
   
 
-    double algaeRps = rollerSimModel.getAngularVelocityRPM() / 60;
-    motorSim.setRotorVelocity(algaeRps);
-    motorSim.addRotorPosition(algaeRps * LoggedRobot.defaultPeriodSecs);
+    double motorRPS = rollerSimModel.getAngularVelocityRPM() / 60;
+    motorSim.setRotorVelocity(motorRPS);
+    motorSim.addRotorPosition(motorRPS * LoggedRobot.defaultPeriodSecs);
   
 
     // Update battery voltage (after the effects of physics models)
@@ -75,7 +72,7 @@ private final TalonFXSimState motorSim;
     SimMechs.getInstance()
         .updateRollers(
             Degrees.of(
-                Math.toDegrees(algaeRps)
+                Math.toDegrees(motorRPS)
                     * LoggedRobot.defaultPeriodSecs
                     * GroundIntakeRollersConstants.SimulationConstants.kAngularVelocityScalar));
         
