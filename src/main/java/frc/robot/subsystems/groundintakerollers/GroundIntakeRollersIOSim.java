@@ -24,12 +24,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sim.SimMechs;
 import frc.robot.subsystems.endeffector.EndEffectorConstants;
 import frc.robot.subsystems.endeffector.EndEffectorIOTalonFX;
-
+import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIO.GroundIntakeIOInputs;
 
 import org.littletonrobotics.junction.LoggedRobot;
 
 public class GroundIntakeRollersIOSim extends GroundIntakeRollersIOTalonFX {
-public class EndEffectorIOSim extends EndEffectorIOTalonFX {
   private final FlywheelSim rollerSimModel =
       new FlywheelSim(
           LinearSystemId.createFlywheelSystem(
@@ -41,30 +40,14 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
 private final TalonFXSimState motorSim;
 
 
-private final CANdiSimState candiSim;
-
-  private final SendableChooser<Boolean> s1Closed =
-      new SendableChooser<>() {
-        {
-          addOption("Algae Inside", true);
-          addOption("No Algae", false);
-        }
-      };
-
 
 
   public GroundIntakeRollersIOSim() {
     super();
-    motorSim = super.getAlgaeMotor().getSimState();
-    candiSim = super.getCandi().getSimState();
-    s1Closed.onChange(this::updateCandiS1);
-    s1Closed.setDefaultOption("No Algae", false);
-    SmartDashboard.putData("S1", s1Closed);
+    motorSim = super.getIntakeRollerMotor().getSimState();
   }
 
-  private void updateCandiS1(boolean beamBroken) {
-    candiSim.setS1State(beamBroken ? S1StateValue.Floating : S1StateValue.Low);
-  }
+
 
 
   @Override
@@ -72,7 +55,7 @@ private final CANdiSimState candiSim;
 
     // Update battery voltage
     motorSim.setSupplyVoltage(RobotController.getBatteryVoltage());
-    candiSim.setSupplyVoltage(RobotController.getBatteryVoltage());
+
     // Update physics models
     rollerSimModel.setInput(rollerSimModel.getMotorVoltage());
     rollerSimModel.update(LoggedRobot.defaultPeriodSecs);
@@ -90,10 +73,10 @@ private final CANdiSimState candiSim;
     super.updateInputs(inputs);
 
     SimMechs.getInstance()
-        .updateEndEffector(
+        .updateRollers(
             Degrees.of(
                 Math.toDegrees(algaeRps)
                     * LoggedRobot.defaultPeriodSecs
                     * GroundIntakeRollersConstants.SimulationConstants.kAngularVelocityScalar));
         
-}}}
+}}
