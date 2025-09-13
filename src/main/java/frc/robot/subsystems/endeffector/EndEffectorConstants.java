@@ -18,9 +18,7 @@ public final class EndEffectorConstants {
   public static final int algaeMotorID = 45;
   public static final int coralMotorID = 43;
 
-  public static final AngularVelocity l1Velocity = RotationsPerSecond.of(50.0);
-  public static final AngularVelocity l2l3Velocity = RotationsPerSecond.of(32);
-  public static final double l4Voltage = 2.592;
+  public static final double coralOuttakeVoltage = 3;
 
   // algae first then coral
   public static final AngularVelocity sourceVelocity = RotationsPerSecond.of(30);
@@ -75,12 +73,12 @@ public final class EndEffectorConstants {
   public static final int candiID = 21;
 
   public static final class SimulationConstants {
-    public static double coralGearingRatio = 1.0;
-    public static double coralMomentOfInertia = 0.0001;
+    public static double coralGearingRatio = 1;
+    public static double coralMomentOfInertia = 1;
     public static double algaeGearingRatio = 1.0;
-    public static double algaeMomentOfInertia = 0.0001;
+    public static double algaeMomentOfInertia = 1;
     // Scale down the angular velocity so we can actually see what is happening
-    public static double kAngularVelocityScalar = 0.05;
+    public static double kAngularVelocityScalar = 5;
   }
 
   public static double updateFrequency = 50.0;

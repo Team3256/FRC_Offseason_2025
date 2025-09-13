@@ -9,7 +9,6 @@ package frc.robot.subsystems.groundintakerollers;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANrange;
@@ -26,7 +25,6 @@ public class GroundIntakeRollersIOTalonFX implements GroundIntakeRollersIO {
       new TalonFX(GroundIntakeRollersConstants.kIntakeRollerMotorID);
   private final CANrange canRange = new CANrange(GroundIntakeRollersConstants.kIntakeRollerMotorID);
   final VelocityVoltage intakeRequest = new VelocityVoltage(0).withSlot(0);
-
 
   private final StatusSignal<Voltage> intakeRollerMotorVoltage = intakeMotor.getMotorVoltage();
   private final StatusSignal<AngularVelocity> intakeRollerMotorVelocity = intakeMotor.getVelocity();
@@ -85,9 +83,9 @@ public class GroundIntakeRollersIOTalonFX implements GroundIntakeRollersIO {
 
   @Override
   public void setVelocity(double velocity) {
-      intakeMotor.setControl(intakeRequest.withVelocity(velocity));
-    }
 
+    intakeMotor.setControl(intakeRequest.withVelocity(velocity));
+  }
 
   @Override
   public void off() {
