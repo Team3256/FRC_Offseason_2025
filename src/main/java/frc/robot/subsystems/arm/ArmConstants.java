@@ -90,11 +90,11 @@ public final class ArmConstants {
                   .withSensorToMechanismRatio(1.33333)
                   .withRotorToSensorRatio(69.9999975));
 
-  public static final TalonFXConfiguration simMotorConfigs = motorConfigs.withFeedback(
+  public static final TalonFXConfiguration simMotorConfigs =
+      motorConfigs.withFeedback(
           new FeedbackConfigs()
-                  .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor)
-                    .withSensorToMechanismRatio(142.22)
-  );
+              .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor)
+              .withSensorToMechanismRatio(142.22));
 
   public static final CANcoderConfiguration cancoderConfiguration =
       new CANcoderConfiguration()
