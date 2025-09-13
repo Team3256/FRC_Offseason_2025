@@ -60,17 +60,10 @@ public final class SimMechs {
           new MechanismLigament2d(
               "Coral End Effector Flywheel", .1, 0.0, 2.5, new Color8Bit(Color.kYellow)));
 
-  
   private final MechanismLigament2d groundIntakeRollerViz =
       elevatorViz.append(
           new MechanismLigament2d(
               "Roller for Ground Intake", .1, 90, 2.5, new Color8Bit(Color.kRed)));
-  
-
-
-
-
-
 
   private static SimMechs instance = null;
 
@@ -102,6 +95,5 @@ public final class SimMechs {
 
   public void updateRollers(Angle coral) {
     groundIntakeRollerViz.setAngle(groundIntakeRollerViz.getAngle() + coral.in(Degrees));
-
   }
 }

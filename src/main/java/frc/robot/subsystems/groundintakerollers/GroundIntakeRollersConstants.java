@@ -16,9 +16,8 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class GroundIntakeRollersConstants {
-    
 
-   public static final boolean kUseFOC = false;
+  public static final boolean kUseFOC = false;
 
   // Constants used in CANrange construction
   public static final int kCANrangeId = 0;
@@ -46,7 +45,6 @@ public class GroundIntakeRollersConstants {
 
   public static final int motorCoralStall = 40;
   public static final double coralIntakeIn = 0.2;
-
 
   public static final class SimulationConstants {
     public static double rollerGearingRatio = 1.0;
