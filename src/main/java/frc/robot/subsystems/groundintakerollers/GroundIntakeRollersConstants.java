@@ -50,9 +50,9 @@ public class GroundIntakeRollersConstants {
 
   public static final class SimulationConstants {
     public static double rollerGearingRatio = 1.0;
-    public static double rollerMomentOfInertia = 0.0001;
+    public static double rollerMomentOfInertia = 1;
 
     // Scale down the angular velocity so we can actually see what is happening
-    public static double kAngularVelocityScalar = 0.05;
+    public static double kAngularVelocityScalar = 5;
   }
 }
