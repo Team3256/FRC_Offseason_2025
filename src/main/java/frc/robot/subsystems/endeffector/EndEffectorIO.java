@@ -17,10 +17,6 @@ import org.littletonrobotics.junction.AutoLog;
 public interface EndEffectorIO {
   @AutoLog
   public static class EndEffectorIOInputs {
-    public double algaeMotorVoltage = 0;
-    public double algaeMotorVelocity = 0;
-    public double algaeMotorStatorCurrent = 0;
-    public double algaeMotorSupplyCurrent = 0;
 
     public double coralMotorVoltage = 0;
     public double coralMotorVelocity = 0;
@@ -28,30 +24,17 @@ public interface EndEffectorIO {
     public double coralMotorSupplyCurrent = 0;
 
     public boolean coralBeamBreak = false;
-    public boolean algaeBeamBreak = false;
   }
 
   public default void updateInputs(EndEffectorIOInputs inputs) {}
-
-  public default void setAlgaeVoltage(double voltage) {}
-
-  public default void setAlgaeVelocity(AngularVelocity velocity) {}
 
   public default void setCoralVoltage(double voltage) {}
 
   public default void setCoralVelocity(AngularVelocity velocity) {}
 
-  public default void setAlgaeVoltage(double voltage, boolean override) {}
-
-  public default void setAlgaeVelocity(AngularVelocity velocity, boolean override) {}
-
   public default void setCoralVoltage(double voltage, boolean override) {}
 
   public default void setCoralVelocity(AngularVelocity velocity, boolean override) {}
-
-  public default TalonFX getAlgaeMotor() {
-    return new TalonFX(0);
-  }
 
   public default TalonFX getCoralMotor() {
     return new TalonFX(0);
@@ -60,8 +43,6 @@ public interface EndEffectorIO {
   public default CANdi getCandi() {
     return new CANdi(0);
   }
-
-  public default void algaeOff() {}
 
   public default void coralOff() {}
 }

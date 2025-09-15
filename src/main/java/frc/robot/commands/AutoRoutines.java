@@ -407,11 +407,13 @@ public class AutoRoutines {
     }
 
     public Command dealgaeify() {
-      return m_endEffector.setAlgaeIntakeVelocity();
+        return Commands.none();
+    //   return m_endEffector.setAlgaeIntakeVelocity();
     }
 
     public Command scoreBarge() {
-      return m_endEffector.setAlgaeOuttakeVoltage();
+        return Commands.none();
+    //   return m_endEffector.setAlgaeOuttakeVoltage();
     }
 
     public Command scoreL4() {

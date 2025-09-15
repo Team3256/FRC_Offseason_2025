@@ -145,8 +145,8 @@ public class Superstructure {
         .onTrue(arm.toDealgaeLevel(1, rightManipulatorSide));
     stateTriggers
         .get(StructureState.DEALGAE_L2)
-        .or(stateTriggers.get(StructureState.DEALGAE_L3))
-        .onTrue(endEffector.setAlgaeIntakeVelocity());
+        .or(stateTriggers.get(StructureState.DEALGAE_L3));
+        // .onTrue(endEffector.setAlgaeIntakeVelocity());
 
     // Arm needs to wrap 180, so elevator has to be safe before we fully move
     stateTriggers
@@ -178,7 +178,7 @@ public class Superstructure {
         .onTrue(arm.toProcessorLevel());
 
     // Outtake
-    stateTriggers.get(StructureState.SCORE_ALGAE).onTrue(endEffector.setAlgaeOuttakeVoltage());
+    // stateTriggers.get(StructureState.SCORE_ALGAE).onTrue(endEffector.setAlgaeOuttakeVoltage());
 
     // Turn coral motor off (helpful for transitioning from SCORE_CORAL), do not turn algae motor
     // off since you might be holding one
@@ -188,8 +188,8 @@ public class Superstructure {
     // needs to move a specific direction
     stateTriggers
         .get(StructureState.PREHOME)
-        .and(prevStateTriggers.get(StructureState.SCORE_ALGAE))
-        .onTrue(endEffector.algaeOff());
+        .and(prevStateTriggers.get(StructureState.SCORE_ALGAE));
+        // .onTrue(endEffector.algaeOff());
     stateTriggers
         .get(StructureState.PREHOME)
         .and(prevStateTriggers.get(StructureState.SCORE_CORAL))
@@ -225,7 +225,7 @@ public class Superstructure {
         .get(StructureState.CANCEL_ALL)
         .onTrue(elevator.off())
         .onTrue(arm.off())
-        .onTrue(endEffector.algaeOff())
+        // .onTrue(endEffector.algaeOff())
         .onTrue(endEffector.coralOff());
   }
 
@@ -234,7 +234,8 @@ public class Superstructure {
   }
 
   public Trigger algaeBeamBreak() {
-    return endEffector.algaeBeamBreak;
+    return new Trigger(()->true);
+    // return endEffector.algaeBeamBreak;
   }
 
   // call manually

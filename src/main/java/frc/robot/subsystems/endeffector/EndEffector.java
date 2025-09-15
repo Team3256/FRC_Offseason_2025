@@ -26,7 +26,7 @@ public class EndEffector extends DisableSubsystem {
       new Trigger(() -> endEffectorIOInputsAutoLogged.coralBeamBreak);
 
   public final Trigger algaeBeamBreak =
-      new Trigger(() -> endEffectorIOInputsAutoLogged.algaeBeamBreak);
+      new Trigger(() -> endEffectorIOInputsAutoLogged.coralBeamBreak);
 
   public EndEffector(boolean enabled, EndEffectorIO endEffectorIO) {
     super(enabled);
@@ -55,31 +55,9 @@ public class EndEffector extends DisableSubsystem {
         .withName("setCoralOuttakeVoltage");
   }
 
-  public Command setAlgaeVoltage(double voltage) {
-    return this.run(() -> endEffectorIO.setAlgaeVoltage(voltage));
-  }
-
-  public Command setAlgaeVelocity(Supplier<AngularVelocity> velocity) {
-    return this.run(() -> endEffectorIO.setAlgaeVelocity(velocity.get()));
-  }
-
   public Command setSourceVelocity() {
     return setCoralVelocity(() -> EndEffectorConstants.sourceVelocity)
         .withName("setSourceVelocity");
-  }
-
-  public Command setAlgaeIntakeVelocity() {
-    return setAlgaeVelocity(() -> EndEffectorConstants.algaeIntakeVelocity)
-        .withName("setAlgaeIntakeVelocity");
-  }
-
-  public Command setAlgaeOuttakeVoltage() {
-    return setAlgaeVelocity(() -> EndEffectorConstants.algaeOuttakeVelocity)
-        .withName("setAlgaeOuttakeVoltage");
-  }
-
-  public Command algaeOff() {
-    return this.runOnce(endEffectorIO::algaeOff).withName("algaeOff");
   }
 
   public Command coralOff() {
