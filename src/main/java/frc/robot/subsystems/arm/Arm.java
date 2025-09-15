@@ -90,8 +90,8 @@ public class Arm extends DisableSubsystem {
     return setPosition(
             () ->
                 rightSide.getAsBoolean()
-                    ? ArmConstants.reefRightPositions[level]
-                    : ArmConstants.reefLeftPositions[level],
+                    ? ArmConstants.reefRightPrepPositions[level]
+                    : ArmConstants.reefLeftPrepPositions[level],
             true,
             () -> 0)
         .withName("toReefLevel_" + level);
@@ -111,6 +111,17 @@ public class Arm extends DisableSubsystem {
   public Command toProcessorLevel() {
     return this.setPosition(() -> ArmConstants.processorRightPosition, true, () -> 0)
         .withName("toProcessorLevel");
+  }
+
+  public Command toScoringPosition(int level, BooleanSupplier rightSide) {
+    return this.setPosition(
+            () ->
+                rightSide.getAsBoolean()
+                    ? ArmConstants.reefRightScoringPosition[level]
+                    : ArmConstants.reefLeftScoringPosition[level],
+            true,
+            () -> 0)
+        .withName("toScoringPosition_" + level);
   }
 
   @AutoLogOutput
