@@ -15,7 +15,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 
 public final class EndEffectorConstants {
   public static final boolean kUseFOC = true;
-  public static final int algaeMotorID = 45;
   public static final int coralMotorID = 43;
 
   public static final AngularVelocity l1Velocity = RotationsPerSecond.of(50.0);
@@ -25,25 +24,6 @@ public final class EndEffectorConstants {
   // algae first then coral
   public static final AngularVelocity sourceVelocity = RotationsPerSecond.of(30);
 
-  public static final AngularVelocity algaeIntakeVelocity = RotationsPerSecond.of(50);
-  public static final AngularVelocity algaeOuttakeVelocity = RotationsPerSecond.of(-100);
-
-  public static TalonFXConfiguration algaeMotorConfigs =
-      new TalonFXConfiguration()
-          .withSlot0(
-              new Slot0Configs().withKS(0).withKV(.12).withKA(0).withKP(.3).withKI(0).withKD(0))
-          .withMotorOutput(
-              new MotorOutputConfigs()
-                  .withNeutralMode(NeutralModeValue.Brake)
-                  .withInverted(InvertedValue.CounterClockwise_Positive))
-          .withMotionMagic(
-              new MotionMagicConfigs()
-                  .withMotionMagicAcceleration(1600)
-                  .withMotionMagicCruiseVelocity(0))
-          .withCurrentLimits(
-              new CurrentLimitsConfigs()
-                  .withStatorCurrentLimitEnable(true)
-                  .withStatorCurrentLimit(40));
   public static TalonFXConfiguration coralMotorConfigs =
       new TalonFXConfiguration()
           .withSlot0(
@@ -77,8 +57,6 @@ public final class EndEffectorConstants {
   public static final class SimulationConstants {
     public static double coralGearingRatio = 1.0;
     public static double coralMomentOfInertia = 0.0001;
-    public static double algaeGearingRatio = 1.0;
-    public static double algaeMomentOfInertia = 0.0001;
     // Scale down the angular velocity so we can actually see what is happening
     public static double kAngularVelocityScalar = 0.05;
   }
