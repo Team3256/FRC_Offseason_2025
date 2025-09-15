@@ -21,6 +21,11 @@ public final class IntakePivotConstants {
   public static final boolean kUseMotionMagic = true; // idk if pivot needs motion magic
   public static final int flashConfigRetries = 5;
 
+  public static final double stowPosition = 0;
+  public static final double handoffPosition = 0.25;
+  public static final double groundIntakePosition = 0.27;
+
+  
   public static final TalonFXConfiguration motorConfigs =
       new TalonFXConfiguration()
           .withSlot0(

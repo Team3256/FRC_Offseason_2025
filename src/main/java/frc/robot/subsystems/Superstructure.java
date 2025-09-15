@@ -37,6 +37,7 @@ public class Superstructure {
     SCORE_ALGAE,
     SCORE_CORAL,
     GROUND_INTAKE,
+    PRE_HANDOFF,
     HANDOFF
   }
 
@@ -62,13 +63,13 @@ public class Superstructure {
   private final Elevator elevator;
   private final EndEffector endEffector;
   private final Arm arm;
-  private final GroundIntakeRollers intake;
+  private final GroundIntakeRollers intakeRollers;
 
-  public Superstructure(Elevator elevator, EndEffector endEffector, Arm arm, GroundIntakeRollers intake) {
+  public Superstructure(Elevator elevator, EndEffector endEffector, Arm arm, GroundIntakeRollers intakeRollers) {
     this.elevator = elevator;
     this.endEffector = endEffector;
     this.arm = arm;
-    this.intake = intake;
+    this.intakeRollers = intakeRollers;
 
     stateTimer.start();
 
@@ -206,6 +207,12 @@ public class Superstructure {
         .onTrue(elevator.off())
         .onTrue(arm.off())
         .onTrue(endEffector.off());
+
+    stateTriggers
+        .get(StructureState.GROUND_INTAKE)
+        .onTrue(intakeRollers.intakeCoral())
+        
+
   }
 
   public Trigger eeHasGamePiece() {
