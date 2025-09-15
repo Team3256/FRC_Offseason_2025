@@ -7,11 +7,8 @@
 
 package frc.robot.subsystems.endeffector;
 
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.*;
-import edu.wpi.first.units.measure.AngularVelocity;
 
 public final class EndEffectorConstants {
   public static final boolean kUseFOC = true;
@@ -20,7 +17,7 @@ public final class EndEffectorConstants {
   public static final double coralOuttakeVoltage = 3;
 
   // algae first then coral
-  public static final AngularVelocity sourceVelocity = RotationsPerSecond.of(30);
+  public static final double sourceVelocityRps = 30;
 
   public static TalonFXConfiguration coralMotorConfigs =
       new TalonFXConfiguration()
@@ -43,19 +40,16 @@ public final class EndEffectorConstants {
                   .withSupplyCurrentLowerTime(1)
                   .withSupplyCurrentLowerLimit(40));
 
-  public static final CANdiConfiguration canDiConfigs =
-      new CANdiConfiguration()
-          .withDigitalInputs(
-              new DigitalInputsConfigs()
-                  .withS1CloseState(S1CloseStateValue.CloseWhenFloating)
-                  .withS2CloseState(S2CloseStateValue.CloseWhenFloating));
 
-  public static final int candiID = 21;
+  public static final double stallStatorCurrent = 50;
+    public static final double algaeIntakeVoltage = 3;
+    public static double algaeOuttakeVoltage = 4;
 
-  public static final class SimulationConstants {
 
-    public static double coralGearingRatio = 1.0;
-    public static double coralMomentOfInertia = 0.0001;
+    public static final class SimulationConstants {
+
+    public static double eeGearingRatio = 1.0;
+    public static double eeMomentOfInertia = 0.0001;
     // Scale down the angular velocity so we can actually see what is happening
     public static double kAngularVelocityScalar = 5;
   }

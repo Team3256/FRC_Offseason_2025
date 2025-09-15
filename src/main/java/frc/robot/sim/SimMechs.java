@@ -51,7 +51,7 @@ public final class SimMechs {
               7,
               new Color8Bit(Color.kGreen)));
 
-  private final MechanismLigament2d coralEndEffectorViz =
+  private final MechanismLigament2d endEffectorViz =
       armViz.append(
           new MechanismLigament2d(
               "Coral End Effector Flywheel", .1, 0.0, 2.5, new Color8Bit(Color.kYellow)));
@@ -84,8 +84,8 @@ public final class SimMechs {
     SmartDashboard.putData("RobotSim", mech);
   }
 
-  public void updateEndEffector(Angle coral) {
-    coralEndEffectorViz.setAngle(coralEndEffectorViz.getAngle() + coral.in(Degrees));
+  public void updateEndEffector(Angle eeWheel) {
+    endEffectorViz.setAngle(endEffectorViz.getAngle() + eeWheel.in(Degrees));
   }
 
   public void updateRollers(Angle coral) {
