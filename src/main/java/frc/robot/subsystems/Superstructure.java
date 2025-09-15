@@ -15,6 +15,7 @@ import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.endeffector.EndEffector;
 import frc.robot.subsystems.groundintakerollers.GroundIntakeRollers;
+import frc.robot.subsystems.intakepivot.IntakePivot;
 import frc.robot.utils.LoggedTracer;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,12 +65,14 @@ public class Superstructure {
   private final EndEffector endEffector;
   private final Arm arm;
   private final GroundIntakeRollers intakeRollers;
+  private final IntakePivot intakePivot;
 
-  public Superstructure(Elevator elevator, EndEffector endEffector, Arm arm, GroundIntakeRollers intakeRollers) {
+  public Superstructure(Elevator elevator, EndEffector endEffector, Arm arm, GroundIntakeRollers intakeRollers, IntakePivot intakePivot) {
     this.elevator = elevator;
     this.endEffector = endEffector;
     this.arm = arm;
     this.intakeRollers = intakeRollers;
+    this.intakePivot = intakePivot;
 
     stateTimer.start();
 
@@ -210,7 +213,27 @@ public class Superstructure {
 
     stateTriggers
         .get(StructureState.GROUND_INTAKE)
+        .onTrue(intakePivot.goToGroundIntake())
         .onTrue(intakeRollers.intakeCoral())
+        .and(intakeRollers.motorStalled)
+        .onTrue(this.setState(StructureState.PRE_HANDOFF));
+    
+    stateTriggers
+        .get(StructureState.PRE_HANDOFF)
+        .onTrue(intakePivot.goToHandoff())
+        .onTrue(this.setState(StructureState.HANDOFF));
+    
+
+    stateTriggers
+        .get(StructureState.HANDOFF)
+        
+        .onTrue(intakePivot.goToStow());
+
+
+
+
+
+        
         
 
   }

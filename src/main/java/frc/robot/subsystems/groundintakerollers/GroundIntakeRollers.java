@@ -18,7 +18,7 @@ public class GroundIntakeRollers extends DisableSubsystem {
   private final GroundIntakeRollersIOInputsAutoLogged intakeIOAutoLogged =
       new GroundIntakeRollersIOInputsAutoLogged();
 
-  public final Trigger motorStalled =
+      public final Trigger motorStalled =
       new Trigger(
           () ->
               (intakeIOAutoLogged.intakeRollerMotorStatorCurrent
