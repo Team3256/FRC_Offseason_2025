@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.endeffector.EndEffector;
+import frc.robot.subsystems.groundintakerollers.GroundIntakeRollers;
 import frc.robot.utils.LoggedTracer;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +36,8 @@ public class Superstructure {
     PROCESSOR,
     SCORE_ALGAE,
     SCORE_CORAL,
+    GROUND_INTAKE,
+    HANDOFF
   }
 
   public enum ManipulatorSide {
@@ -59,11 +62,13 @@ public class Superstructure {
   private final Elevator elevator;
   private final EndEffector endEffector;
   private final Arm arm;
+  private final GroundIntakeRollers intake;
 
-  public Superstructure(Elevator elevator, EndEffector endEffector, Arm arm) {
+  public Superstructure(Elevator elevator, EndEffector endEffector, Arm arm, GroundIntakeRollers intake) {
     this.elevator = elevator;
     this.endEffector = endEffector;
     this.arm = arm;
+    this.intake = intake;
 
     stateTimer.start();
 
