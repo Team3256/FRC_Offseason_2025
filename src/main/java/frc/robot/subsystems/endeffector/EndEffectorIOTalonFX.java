@@ -32,9 +32,6 @@ public class EndEffectorIOTalonFX implements EndEffectorIO {
   private final StatusSignal<Current> coralMotorStatorCurrent = coralMotor.getStatorCurrent();
   private final StatusSignal<Current> coralMotorSupplyCurrent = coralMotor.getSupplyCurrent();
 
-  private final CANdi candi = new CANdi(EndEffectorConstants.candiID);
-
-  private final StatusSignal<Boolean> coralBeamBreak = candi.getS2Closed();
 
   public EndEffectorIOTalonFX() {
     PhoenixUtil.applyMotorConfigs(
@@ -42,71 +39,52 @@ public class EndEffectorIOTalonFX implements EndEffectorIO {
         EndEffectorConstants.coralMotorConfigs,
         EndEffectorConstants.flashConfigRetries);
 
-    PhoenixUtil.applyCANdiConfigs(
-        candi, EndEffectorConstants.canDiConfigs, EndEffectorConstants.flashConfigRetries);
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         EndEffectorConstants.updateFrequency,
         coralMotorVoltage,
         coralMotorVelocity,
         coralMotorStatorCurrent,
-        coralMotorSupplyCurrent,
-        coralBeamBreak);
+        coralMotorSupplyCurrent);
     PhoenixUtil.registerSignals(
         false,
         coralMotorVoltage,
         coralMotorVelocity,
         coralMotorStatorCurrent,
-        coralMotorSupplyCurrent,
-        coralBeamBreak);
+        coralMotorSupplyCurrent);
 
     coralMotor.optimizeBusUtilization(4, 0.100);
   }
 
   @Override
   public void updateInputs(EndEffectorIOInputs inputs) {
-    inputs.coralMotorVoltage = coralMotorVoltage.getValueAsDouble();
-    inputs.coralMotorVelocity = coralMotorVelocity.getValueAsDouble();
-    inputs.coralMotorStatorCurrent = coralMotorStatorCurrent.getValueAsDouble();
-    inputs.coralMotorSupplyCurrent = coralMotorSupplyCurrent.getValueAsDouble();
-
-    inputs.coralBeamBreak = coralBeamBreak.getValue();
+    inputs.eeMotorVoltage = coralMotorVoltage.getValueAsDouble();
+    inputs.eeMotorVelocity = coralMotorVelocity.getValueAsDouble();
+    inputs.eeMotorStatorCurrent = coralMotorStatorCurrent.getValueAsDouble();
+    inputs.eeMotorSupplyCurrent = coralMotorSupplyCurrent.getValueAsDouble();
   }
 
   @Override
-  public void setCoralVoltage(double voltage) {
-    setCoralVoltage(voltage, false);
+  public void setEEVoltage(double voltage) {
+    coralMotor.setVoltage(voltage);
   }
 
-  @Override
-  public void setCoralVelocity(AngularVelocity velocity) {
-    setCoralVelocity(velocity, false);
-  }
+
 
   @Override
-  public void setCoralVoltage(double voltage, boolean override) {
+  public void setEEVelocity(double velocity) {
     coralMotor.setControl(
-        coralVoltageRequest.withOutput(Volts.of(voltage)).withIgnoreHardwareLimits(override));
+        coralVelocityRequest.withVelocity(velocity));
   }
 
   @Override
-  public void setCoralVelocity(AngularVelocity velocity, boolean override) {
-    coralMotor.setControl(
-        coralVelocityRequest.withVelocity(velocity).withIgnoreHardwareLimits(override));
-  }
-
-  @Override
-  public void coralOff() {
+  public void eeOff() {
     coralMotor.setControl(new NeutralOut());
   }
 
   @Override
-  public TalonFX getCoralMotor() {
+  public TalonFX getEEMotor() {
     return coralMotor;
   }
 
-  @Override
-  public CANdi getCandi() {
-    return candi;
-  }
 }

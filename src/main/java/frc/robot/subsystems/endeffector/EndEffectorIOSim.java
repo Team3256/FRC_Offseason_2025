@@ -9,9 +9,6 @@ package frc.robot.subsystems.endeffector;
 
 import static edu.wpi.first.units.Units.Degrees;
 
-import com.ctre.phoenix6.signals.S1StateValue;
-import com.ctre.phoenix6.signals.S2StateValue;
-import com.ctre.phoenix6.sim.CANdiSimState;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -19,52 +16,50 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sim.SimMechs;
 import org.littletonrobotics.junction.LoggedRobot;
 
 public class EndEffectorIOSim extends EndEffectorIOTalonFX {
   
-  private final FlywheelSim coralSimModel =
+  private final FlywheelSim eeSimModel =
       new FlywheelSim(
           LinearSystemId.createFlywheelSystem(
               EndEffectorConstants.kUseFOC ? DCMotor.getKrakenX60Foc(1) : DCMotor.getKrakenX60(1),
-              EndEffectorConstants.SimulationConstants.coralGearingRatio,
-              EndEffectorConstants.SimulationConstants.coralMomentOfInertia),
+              EndEffectorConstants.SimulationConstants.eeGearingRatio,
+              EndEffectorConstants.SimulationConstants.eeMomentOfInertia),
           EndEffectorConstants.kUseFOC ? DCMotor.getKrakenX60Foc(1) : DCMotor.getKrakenX60(1));
-  private final TalonFXSimState coralMotorSim;
+  private final TalonFXSimState eeMotorSim;
 
 
   public EndEffectorIOSim() {
     super();
 
-    coralMotorSim = super.getCoralMotor().getSimState();
+    eeMotorSim = super.getEEMotor().getSimState();
   }
 
   @Override
   public void updateInputs(EndEffectorIOInputs inputs) {
 
     // Update battery voltage
-    coralMotorSim.setSupplyVoltage(RobotController.getBatteryVoltage());
+    eeMotorSim.setSupplyVoltage(RobotController.getBatteryVoltage());
     // Update physics models
-    coralSimModel.setInput(coralMotorSim.getMotorVoltage());
-    coralSimModel.update(LoggedRobot.defaultPeriodSecs);
+    eeSimModel.setInput(eeMotorSim.getMotorVoltage());
+    eeSimModel.update(LoggedRobot.defaultPeriodSecs);
 
-    double coralRps = coralSimModel.getAngularVelocityRPM() / 60;
-    coralMotorSim.setRotorVelocity(coralRps);
-    coralMotorSim.addRotorPosition(coralRps * LoggedRobot.defaultPeriodSecs);
+    double eeRps = eeSimModel.getAngularVelocityRPM() / 60;
+    eeMotorSim.setRotorVelocity(eeRps);
+    eeMotorSim.addRotorPosition(eeRps * LoggedRobot.defaultPeriodSecs);
 
     // Update battery voltage (after the effects of physics models)
     RoboRioSim.setVInVoltage(
         BatterySim.calculateDefaultBatteryLoadedVoltage(
-          coralSimModel.getCurrentDrawAmps(), coralSimModel.getCurrentDrawAmps()));
+          eeSimModel.getCurrentDrawAmps(), eeSimModel.getCurrentDrawAmps()));
     super.updateInputs(inputs);
 
     SimMechs.getInstance()
         .updateEndEffector(
             Degrees.of(
-                Math.toDegrees(coralRps)
+                Math.toDegrees(eeRps)
                     * LoggedRobot.defaultPeriodSecs
                     * EndEffectorConstants.SimulationConstants.kAngularVelocityScalar));
   }

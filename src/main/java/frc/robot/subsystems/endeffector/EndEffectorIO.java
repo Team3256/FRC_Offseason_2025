@@ -7,9 +7,6 @@
 
 package frc.robot.subsystems.endeffector;
 
-import static edu.wpi.first.units.Units.*;
-
-import com.ctre.phoenix6.hardware.CANdi;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.AngularVelocity;
 import org.littletonrobotics.junction.AutoLog;
@@ -18,31 +15,24 @@ public interface EndEffectorIO {
   @AutoLog
   public static class EndEffectorIOInputs {
 
-    public double coralMotorVoltage = 0;
-    public double coralMotorVelocity = 0;
-    public double coralMotorStatorCurrent = 0;
-    public double coralMotorSupplyCurrent = 0;
+    public double eeMotorVoltage = 0;
+    public double eeMotorVelocity = 0;
+    public double eeMotorStatorCurrent = 0;
+    public double eeMotorSupplyCurrent = 0;
 
-    public boolean coralBeamBreak = false;
   }
 
   public default void updateInputs(EndEffectorIOInputs inputs) {}
 
-  public default void setCoralVoltage(double voltage) {}
+  public default void setEEVoltage(double voltage) {}
 
-  public default void setCoralVelocity(AngularVelocity velocity) {}
+  public default void setEEVelocity(double velocity) {}
 
-  public default void setCoralVoltage(double voltage, boolean override) {}
 
-  public default void setCoralVelocity(AngularVelocity velocity, boolean override) {}
-
-  public default TalonFX getCoralMotor() {
+  public default TalonFX getEEMotor() {
     return new TalonFX(0);
   }
 
-  public default CANdi getCandi() {
-    return new CANdi(0);
-  }
 
-  public default void coralOff() {}
+  public default void eeOff() {}
 }
