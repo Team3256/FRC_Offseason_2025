@@ -27,7 +27,7 @@ public class IntakePivotIOSim extends IntakePivotIOTalonFX {
           DCMotor.getKrakenX60(1),
           IntakePivotConstants.PivotSim.pivotSimGearing,
           IntakePivotConstants.PivotSim.jkGMetersSquared,
-          IntakePivotConstants.PivotSim.intakepivotLength.in(Meters),
+          IntakePivotConstants.PivotSim.intakePivotLength.in(Meters),
           IntakePivotConstants.PivotSim.minAngle.getRadians(),
           IntakePivotConstants.PivotSim.maxAngle.getRadians(),
           true,
@@ -60,6 +60,6 @@ public class IntakePivotIOSim extends IntakePivotIOTalonFX {
     pivotSimState.setRotorVelocity(
         RadiansPerSecond.of(pivotSimModel.getVelocityRadPerSec()).in(RotationsPerSecond));
     super.updateInputs(inputs);
-    SimMechs.getInstance().updateArm(Radians.of(pivotSimModel.getAngleRads()));
+    SimMechs.getInstance().updatePivot(Radians.of(pivotSimModel.getAngleRads()));
   }
 }

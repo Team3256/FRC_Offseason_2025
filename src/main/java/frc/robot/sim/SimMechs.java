@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Constants;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.elevator.ElevatorConstants;
+import frc.robot.subsystems.intakepivot.IntakePivotConstants;
 
 public final class SimMechs {
 
@@ -50,6 +51,17 @@ public final class SimMechs {
               0.0,
               7,
               new Color8Bit(Color.kGreen)));
+            
+  private final MechanismLigament2d intakePivotViz = 
+      elevatorViz.append(
+        new MechanismLigament2d(
+          "Intake Pivot", 
+          IntakePivotConstants.PivotSim.intakePivotLength.in(Meters)/4, //not sure what to divide by
+          0.0,
+          7,
+          new Color8Bit(Color.kGreen))
+      );
+  
 
   private final MechanismLigament2d algaeEndEffectorViz =
       armViz.append(
@@ -79,6 +91,9 @@ public final class SimMechs {
     elevatorViz.setLength(height.in(Meters) / 4);
   }
 
+  public void updatePivot(Angle angle) {
+    intakePivotViz.setAngle(angle.in(Degrees));
+  }
   public void publishToNT() {
     SmartDashboard.putData("RobotSim", mech);
   }

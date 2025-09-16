@@ -53,12 +53,12 @@ public final class IntakePivotConstants {
     // not sure about what gearing means and not sure if its equal to gear ratio
     public static final double pivotSimGearing = 0;
 
-    public static final Distance intakepivotLength = Inches.of(0);
-    public static final Mass intakepivotMass = Kilograms.of(2);
+    public static final Distance intakePivotLength = Inches.of(0);
+    public static final Mass intakePivotMass = Kilograms.of(2);
     public static final double jkGMetersSquared = 0;
 
-    public static final Rotation2d minAngle = Rotation2d.fromDegrees(0);
-    public static final Rotation2d maxAngle = Rotation2d.fromDegrees(360);
-    public static final Rotation2d startingAngle = Rotation2d.fromDegrees(0.25);
+    public static final Rotation2d minAngle = Rotation2d.fromDegrees(145.138);
+    public static final Rotation2d maxAngle = Rotation2d.fromDegrees(0);
+    public static final Rotation2d startingAngle = Rotation2d.fromDegrees(0.0);
   }
 }
