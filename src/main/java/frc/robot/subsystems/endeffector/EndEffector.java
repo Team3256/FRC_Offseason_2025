@@ -7,13 +7,12 @@
 
 package frc.robot.subsystems.endeffector;
 
-import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.utils.DisableSubsystem;
 import frc.robot.utils.LoggedTracer;
 import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
+
 import org.littletonrobotics.junction.Logger;
 
 public class EndEffector extends DisableSubsystem {
@@ -22,11 +21,7 @@ public class EndEffector extends DisableSubsystem {
   private final EndEffectorIOInputsAutoLogged endEffectorIOInputsAutoLogged =
       new EndEffectorIOInputsAutoLogged();
 
-  public final Trigger coralBeamBreak =
-      new Trigger(() -> endEffectorIOInputsAutoLogged.coralBeamBreak);
-
-  public final Trigger algaeBeamBreak =
-      new Trigger(() -> endEffectorIOInputsAutoLogged.algaeBeamBreak);
+  public final Trigger motorStalled = new Trigger(()->endEffectorIOInputsAutoLogged.eeMotorStatorCurrent >EndEffectorConstants.stallStatorCurrent);
 
   public EndEffector(boolean enabled, EndEffectorIO endEffectorIO) {
     super(enabled);
@@ -42,54 +37,35 @@ public class EndEffector extends DisableSubsystem {
     LoggedTracer.record("EndEffector");
   }
 
-  public Command setCoralVoltage(DoubleSupplier voltage) {
-    return this.run(() -> endEffectorIO.setCoralVoltage(voltage.getAsDouble()));
+  public Command setEEVoltage(DoubleSupplier voltage) {
+    return this.run(() -> endEffectorIO.setEEVoltage(voltage.getAsDouble()));
   }
 
-  public Command setCoralVelocity(Supplier<AngularVelocity> velocity) {
-    return this.run(() -> endEffectorIO.setCoralVelocity(velocity.get()));
+  public Command setEEVelocity(DoubleSupplier velocity) {
+    return this.run(() -> endEffectorIO.setEEVelocity(velocity.getAsDouble()));
   }
 
-  public Command setL1Velocity() {
-    return this.setCoralVelocity(() -> EndEffectorConstants.l1Velocity);
+  public Command setCoralOuttakeVoltage() {
+    return setEEVoltage(() -> EndEffectorConstants.coralOuttakeVoltage)
+        .withName("setCoralOuttakeVoltage");
   }
 
-  public Command setL2L3Velocity() {
-    return this.setCoralVelocity(() -> EndEffectorConstants.l2l3Velocity);
-  }
-
-  public Command setL4Voltage() {
-    return this.setCoralVoltage(() -> EndEffectorConstants.l4Voltage);
-  }
-
-  public Command setAlgaeVoltage(double voltage) {
-    return this.run(() -> endEffectorIO.setAlgaeVoltage(voltage));
-  }
-
-  public Command setAlgaeVelocity(Supplier<AngularVelocity> velocity) {
-    return this.run(() -> endEffectorIO.setAlgaeVelocity(velocity.get()));
-  }
-
-  public Command setSourceVelocity() {
-    return setCoralVelocity(() -> EndEffectorConstants.sourceVelocity)
-        .withName("setSourceVelocity");
-  }
-
-  public Command setAlgaeIntakeVelocity() {
-    return setAlgaeVelocity(() -> EndEffectorConstants.algaeIntakeVelocity)
-        .withName("setAlgaeIntakeVelocity");
+  public Command setAlgaeIntakeVoltage() {
+    return setEEVoltage(() -> EndEffectorConstants.algaeIntakeVoltage)
+        .withName("setAlgaeIntakeVoltage");
   }
 
   public Command setAlgaeOuttakeVoltage() {
-    return setAlgaeVelocity(() -> EndEffectorConstants.algaeOuttakeVelocity)
+    return setEEVoltage(() -> EndEffectorConstants.algaeOuttakeVoltage)
         .withName("setAlgaeOuttakeVoltage");
   }
 
-  public Command algaeOff() {
-    return this.runOnce(endEffectorIO::algaeOff).withName("algaeOff");
+  public Command setSourceVelocity() {
+    return setEEVelocity(() -> EndEffectorConstants.sourceVelocityRps)
+        .withName("setSourceVelocity");
   }
 
-  public Command coralOff() {
-    return this.runOnce(endEffectorIO::coralOff).withName("coralOff");
+  public Command off() {
+    return this.runOnce(endEffectorIO::eeOff).withName("eeOff");
   }
 }

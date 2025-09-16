@@ -161,16 +161,10 @@ public class RobotContainer {
   private void configureLEDs() {
     leds.setDefaultCommand(leds.animate(IndicatorAnimation.Default));
     superstructure
-        .coralBeamBreak()
+        .eeHasGamePiece()
         .and(autoAlignRunning.negate())
         .and(autoAlignedTrigger.negate())
         .whileTrue(leds.animate(IndicatorAnimation.CoralIntaken));
-    superstructure
-        .algaeBeamBreak()
-        .and(superstructure.coralBeamBreak().negate())
-        .and(autoAlignedTrigger.negate())
-        .and(autoAlignRunning.negate())
-        .whileTrue(leds.animate(IndicatorAnimation.AlgaeIntaken));
     autoAlignedTrigger.whileTrue(
         Commands.run(
                 () -> {
@@ -207,11 +201,7 @@ public class RobotContainer {
   }
 
   private void configureOperatorBinds() {
-
-    // source
-    m_operatorController
-        .x("Preset for source")
-        .onTrue(superstructure.setState(StructureState.PRESOURCE));
+      
 
     // stow everything
     m_operatorController
@@ -269,14 +259,8 @@ public class RobotContainer {
 
     // Add options to the chooser
     autoChooser.addCmd("Wheel Radius Change", () -> drivetrain.wheelRadiusCharacterization(1));
-    autoChooser.addRoutine("Center 1L4-H Preload", m_autoRoutines::l4PreloadH);
-    autoChooser.addRoutine("Center 1L4-G Preload", m_autoRoutines::l4PreloadG);
     autoChooser.addRoutine("Mobility Left", m_autoRoutines::mobilityLeft);
     autoChooser.addRoutine("Mobility Right", m_autoRoutines::mobilityRight);
-    autoChooser.addRoutine("Center 3L4-GCD", m_autoRoutines::l4CenterPreloadRightSourceRight);
-    autoChooser.addRoutine("Right 3L4-FCD", m_autoRoutines::l4RightPreloadRightSourceRight);
-    autoChooser.addRoutine("Left 3L4-IKL", m_autoRoutines::l4LeftPreloadLeftSourceLeft);
-    autoChooser.addRoutine("Center 1L4-H 2Barge-GH_IJ", m_autoRoutines::dealgae2LeftPreloadL4H);
 
     SmartDashboard.putData("auto chooser", autoChooser);
 

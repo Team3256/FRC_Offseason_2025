@@ -62,14 +62,15 @@ public final class SimMechs {
               7,
               new Color8Bit(Color.kGreen)));
 
-  private final MechanismLigament2d algaeEndEffectorViz =
-      armViz.append(
-          new MechanismLigament2d(
-              "Algae End Effector Flywheel", .1, 90, 2.5, new Color8Bit(Color.kRed)));
-  private final MechanismLigament2d coralEndEffectorViz =
+  private final MechanismLigament2d endEffectorViz =
       armViz.append(
           new MechanismLigament2d(
               "Coral End Effector Flywheel", .1, 0.0, 2.5, new Color8Bit(Color.kYellow)));
+
+  private final MechanismLigament2d groundIntakeRollerViz =
+      elevatorViz.append(
+          new MechanismLigament2d(
+              "Roller for Ground Intake", .1, 90, 2.5, new Color8Bit(Color.kRed)));
 
   private static SimMechs instance = null;
 
@@ -98,8 +99,11 @@ public final class SimMechs {
     SmartDashboard.putData("RobotSim", mech);
   }
 
-  public void updateEndEffector(Angle algae, Angle coral) {
-    algaeEndEffectorViz.setAngle(algaeEndEffectorViz.getAngle() + algae.in(Degrees));
-    coralEndEffectorViz.setAngle(coralEndEffectorViz.getAngle() + coral.in(Degrees));
+  public void updateEndEffector(Angle eeWheel) {
+    endEffectorViz.setAngle(endEffectorViz.getAngle() + eeWheel.in(Degrees));
+  }
+
+  public void updateRollers(Angle coral) {
+    groundIntakeRollerViz.setAngle(groundIntakeRollerViz.getAngle() + coral.in(Degrees));
   }
 }

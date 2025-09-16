@@ -11,6 +11,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.*;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
@@ -48,6 +49,7 @@ public final class IntakePivotConstants {
                   .withStatorCurrentLimitEnable(true)
                   .withStatorCurrentLimit(80))
           .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(pivotGearRatio));
+
 
   public static final class PivotSim {
     // not sure about what gearing means and not sure if its equal to gear ratio

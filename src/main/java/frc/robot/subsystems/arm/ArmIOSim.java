@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import frc.robot.sim.SimMechs;
+import frc.robot.utils.PhoenixUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 
 public class ArmIOSim extends ArmIOTalonFX {
@@ -39,10 +40,11 @@ public class ArmIOSim extends ArmIOTalonFX {
 
   public ArmIOSim() {
     super();
+    PhoenixUtil.applyMotorConfigs(super.getMotor(), ArmConstants.simMotorConfigs, 1);
     armSimState = super.getMotor().getSimState();
     cancoderSimState = super.getEncoder().getSimState();
     cancoderSimState.Orientation = ChassisReference.Clockwise_Positive;
-    armSimState.Orientation = ChassisReference.Clockwise_Positive;
+    armSimState.Orientation = ChassisReference.CounterClockwise_Positive;
   }
 
   @Override
