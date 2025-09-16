@@ -57,11 +57,11 @@ public class IntakePivot extends DisableSubsystem {
     return this.runOnce(intakePivotIO::off).withName("off");
   }
 
-  public Command goToStow(){
+  public Command goToStow() {
     return this.setPosition(IntakePivotConstants.stowPosition);
   }
 
-  public Command goToHandoff(){
+  public Command goToHandoff() {
     return this.setPosition(IntakePivotConstants.handoffPosition);
   }
 

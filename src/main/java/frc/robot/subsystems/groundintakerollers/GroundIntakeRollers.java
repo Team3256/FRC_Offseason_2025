@@ -14,11 +14,11 @@ import frc.robot.utils.LoggedTracer;
 import org.littletonrobotics.junction.Logger;
 
 public class GroundIntakeRollers extends DisableSubsystem {
-  private final GroundIntakeRollersIO groundIntakeRollersIO;
+  public final GroundIntakeRollersIO groundIntakeRollersIO;
   private final GroundIntakeRollersIOInputsAutoLogged intakeIOAutoLogged =
       new GroundIntakeRollersIOInputsAutoLogged();
 
-      public final Trigger motorStalled =
+  public final Trigger motorStalled =
       new Trigger(
           () ->
               (intakeIOAutoLogged.intakeRollerMotorStatorCurrent
@@ -59,6 +59,11 @@ public class GroundIntakeRollers extends DisableSubsystem {
   public Command intakeCoral() {
     return setVoltage(GroundIntakeRollersConstants.kIntakeRollerMotorVoltage)
         .until(motorStalled)
+        .finallyDo(groundIntakeRollersIO::off);
+  }
+
+  public Command handoffCoral() {
+    return setVoltage(GroundIntakeRollersConstants.kIntakeRollerMotorHandoffVoltage)
         .finallyDo(groundIntakeRollersIO::off);
   }
 }

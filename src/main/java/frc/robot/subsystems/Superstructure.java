@@ -67,7 +67,12 @@ public class Superstructure {
   private final GroundIntakeRollers intakeRollers;
   private final IntakePivot intakePivot;
 
-  public Superstructure(Elevator elevator, EndEffector endEffector, Arm arm, GroundIntakeRollers intakeRollers, IntakePivot intakePivot) {
+  public Superstructure(
+      Elevator elevator,
+      EndEffector endEffector,
+      Arm arm,
+      GroundIntakeRollers intakeRollers,
+      IntakePivot intakePivot) {
     this.elevator = elevator;
     this.endEffector = endEffector;
     this.arm = arm;
@@ -152,7 +157,6 @@ public class Superstructure {
         .or(stateTriggers.get(StructureState.DEALGAE_L3))
         .onTrue(endEffector.setAlgaeIntakeVoltage());
 
-
     // Barge level
     stateTriggers
         .get(StructureState.BARGE)
@@ -217,31 +221,23 @@ public class Superstructure {
         .onTrue(intakeRollers.intakeCoral())
         .and(intakeRollers.motorStalled)
         .onTrue(this.setState(StructureState.PRE_HANDOFF));
-    
+
     stateTriggers
         .get(StructureState.PRE_HANDOFF)
         .onTrue(intakePivot.goToHandoff())
         .onTrue(this.setState(StructureState.HANDOFF));
-    
 
     stateTriggers
         .get(StructureState.HANDOFF)
-        
-        .onTrue(intakePivot.goToStow());
-
-
-
-
-
-        
-        
-
+        .onTrue(intakeRollers.handoffCoral())
+        .onTrue(intakePivot.goToStow())
+        .onTrue(this.setState(StructureState.GROUND_INTAKE));
+    ;
   }
 
   public Trigger eeHasGamePiece() {
     return endEffector.motorStalled;
   }
-
 
   // call manually
   public void periodic() {
