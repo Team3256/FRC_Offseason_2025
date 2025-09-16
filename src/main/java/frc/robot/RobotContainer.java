@@ -85,14 +85,19 @@ public class RobotContainer {
       new EndEffector(
           true, Utils.isSimulation() ? new EndEffectorIOSim() : new EndEffectorIOTalonFX());
 
-  private final GroundIntakeRollers intakeRollers = new GroundIntakeRollers(true, Utils.isSimulation() ? new GroundIntakeRollersIOSim() : new GroundIntakeRollersIOTalonFX());
+  private final GroundIntakeRollers intakeRollers =
+      new GroundIntakeRollers(
+          true,
+          Utils.isSimulation()
+              ? new GroundIntakeRollersIOSim()
+              : new GroundIntakeRollersIOTalonFX());
 
   private final IntakePivot intakePivot = new IntakePivot(true, new IntakePivotIOTalonFX());
 
-/// sim file for intakepivot needs to be added -- seems like its not been merged yet
+  /// sim file for intakepivot needs to be added -- seems like its not been merged yet
 
-
-  private final Superstructure superstructure = new Superstructure(elevator, endEffector, arm, intakeRollers, intakePivot);
+  private final Superstructure superstructure =
+      new Superstructure(elevator, endEffector, arm, intakeRollers, intakePivot);
   private final LED leds = new LED();
 
   private final Vision vision =
