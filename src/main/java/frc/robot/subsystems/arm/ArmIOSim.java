@@ -62,8 +62,6 @@ public class ArmIOSim extends ArmIOTalonFX {
     cancoderSimState = super.getEncoder().getSimState();
     cancoderSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
     cancoderSimState.setRawPosition(Radians.of(armSimModel.getAngleRads()).in(Rotations));
-    armSimState.setRotorVelocity(
-        RadiansPerSecond.of(armSimModel.getVelocityRadPerSec()).in(RotationsPerSecond));
     super.updateInputs(inputs);
     SimMechs.getInstance().updateArm(Radians.of(armSimModel.getAngleRads()));
   }

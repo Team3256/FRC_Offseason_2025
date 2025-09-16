@@ -51,17 +51,16 @@ public final class SimMechs {
               0.0,
               7,
               new Color8Bit(Color.kGreen)));
-            
-  private final MechanismLigament2d intakePivotViz = 
-      elevatorViz.append(
-        new MechanismLigament2d(
-          "Intake Pivot", 
-          IntakePivotConstants.PivotSim.intakePivotLength.in(Meters)/4, //not sure what to divide by
-          0.0,
-          7,
-          new Color8Bit(Color.kGreen))
-      );
-  
+
+  private final MechanismLigament2d intakePivotViz =
+      elevatorRoot.append(
+          new MechanismLigament2d(
+              "Intake Pivot",
+              IntakePivotConstants.PivotSim.intakePivotLength.in(Meters)
+                  / 4, // not sure what to divide by
+              0.0,
+              7,
+              new Color8Bit(Color.kGreen)));
 
   private final MechanismLigament2d algaeEndEffectorViz =
       armViz.append(
@@ -94,6 +93,7 @@ public final class SimMechs {
   public void updatePivot(Angle angle) {
     intakePivotViz.setAngle(angle.in(Degrees));
   }
+
   public void publishToNT() {
     SmartDashboard.putData("RobotSim", mech);
   }

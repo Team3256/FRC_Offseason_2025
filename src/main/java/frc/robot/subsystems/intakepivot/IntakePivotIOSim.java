@@ -57,8 +57,6 @@ public class IntakePivotIOSim extends IntakePivotIOTalonFX {
     RoboRioSim.setVInVoltage(
         BatterySim.calculateDefaultBatteryLoadedVoltage(pivotSimModel.getCurrentDrawAmps()));
 
-    pivotSimState.setRotorVelocity(
-        RadiansPerSecond.of(pivotSimModel.getVelocityRadPerSec()).in(RotationsPerSecond));
     super.updateInputs(inputs);
     SimMechs.getInstance().updatePivot(Radians.of(pivotSimModel.getAngleRads()));
   }

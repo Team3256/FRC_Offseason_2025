@@ -51,7 +51,7 @@ public final class IntakePivotConstants {
 
   public static final class PivotSim {
     // not sure about what gearing means and not sure if its equal to gear ratio
-    public static final double pivotSimGearing = 0;
+    public static final double pivotSimGearing = 10;
 
     public static final Distance intakePivotLength = Inches.of(0);
     public static final Mass intakePivotMass = Kilograms.of(2);
