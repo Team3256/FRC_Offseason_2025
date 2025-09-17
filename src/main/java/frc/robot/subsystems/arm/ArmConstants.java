@@ -58,7 +58,7 @@ public final class ArmConstants {
   public static final double safeRightPosition = .37;
   public static final double safeLeftPosition = .25;
 
-  public static final double handoffPosition = 0.10;
+  public static final double handoffPosition = 0.5;
 
   public static final TalonFXConfiguration motorConfigs =
       new TalonFXConfiguration()

@@ -225,6 +225,8 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.PRE_HANDOFF)
         .onTrue(intakePivot.goToHandoff())
+        .onTrue(elevator.toHandoffPosition())
+        .and(elevator.reachedPosition)
         .onTrue(arm.toHandoffLevel())
         .onTrue(this.setState(StructureState.HANDOFF));
 
@@ -233,7 +235,7 @@ public class Superstructure {
         .onTrue(intakeRollers.handoffCoral())
         .onTrue(endEffector.intakeCoral())
         .onTrue(intakePivot.goToStow())
-        .onTrue(this.setState(StructureState.GROUND_INTAKE));
+        .onTrue(this.setState(StructureState.PREHOME));
     ;
   }
 
