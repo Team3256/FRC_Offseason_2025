@@ -15,6 +15,7 @@ public final class EndEffectorConstants {
   public static final int coralMotorID = 43;
 
   public static final double coralOuttakeVoltage = 3;
+  public static final double coralIntakeVoltage = 3;
 
   // algae first then coral
   public static final double sourceVelocityRps = 30;

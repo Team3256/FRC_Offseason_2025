@@ -225,11 +225,13 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.PRE_HANDOFF)
         .onTrue(intakePivot.goToHandoff())
+        .onTrue(arm.toHandoffLevel())
         .onTrue(this.setState(StructureState.HANDOFF));
 
     stateTriggers
         .get(StructureState.HANDOFF)
         .onTrue(intakeRollers.handoffCoral())
+        .onTrue(endEffector.intakeCoral())
         .onTrue(intakePivot.goToStow())
         .onTrue(this.setState(StructureState.GROUND_INTAKE));
     ;

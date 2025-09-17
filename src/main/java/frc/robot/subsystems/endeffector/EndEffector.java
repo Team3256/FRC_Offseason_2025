@@ -71,4 +71,9 @@ public class EndEffector extends DisableSubsystem {
   public Command off() {
     return this.runOnce(endEffectorIO::eeOff).withName("eeOff");
   }
+
+  public Command intakeCoral() {
+    return setEEVoltage(() -> EndEffectorConstants.coralIntakeVoltage)
+        .withName("setCoralIntakeVoltage");
+  }
 }

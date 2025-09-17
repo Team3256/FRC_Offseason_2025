@@ -14,7 +14,7 @@ import frc.robot.utils.LoggedTracer;
 import org.littletonrobotics.junction.Logger;
 
 public class GroundIntakeRollers extends DisableSubsystem {
-  public final GroundIntakeRollersIO groundIntakeRollersIO;
+  private final GroundIntakeRollersIO groundIntakeRollersIO;
   private final GroundIntakeRollersIOInputsAutoLogged intakeIOAutoLogged =
       new GroundIntakeRollersIOInputsAutoLogged();
 
