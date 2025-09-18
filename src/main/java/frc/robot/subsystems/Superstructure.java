@@ -245,9 +245,6 @@ public class Superstructure {
     return endEffector.motorStalled;
   }
 
-
-  
-
   // call manually
   public void periodic() {
     Logger.recordOutput(
