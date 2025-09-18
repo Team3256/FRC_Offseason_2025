@@ -11,14 +11,12 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.*;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 
 public final class IntakePivotConstants {
   public static final int pivotMotorId = 36;
-
 
   public static final boolean kUseFOC = false; // do we need this??????
   public static final boolean kUseMotionMagic = true; // idk if pivot needs motion magic
@@ -35,8 +33,7 @@ public final class IntakePivotConstants {
                   .withKD(1)
                   .withKA(0)
                   .withKG(1.8)
-                      .withGravityType(GravityTypeValue.Arm_Cosine))
-
+                  .withGravityType(GravityTypeValue.Arm_Cosine))
           .withMotorOutput(
               new MotorOutputConfigs()
                   .withNeutralMode(NeutralModeValue.Brake)
@@ -51,14 +48,13 @@ public final class IntakePivotConstants {
                   .withStatorCurrentLimit(80))
           .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(10));
 
-
   public static final class PivotSim {
     // not sure about what gearing means and not sure if its equal to gear ratio
     public static final double pivotSimGearing = 10;
 
     public static final Distance intakePivotLength = Inches.of(24);
     public static final Mass intakePivotMass = Kilograms.of(1);
-    public static final double jkGMetersSquared =.5;
+    public static final double jkGMetersSquared = .5;
 
     public static final Rotation2d minAngle = Rotation2d.fromDegrees(75);
     public static final Rotation2d maxAngle = Rotation2d.fromDegrees(180);

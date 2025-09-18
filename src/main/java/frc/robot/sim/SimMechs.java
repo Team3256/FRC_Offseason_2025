@@ -35,11 +35,10 @@ public final class SimMechs {
           Constants.SimulationConstants.kDrivebaseWidth.in(Meters) / 2,
           ElevatorConstants.SimulationConstants.kStartingHeight.in(Meters));
   private final MechanismRoot2d groundIntakeRoot =
-          mech.getRoot(
-                  "Ground Intake",
-                  Constants.SimulationConstants.kDrivebaseWidth.in(Meters) / 2 + .5,
-                  Inches.of(2).in(Meters)
-          );
+      mech.getRoot(
+          "Ground Intake",
+          Constants.SimulationConstants.kDrivebaseWidth.in(Meters) / 2 + .5,
+          Inches.of(2).in(Meters));
 
   private final MechanismLigament2d elevatorViz =
       elevatorRoot.append(

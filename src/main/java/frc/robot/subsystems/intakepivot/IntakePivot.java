@@ -45,7 +45,7 @@ public class IntakePivot extends DisableSubsystem {
   public Command setPosition(DoubleSupplier position) {
     return this.run(
         () -> {
-            reqPosition= position.getAsDouble();
+          reqPosition = position.getAsDouble();
           intakePivotIO.setPosition(reqPosition);
         });
   }
