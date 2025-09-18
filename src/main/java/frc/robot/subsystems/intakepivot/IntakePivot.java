@@ -19,6 +19,8 @@ public class IntakePivot extends DisableSubsystem {
   private final IntakePivotIOInputsAutoLogged intakePivotIOInputsAutoLogged =
       new IntakePivotIOInputsAutoLogged();
 
+  private double reqPosition = 0.0;
+
   public IntakePivot(boolean enabled, IntakePivotIO intakePivotIO) {
     super(enabled);
 
@@ -31,6 +33,8 @@ public class IntakePivot extends DisableSubsystem {
     intakePivotIO.updateInputs(intakePivotIOInputsAutoLogged);
     Logger.processInputs("IntakePivot", intakePivotIOInputsAutoLogged);
 
+    Logger.recordOutput(this.getClass().getSimpleName() + "/reqPosition", reqPosition);
+
     LoggedTracer.record("IntakePivot");
   }
 
@@ -41,7 +45,8 @@ public class IntakePivot extends DisableSubsystem {
   public Command setPosition(DoubleSupplier position) {
     return this.run(
         () -> {
-          intakePivotIO.setPosition(position.getAsDouble());
+            reqPosition= position.getAsDouble();
+          intakePivotIO.setPosition(reqPosition);
         });
   }
 
