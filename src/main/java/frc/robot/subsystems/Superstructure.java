@@ -202,6 +202,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.HOME)
         .and(prevStateTriggers.get(StructureState.PREHOME))
+        .onTrue(intakePivot.goToStow())
         .onTrue(elevator.toHome())
         .onTrue(arm.toHome())
         .and(arm.reachedPosition)
@@ -219,8 +220,9 @@ public class Superstructure {
         .get(StructureState.GROUND_INTAKE)
         .onTrue(intakePivot.goToGroundIntake())
         .onTrue(intakeRollers.intakeCoral())
-        .and(intakeRollers.motorStalled)
-        .onTrue(this.setState(StructureState.PRE_HANDOFF));
+        .and(intakeRollers.motorStalled);
+ 
+
 
     stateTriggers
         .get(StructureState.PRE_HANDOFF)
@@ -234,7 +236,6 @@ public class Superstructure {
         .get(StructureState.HANDOFF)
         .onTrue(intakeRollers.handoffCoral())
         .onTrue(endEffector.intakeCoral())
-        .onTrue(intakePivot.goToStow())
         .onTrue(this.setState(StructureState.PREHOME));
     ;
   }
@@ -242,6 +243,9 @@ public class Superstructure {
   public Trigger eeHasGamePiece() {
     return endEffector.motorStalled;
   }
+
+
+  
 
   // call manually
   public void periodic() {
