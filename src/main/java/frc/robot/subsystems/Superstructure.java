@@ -229,7 +229,7 @@ public class Superstructure {
         .onTrue(intakePivot.goToHandoff())
         .onTrue(elevator.toHandoffPosition())
         .and(elevator.reachedPosition)
-        .debounce(0.2)
+        .debounce(0.25)
         .onTrue(arm.toHandoffLevel())
         .onTrue(this.setState(StructureState.HANDOFF));
 
