@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.utils.DisableSubsystem;
 import frc.robot.utils.LoggedTracer;
 import java.util.function.DoubleSupplier;
-
 import org.littletonrobotics.junction.Logger;
 
 public class EndEffector extends DisableSubsystem {
@@ -21,7 +20,11 @@ public class EndEffector extends DisableSubsystem {
   private final EndEffectorIOInputsAutoLogged endEffectorIOInputsAutoLogged =
       new EndEffectorIOInputsAutoLogged();
 
-  public final Trigger motorStalled = new Trigger(()->endEffectorIOInputsAutoLogged.eeMotorStatorCurrent >EndEffectorConstants.stallStatorCurrent);
+  public final Trigger motorStalled =
+      new Trigger(
+          () ->
+              endEffectorIOInputsAutoLogged.eeMotorStatorCurrent
+                  > EndEffectorConstants.stallStatorCurrent);
 
   public EndEffector(boolean enabled, EndEffectorIO endEffectorIO) {
     super(enabled);

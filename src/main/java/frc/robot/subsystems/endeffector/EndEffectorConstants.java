@@ -40,13 +40,11 @@ public final class EndEffectorConstants {
                   .withSupplyCurrentLowerTime(1)
                   .withSupplyCurrentLowerLimit(40));
 
-
   public static final double stallStatorCurrent = 50;
-    public static final double algaeIntakeVoltage = 3;
-    public static double algaeOuttakeVoltage = 4;
+  public static final double algaeIntakeVoltage = 3;
+  public static double algaeOuttakeVoltage = 4;
 
-
-    public static final class SimulationConstants {
+  public static final class SimulationConstants {
 
     public static double eeGearingRatio = 1.0;
     public static double eeMomentOfInertia = 0.0001;
