@@ -239,12 +239,14 @@ public class Superstructure {
         .and(elevator.reachedPosition)
         .debounce(0.025)
         .onTrue(arm.toHandoffLevel())
+        .and(arm.reachedPosition)
         .onTrue(this.setState(StructureState.HANDOFF));
 
     stateTriggers
         .get(StructureState.HANDOFF)
         .onTrue(intakeRollers.handoffCoral())
         .onTrue(endEffector.intakeCoral())
+        .and(endEffector.motorStalled)
         .onTrue(this.setState(StructureState.PREHOME));
     ;
   }
