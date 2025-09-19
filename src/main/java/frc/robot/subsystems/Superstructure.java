@@ -112,7 +112,7 @@ public class Superstructure {
         .get(StructureState.L4)
         .onTrue(elevator.toReefLevel(3))
         .and(elevator.reachedPosition)
-        .debounce(.03)
+        .debounce(.025)
         .onTrue(arm.toReefLevel(2, rightManipulatorSide));
 
     // Scoring coral, depending on previous state it changes endEffector velocity
@@ -125,21 +125,21 @@ public class Superstructure {
         .and(prevStateTriggers.get(StructureState.L2))
         .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
         .and(arm.reachedPosition)
-        .debounce(.02)
+        .debounce(.025)
         .onTrue(endEffector.setCoralOuttakeVoltage());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L3))
         .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
         .and(arm.reachedPosition)
-        .debounce(.02)
+        .debounce(.025)
         .onTrue(endEffector.setCoralOuttakeVoltage());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
         .onTrue(arm.toScoringPosition(2, rightManipulatorSide))
         .and(arm.reachedPosition)
-        .debounce(.02)
+        .debounce(.025)
         .onTrue(endEffector.setCoralOuttakeVoltage());
 
     // Dealgae Levels
@@ -168,7 +168,7 @@ public class Superstructure {
         .get(StructureState.PROCESSOR)
         .onTrue(elevator.toProcessorPosition())
         .and(elevator.reachedPosition)
-        .debounce(.04) // wait 2 loop times
+        .debounce(.025) // wait 2 loop times
         .onTrue(arm.toProcessorLevel());
 
     // Outtake
@@ -183,7 +183,7 @@ public class Superstructure {
         .and(prevStateTriggers.get(StructureState.SCORE_CORAL))
         .onTrue(arm.toHome())
         .and(arm.reachedPosition)
-        .debounce(0.25)
+        .debounce(0.025)
         .onTrue(this.setState(StructureState.HOME));
 
     // Since everything else is non-source and arm doesn't need to be towards the bellypan, you can
