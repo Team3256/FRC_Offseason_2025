@@ -63,6 +63,26 @@ public class AutoRoutines {
         return routine;
     }
 
+    public AutoRoutine l4PreloadI() {
+        final AutoRoutine routine = m_factory.newRoutine("l4PreloadI");
+        final AutoTrajectory preloadI = routine.trajectory("Left-I");
+
+        routine.active().onTrue(preloadI.resetOdometry().andThen(Commands.waitSeconds(5)).andThen(preloadI.cmd()));
+        preloadI.atTimeBeforeEnd(0.5).onTrue(m_autoCommands.goToL4());
+        preloadI.done().onTrue(
+            Commands.waitUntil(m_arm.reachedPosition.and(m_elevator.reachedPosition).debounce(0.1))
+            .andThen(m_autoCommands.scoreL4().asProxy())
+            .withTimeout(1.0)
+            .deadlineFor(
+            m_drivetrain.pidToPose(
+                () -> preloadI.getFinalPose().orElse(CoralTargets.BLUE_I.location))
+            )
+            .andThen(m_autoCommands.home().asProxy()));
+            
+
+        return routine;
+    }
+
     private static class AutoCommands {
 
         private final Elevator m_elevator;
@@ -76,6 +96,20 @@ public class AutoRoutines {
             m_endEffector = endEffector;
         }
 
+        public Command goToL4() {
+            return m_elevator.toReefLevel(3)
+            .alongWith(Commands.waitUntil(new Trigger(() -> m_elevator.getPosition() > 4))
+            .withTimeout(0.5)
+            .andThen(m_arm.toReefLevel(2, () -> true)));
+        }
+
+        public Command scoreL4() {
+            return m_endEffector.setCoralOuttakeVoltage();
+        }
+
+        public Command home() {
+            return m_elevator.toHome().alongWith(m_endEffector.off()).alongWith(m_arm.toHome());
+        }
 
     }
 }
