@@ -41,13 +41,13 @@ public class ElevatorIOTalonFX implements ElevatorIO {
         motorPosition,
         motorStatorCurrent,
         motorSupplyCurrent);
+    PhoenixUtil.registerSignals(
+        false, motorVoltage, motorPosition, motorStatorCurrent, motorSupplyCurrent);
     motor.optimizeBusUtilization(4, 0.100);
   }
 
   @Override
   public void updateInputs(ElevatorIOInputs inputs) {
-    BaseStatusSignal.refreshAll(
-        motorVoltage, motorPosition, motorStatorCurrent, motorSupplyCurrent);
     inputs.motorVoltage = motorVoltage.getValueAsDouble();
     inputs.motorPosition = motorPosition.getValueAsDouble();
     inputs.motorStatorCurrent = motorStatorCurrent.getValueAsDouble();

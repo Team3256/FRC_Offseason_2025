@@ -7,15 +7,12 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Rotations;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.elevator.ElevatorConstants;
 import frc.robot.subsystems.endeffector.EndEffector;
 import frc.robot.utils.LoggedTracer;
 import java.util.HashMap;
@@ -35,11 +32,9 @@ public class Superstructure {
     L3,
     L4,
     PREHOME,
-    PRESOURCE,
     PROCESSOR,
     SCORE_ALGAE,
     SCORE_CORAL,
-    SOURCE
   }
 
   public enum ManipulatorSide {
@@ -83,7 +78,7 @@ public class Superstructure {
   }
 
   public void configStateTransitions() {
-    stateTriggers.get(StructureState.IDLE).onTrue(endEffector.coralOff());
+    stateTriggers.get(StructureState.IDLE).onTrue(endEffector.off());
     // Move elevator and reef to L1, no safety limits since arm is still safe
     stateTriggers
         .get(StructureState.L1)
@@ -110,15 +105,28 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L1))
-        .onTrue(endEffector.setL1Velocity());
+        .onTrue(endEffector.setCoralOuttakeVoltage());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
-        .and(prevStateTriggers.get(StructureState.L2).or(prevStateTriggers.get(StructureState.L3)))
-        .onTrue(endEffector.setL2L3Velocity());
+        .and(prevStateTriggers.get(StructureState.L2))
+        .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
+        .and(arm.reachedPosition)
+        .debounce(.02)
+        .onTrue(endEffector.setCoralOuttakeVoltage());
+    stateTriggers
+        .get(StructureState.SCORE_CORAL)
+        .and(prevStateTriggers.get(StructureState.L3))
+        .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
+        .and(arm.reachedPosition)
+        .debounce(.02)
+        .onTrue(endEffector.setCoralOuttakeVoltage());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
-        .onTrue(endEffector.setL4Voltage());
+        .onTrue(arm.toScoringPosition(2, rightManipulatorSide))
+        .and(arm.reachedPosition)
+        .debounce(.02)
+        .onTrue(endEffector.setCoralOuttakeVoltage());
 
     // Dealgae Levels
     stateTriggers
@@ -133,22 +141,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .or(stateTriggers.get(StructureState.DEALGAE_L3))
-        .onTrue(endEffector.setAlgaeIntakeVelocity());
-
-    // Arm needs to wrap 180, so elevator has to be safe before we fully move
-    stateTriggers
-        .get(StructureState.PRESOURCE)
-        .onTrue(arm.toSourceLevel())
-        .and(arm.isSafePosition)
-        .onTrue(this.setState(StructureState.SOURCE));
-    // We can move towards the direction up to a safe position if the elevator is not safe yet
-    // Once the elevator reaches source position, we start move the arm around
-    stateTriggers
-        .get(StructureState.SOURCE)
-        .onTrue(elevator.setPosition(ElevatorConstants.sourcePosition.in(Rotations)))
-        .onTrue(endEffector.setSourceVelocity())
-        .and(endEffector.coralBeamBreak)
-        .onTrue(this.setState(StructureState.PREHOME));
+        .onTrue(endEffector.setAlgaeIntakeVoltage());
 
     // Barge level
     stateTriggers
@@ -165,18 +158,12 @@ public class Superstructure {
         .onTrue(arm.toProcessorLevel());
 
     // Outtake
-    stateTriggers.get(StructureState.SCORE_ALGAE).onTrue(endEffector.setAlgaeOuttakeVoltage());
+    // stateTriggers.get(StructureState.SCORE_ALGAE).onTrue(endEffector.setAlgaeOuttakeVoltage());
 
     // Turn coral motor off (helpful for transitioning from SCORE_CORAL), do not turn algae motor
     // off since you might be holding one
-    stateTriggers.get(StructureState.PREHOME).onTrue(endEffector.coralOff());
+    stateTriggers.get(StructureState.PREHOME).onTrue(endEffector.off());
 
-    // Different version of prehome specifically for transitioning from SOURCE, because the arm
-    // needs to move a specific direction
-    stateTriggers
-        .get(StructureState.PREHOME)
-        .and(prevStateTriggers.get(StructureState.SCORE_ALGAE))
-        .onTrue(endEffector.algaeOff());
     stateTriggers
         .get(StructureState.PREHOME)
         .and(prevStateTriggers.get(StructureState.SCORE_CORAL))
@@ -212,16 +199,11 @@ public class Superstructure {
         .get(StructureState.CANCEL_ALL)
         .onTrue(elevator.off())
         .onTrue(arm.off())
-        .onTrue(endEffector.algaeOff())
-        .onTrue(endEffector.coralOff());
+        .onTrue(endEffector.off());
   }
 
-  public Trigger coralBeamBreak() {
-    return endEffector.coralBeamBreak;
-  }
-
-  public Trigger algaeBeamBreak() {
-    return endEffector.algaeBeamBreak;
+  public Trigger eeHasGamePiece() {
+    return endEffector.motorStalled;
   }
 
   // call manually

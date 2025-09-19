@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Constants;
 import frc.robot.subsystems.arm.ArmConstants;
 import frc.robot.subsystems.elevator.ElevatorConstants;
+import frc.robot.subsystems.intakepivot.IntakePivotConstants;
 
 public final class SimMechs {
 
@@ -33,6 +34,11 @@ public final class SimMechs {
           "Elevator",
           Constants.SimulationConstants.kDrivebaseWidth.in(Meters) / 2,
           ElevatorConstants.SimulationConstants.kStartingHeight.in(Meters));
+  private final MechanismRoot2d groundIntakeRoot =
+      mech.getRoot(
+          "Ground Intake",
+          Constants.SimulationConstants.kDrivebaseWidth.in(Meters) / 2 + .5,
+          Inches.of(2).in(Meters));
 
   private final MechanismLigament2d elevatorViz =
       elevatorRoot.append(
@@ -51,14 +57,25 @@ public final class SimMechs {
               7,
               new Color8Bit(Color.kGreen)));
 
-  private final MechanismLigament2d algaeEndEffectorViz =
-      armViz.append(
+  private final MechanismLigament2d intakePivotViz =
+      elevatorRoot.append(
           new MechanismLigament2d(
-              "Algae End Effector Flywheel", .1, 90, 2.5, new Color8Bit(Color.kRed)));
-  private final MechanismLigament2d coralEndEffectorViz =
+              "Intake Pivot",
+              IntakePivotConstants.PivotSim.intakePivotLength.in(Meters)
+                  / 4, // not sure what to divide by
+              0.0,
+              7,
+              new Color8Bit(Color.kBlue)));
+
+  private final MechanismLigament2d endEffectorViz =
       armViz.append(
           new MechanismLigament2d(
               "Coral End Effector Flywheel", .1, 0.0, 2.5, new Color8Bit(Color.kYellow)));
+
+  private final MechanismLigament2d groundIntakeRollerViz =
+      intakePivotViz.append(
+          new MechanismLigament2d(
+              "Roller for Ground Intake", .05, 90, 2.5, new Color8Bit(Color.kRed)));
 
   private static SimMechs instance = null;
 
@@ -79,12 +96,19 @@ public final class SimMechs {
     elevatorViz.setLength(height.in(Meters) / 4);
   }
 
+  public void updatePivot(Angle angle) {
+    intakePivotViz.setAngle(angle.in(Degrees));
+  }
+
   public void publishToNT() {
     SmartDashboard.putData("RobotSim", mech);
   }
 
-  public void updateEndEffector(Angle algae, Angle coral) {
-    algaeEndEffectorViz.setAngle(algaeEndEffectorViz.getAngle() + algae.in(Degrees));
-    coralEndEffectorViz.setAngle(coralEndEffectorViz.getAngle() + coral.in(Degrees));
+  public void updateEndEffector(Angle eeWheel) {
+    endEffectorViz.setAngle(endEffectorViz.getAngle() + eeWheel.in(Degrees));
+  }
+
+  public void updateRollers(Angle coral) {
+    groundIntakeRollerViz.setAngle(groundIntakeRollerViz.getAngle() + coral.in(Degrees));
   }
 }
