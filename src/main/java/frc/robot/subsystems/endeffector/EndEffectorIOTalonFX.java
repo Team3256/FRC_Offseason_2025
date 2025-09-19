@@ -7,12 +7,9 @@
 
 package frc.robot.subsystems.endeffector;
 
-import static edu.wpi.first.units.Units.Volts;
-
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.*;
-import com.ctre.phoenix6.hardware.CANdi;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -32,13 +29,11 @@ public class EndEffectorIOTalonFX implements EndEffectorIO {
   private final StatusSignal<Current> coralMotorStatorCurrent = coralMotor.getStatorCurrent();
   private final StatusSignal<Current> coralMotorSupplyCurrent = coralMotor.getSupplyCurrent();
 
-
   public EndEffectorIOTalonFX() {
     PhoenixUtil.applyMotorConfigs(
         coralMotor,
         EndEffectorConstants.coralMotorConfigs,
         EndEffectorConstants.flashConfigRetries);
-
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         EndEffectorConstants.updateFrequency,
@@ -69,12 +64,9 @@ public class EndEffectorIOTalonFX implements EndEffectorIO {
     coralMotor.setVoltage(voltage);
   }
 
-
-
   @Override
   public void setEEVelocity(double velocity) {
-    coralMotor.setControl(
-        coralVelocityRequest.withVelocity(velocity));
+    coralMotor.setControl(coralVelocityRequest.withVelocity(velocity));
   }
 
   @Override
@@ -86,5 +78,4 @@ public class EndEffectorIOTalonFX implements EndEffectorIO {
   public TalonFX getEEMotor() {
     return coralMotor;
   }
-
 }

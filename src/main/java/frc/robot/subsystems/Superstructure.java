@@ -143,7 +143,6 @@ public class Superstructure {
         .or(stateTriggers.get(StructureState.DEALGAE_L3))
         .onTrue(endEffector.setAlgaeIntakeVoltage());
 
-
     // Barge level
     stateTriggers
         .get(StructureState.BARGE)
@@ -206,7 +205,6 @@ public class Superstructure {
   public Trigger eeHasGamePiece() {
     return endEffector.motorStalled;
   }
-
 
   // call manually
   public void periodic() {

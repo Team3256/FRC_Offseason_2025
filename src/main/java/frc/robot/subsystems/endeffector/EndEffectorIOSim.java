@@ -20,7 +20,7 @@ import frc.robot.sim.SimMechs;
 import org.littletonrobotics.junction.LoggedRobot;
 
 public class EndEffectorIOSim extends EndEffectorIOTalonFX {
-  
+
   private final FlywheelSim eeSimModel =
       new FlywheelSim(
           LinearSystemId.createFlywheelSystem(
@@ -29,7 +29,6 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
               EndEffectorConstants.SimulationConstants.eeMomentOfInertia),
           EndEffectorConstants.kUseFOC ? DCMotor.getKrakenX60Foc(1) : DCMotor.getKrakenX60(1));
   private final TalonFXSimState eeMotorSim;
-
 
   public EndEffectorIOSim() {
     super();
@@ -53,7 +52,7 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
     // Update battery voltage (after the effects of physics models)
     RoboRioSim.setVInVoltage(
         BatterySim.calculateDefaultBatteryLoadedVoltage(
-          eeSimModel.getCurrentDrawAmps(), eeSimModel.getCurrentDrawAmps()));
+            eeSimModel.getCurrentDrawAmps(), eeSimModel.getCurrentDrawAmps()));
     super.updateInputs(inputs);
 
     SimMechs.getInstance()
