@@ -231,7 +231,7 @@ public class Superstructure {
         .get(StructureState.GROUND_INTAKE)
         .and(endEffector.motorStalled.negate())
         .onTrue(this.setState(StructureState.PRE_HANDOFF));
-        
+
     stateTriggers
         .get(StructureState.PRE_HANDOFF)
         .onTrue(intakePivot.goToHandoff())
