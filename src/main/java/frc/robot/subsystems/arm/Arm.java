@@ -9,6 +9,7 @@ package frc.robot.subsystems.arm;
 
 import static edu.wpi.first.units.Units.Rotations;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.MutAngle;
 import edu.wpi.first.units.measure.Voltage;
@@ -28,6 +29,7 @@ public class Arm extends DisableSubsystem {
 
   private final ArmIO armIO;
   private final ArmIOInputsAutoLogged armIOAutoLogged = new ArmIOInputsAutoLogged();
+  private final DoubleSupplier coralDistanceSupplier;
 
   public final Trigger reachedPosition = new Trigger(this::isAtPosition);
   public final Trigger isSafePosition = new Trigger(this::isSafePosition);
@@ -36,10 +38,19 @@ public class Arm extends DisableSubsystem {
   private int cachedDirection = 0;
   private final MutAngle requestedPosition = Rotations.of(0.0).mutableCopy();
 
+
   public Arm(boolean enabled, ArmIO armIO) {
     super(enabled);
 
     this.armIO = armIO;
+    this.coralDistanceSupplier = () -> 0.0;
+  }
+
+  public Arm(boolean enabled, ArmIO armIO, DoubleSupplier coralDistanceSupplier) {
+    super(enabled);
+
+    this.armIO = armIO;
+    this.coralDistanceSupplier = coralDistanceSupplier;
   }
 
   @Override
@@ -163,6 +174,22 @@ public class Arm extends DisableSubsystem {
 
   public Command off() {
     return this.runOnce(armIO::off).withName("off");
+  }
+
+  public Command setPositionToHandoff() {
+    return this.setPosition(
+            () ->
+                Rotations.of(
+                    MathUtil.interpolate(
+                        ArmConstants.armAngleCoralLeft.in(Rotations),
+                        ArmConstants.armAngleCoralRight.in(Rotations),
+                        MathUtil.inverseInterpolate(
+                            ArmConstants.coralDistanceLeft,
+                            ArmConstants.coralDistanceRight,
+                            coralDistanceSupplier.getAsDouble()))),
+            true,
+            () -> 0)
+        .withName("setPositionToHandoff");
   }
 
   public Angle continuousWrapAtHome(Angle angle, int direction) {
