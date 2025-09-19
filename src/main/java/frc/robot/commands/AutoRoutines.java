@@ -70,7 +70,7 @@ public class AutoRoutines {
     routine
         .active()
         .onTrue(preloadH.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadH.cmd()));
-        preloadH.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
+    preloadH.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
     preloadH
         .done()
         .onTrue(
@@ -90,7 +90,7 @@ public class AutoRoutines {
     routine
         .active()
         .onTrue(preloadG.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadG.cmd()));
-        preloadG.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
+    preloadG.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
     preloadG
         .done()
         .onTrue(
@@ -103,5 +103,4 @@ public class AutoRoutines {
                 .andThen(m_superstructure.setState(StructureState.PREHOME)));
     return routine;
   }
-
 }
