@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.utils.DisableSubsystem;
 import frc.robot.utils.LoggedTracer;
+import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 public class GroundIntakeRollers extends DisableSubsystem {
@@ -60,5 +61,9 @@ public class GroundIntakeRollers extends DisableSubsystem {
     return setVoltage(GroundIntakeRollersConstants.kIntakeRollerMotorVoltage)
         .until(motorStalled)
         .finallyDo(groundIntakeRollersIO::off);
+  }
+
+  public DoubleSupplier getDetectedCanRangeDistance() {
+    return () -> intakeIOAutoLogged.canRangeDistance;
   }
 }

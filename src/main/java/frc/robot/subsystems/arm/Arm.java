@@ -38,13 +38,6 @@ public class Arm extends DisableSubsystem {
   private int cachedDirection = 0;
   private final MutAngle requestedPosition = Rotations.of(0.0).mutableCopy();
 
-  public Arm(boolean enabled, ArmIO armIO) {
-    super(enabled);
-
-    this.armIO = armIO;
-    this.coralDistanceSupplier = () -> 0.0;
-  }
-
   public Arm(boolean enabled, ArmIO armIO, DoubleSupplier coralDistanceSupplier) {
     super(enabled);
 
