@@ -32,11 +32,9 @@ public interface EndEffectorIO {
     return new TalonFX(0);
   }
 
-
   public default CANrange getCanRange() {
     return new CANrange(0);
   }
-
 
   public default void eeOff() {}
 }

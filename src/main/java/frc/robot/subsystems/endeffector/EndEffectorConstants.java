@@ -11,6 +11,8 @@ import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.*;
 
 public final class EndEffectorConstants {
+
+  public static final double coralIntakeIn = 0.2;
   public static final boolean kUseFOC = true;
 
   // Constants used in CANrange construction
@@ -18,7 +20,6 @@ public final class EndEffectorConstants {
 
   // Configure the CANrange for basic use
   public static final CANrangeConfiguration canRangeConfigs = new CANrangeConfiguration();
-
 
   public static final int coralMotorID = 43;
 

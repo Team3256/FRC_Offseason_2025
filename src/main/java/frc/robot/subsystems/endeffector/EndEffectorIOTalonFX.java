@@ -16,7 +16,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
-import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersConstants;
 import frc.robot.utils.PhoenixUtil;
 
 public class EndEffectorIOTalonFX implements EndEffectorIO {
@@ -33,7 +32,6 @@ public class EndEffectorIOTalonFX implements EndEffectorIO {
   private final StatusSignal<Current> coralMotorStatorCurrent = coralMotor.getStatorCurrent();
   private final StatusSignal<Current> coralMotorSupplyCurrent = coralMotor.getSupplyCurrent();
   private final StatusSignal<Distance> canRangeDistance = canRange.getDistance();
-
 
   public EndEffectorIOTalonFX() {
     PhoenixUtil.applyMotorConfigs(
@@ -67,8 +65,6 @@ public class EndEffectorIOTalonFX implements EndEffectorIO {
     inputs.eeMotorSupplyCurrent = coralMotorSupplyCurrent.getValueAsDouble();
     inputs.canRangeDistance = canRangeDistance.getValueAsDouble();
   }
-  }
-
 
   @Override
   public void setEEVoltage(double voltage) {

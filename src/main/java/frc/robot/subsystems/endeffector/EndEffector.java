@@ -74,6 +74,11 @@ public class EndEffector extends DisableSubsystem {
 
   public Command intakeCoral() {
     return setEEVoltage(() -> EndEffectorConstants.coralIntakeVoltage)
-        .withName("setCoralIntakeVoltage");
+        .withName("setCoralIntakeVoltage")
+        .until(
+            new Trigger(
+                (() ->
+                    endEffectorIOInputsAutoLogged.canRangeDistance
+                        < EndEffectorConstants.coralIntakeIn)));
   }
 }
