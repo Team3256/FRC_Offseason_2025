@@ -10,11 +10,10 @@ package frc.robot.commands;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.Superstructure.StructureState;
+import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import frc.robot.utils.autoaim.CoralTargets;
 
 public class AutoRoutines {
@@ -23,9 +22,7 @@ public class AutoRoutines {
   private final Superstructure m_superstructure;
 
   public AutoRoutines(
-      AutoFactory factory,
-      CommandSwerveDrivetrain drivetrain,
-      Superstructure superstructure) {
+      AutoFactory factory, CommandSwerveDrivetrain drivetrain, Superstructure superstructure) {
     m_factory = factory;
     m_drivetrain = drivetrain;
     m_superstructure = superstructure;
@@ -51,12 +48,13 @@ public class AutoRoutines {
 
     routine
         .active()
-        .onTrue(preloadI.resetOdometry().andThen(Commands.waitSeconds(5)).andThen(preloadI.cmd()));
+        .onTrue(preloadI.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadI.cmd()));
     preloadI.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
     preloadI
         .done()
         .onTrue(
-            m_superstructure.setState(StructureState.SCORE_CORAL)
+            m_superstructure
+                .setState(StructureState.SCORE_CORAL)
                 .withTimeout(1.0)
                 .deadlineFor(
                     m_drivetrain.pidToPose(

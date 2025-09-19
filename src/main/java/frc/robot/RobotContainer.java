@@ -126,9 +126,7 @@ public class RobotContainer {
     configureOperatorBinds();
     m_autoRoutines =
         new AutoRoutines(
-            drivetrain.createAutoFactory(drivetrain::trajLogger),
-            drivetrain,
-            superstructure);
+            drivetrain.createAutoFactory(drivetrain::trajLogger), drivetrain, superstructure);
     configureChoreoAutoChooser();
     CommandScheduler.getInstance().registerSubsystem(drivetrain);
     configureSwerve();
