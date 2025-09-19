@@ -114,6 +114,7 @@ public final class ElevatorConstants {
   public static final Angle homePosition = Rotations.of(.2);
   public static final Angle processorPosition = Rotations.of(2.1); // not real for now
   public static final Angle groundAlgaePosition = Rotations.of(2.4);
+  public static final Angle handoffPosition = Rotations.of(.5);
 
   public static class SimulationConstants {
     public static final Mass kCarriageMass = Pounds.of(2.5).plus(ArmConstants.Sim.armMass);

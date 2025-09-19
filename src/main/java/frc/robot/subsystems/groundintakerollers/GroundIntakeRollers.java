@@ -61,4 +61,9 @@ public class GroundIntakeRollers extends DisableSubsystem {
         .until(motorStalled)
         .finallyDo(groundIntakeRollersIO::off);
   }
+
+  public Command handoffCoral() {
+    return setVoltage(GroundIntakeRollersConstants.kIntakeRollerMotorHandoffVoltage)
+        .finallyDo(groundIntakeRollersIO::off);
+  }
 }
