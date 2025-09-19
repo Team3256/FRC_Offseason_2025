@@ -12,7 +12,7 @@ import com.ctre.phoenix6.signals.*;
 
 public final class EndEffectorConstants {
 
-  public static final double coralIntakeIn = 0.2;
+  public static final double coralIntakeInDistance = 0.2;
   public static final boolean kUseFOC = true;
 
   // Constants used in CANrange construction
