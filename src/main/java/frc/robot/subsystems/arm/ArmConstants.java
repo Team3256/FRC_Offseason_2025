@@ -114,6 +114,11 @@ public final class ArmConstants {
     Rotations.of(0.18), Rotations.of(0.18), Rotations.of(0.157)
   };
 
+  public static final Angle armAngleCoralLeft = Rotations.of(0.18);
+  public static final Angle armAngleCoralRight = Rotations.of(0.32);
+  public static final double coralDistanceLeft = 2; //inches
+  public static final double coralDistanceRight = 2; //inches
+
   public static final class Sim {
     public static final double simGearing = 142.22;
 
