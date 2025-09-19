@@ -183,7 +183,7 @@ public class Superstructure {
         .and(prevStateTriggers.get(StructureState.SCORE_CORAL))
         .onTrue(arm.toHome())
         .and(arm.reachedPosition)
-        .debounce(.025)
+        .debounce(0.25)
         .onTrue(this.setState(StructureState.HOME));
 
     // Since everything else is non-source and arm doesn't need to be towards the bellypan, you can
@@ -221,15 +221,23 @@ public class Superstructure {
         .onTrue(intakePivot.goToGroundIntake())
         .onTrue(intakeRollers.intakeCoral())
         .and(intakeRollers.motorStalled);
- 
 
+    stateTriggers
+        .get(StructureState.GROUND_INTAKE)
+        .and(endEffector.motorStalled)
+        .onTrue(this.setState(StructureState.PREHOME));
 
+    stateTriggers
+        .get(StructureState.GROUND_INTAKE)
+        .and(endEffector.motorStalled.negate())
+        .onTrue(this.setState(StructureState.PRE_HANDOFF));
+        
     stateTriggers
         .get(StructureState.PRE_HANDOFF)
         .onTrue(intakePivot.goToHandoff())
         .onTrue(elevator.toHandoffPosition())
         .and(elevator.reachedPosition)
-        .debounce(0.25)
+        .debounce(0.025)
         .onTrue(arm.toHandoffLevel())
         .onTrue(this.setState(StructureState.HANDOFF));
 
