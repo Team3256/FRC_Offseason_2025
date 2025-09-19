@@ -63,4 +63,45 @@ public class AutoRoutines {
 
     return routine;
   }
+
+  public AutoRoutine l4PreloadH() {
+    final AutoRoutine routine = m_factory.newRoutine("l4PreloadH");
+    final AutoTrajectory preloadH = routine.trajectory("MID-H");
+    routine
+        .active()
+        .onTrue(preloadH.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadH.cmd()));
+        preloadH.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
+    preloadH
+        .done()
+        .onTrue(
+            m_superstructure
+                .setState(StructureState.SCORE_CORAL)
+                .withTimeout(1.0)
+                .deadlineFor(
+                    m_drivetrain.pidToPose(
+                        () -> preloadH.getFinalPose().orElse(CoralTargets.BLUE_H.location)))
+                .andThen(m_superstructure.setState(StructureState.PREHOME)));
+    return routine;
+  }
+
+  public AutoRoutine l4PreloadG() {
+    final AutoRoutine routine = m_factory.newRoutine("l4PreloadG");
+    final AutoTrajectory preloadG = routine.trajectory("MID-G");
+    routine
+        .active()
+        .onTrue(preloadG.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadG.cmd()));
+        preloadG.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
+    preloadG
+        .done()
+        .onTrue(
+            m_superstructure
+                .setState(StructureState.SCORE_CORAL)
+                .withTimeout(1.0)
+                .deadlineFor(
+                    m_drivetrain.pidToPose(
+                        () -> preloadG.getFinalPose().orElse(CoralTargets.BLUE_G.location)))
+                .andThen(m_superstructure.setState(StructureState.PREHOME)));
+    return routine;
+  }
+
 }
