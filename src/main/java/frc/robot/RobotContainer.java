@@ -13,7 +13,6 @@ import static frc.robot.subsystems.swerve.SwerveConstants.*;
 import choreo.auto.AutoChooser;
 import choreo.util.ChoreoAllianceFlipUtil;
 import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -41,6 +40,9 @@ import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.endeffector.EndEffector;
 import frc.robot.subsystems.endeffector.EndEffectorIOSim;
 import frc.robot.subsystems.endeffector.EndEffectorIOTalonFX;
+import frc.robot.subsystems.groundintakerollers.GroundIntakeRollers;
+import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOSim;
+import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOTalonFX;
 import frc.robot.subsystems.led.IndicatorAnimation;
 import frc.robot.subsystems.led.LED;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
@@ -49,14 +51,9 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
-import frc.robot.subsystems.groundintakerollers.GroundIntakeRollers;
-import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIO;
-import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOSim;
-import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOTalonFX;
 import frc.robot.utils.MappedXboxController;
 import frc.robot.utils.autoaim.AutoAim;
 import java.util.List;
-import java.util.function.DoubleSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -81,10 +78,18 @@ public class RobotContainer {
   private final Elevator elevator =
       new Elevator(true, Utils.isSimulation() ? new ElevatorIOSim() : new ElevatorIOTalonFX());
 
+  private final GroundIntakeRollers groundIntakeRollers =
+      new GroundIntakeRollers(
+          true,
+          Utils.isSimulation()
+              ? new GroundIntakeRollersIOSim()
+              : new GroundIntakeRollersIOTalonFX());
 
-  private final GroundIntakeRollers groundIntakeRollers = new GroundIntakeRollers(true, Utils.isSimulation() ? new GroundIntakeRollersIOSim() : new GroundIntakeRollersIOTalonFX());
-  
-  private final Arm arm = new Arm(true, Utils.isSimulation() ? new ArmIOSim() : new ArmIOTalonFX(), groundIntakeRollers.getDetectedCanRangeDistance());
+  private final Arm arm =
+      new Arm(
+          true,
+          Utils.isSimulation() ? new ArmIOSim() : new ArmIOTalonFX(),
+          groundIntakeRollers.getDetectedCanRangeDistance());
   private final EndEffector endEffector =
       new EndEffector(
           true, Utils.isSimulation() ? new EndEffectorIOSim() : new EndEffectorIOTalonFX());
