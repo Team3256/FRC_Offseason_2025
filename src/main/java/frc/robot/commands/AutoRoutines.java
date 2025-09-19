@@ -44,7 +44,7 @@ public class AutoRoutines {
 
   public AutoRoutine l4PreloadI() {
     final AutoRoutine routine = m_factory.newRoutine("l4PreloadI");
-    final AutoTrajectory preloadI = routine.trajectory("Left-I");
+    final AutoTrajectory preloadI = routine.trajectory("LEFT-I");
 
     routine
         .active()
@@ -100,6 +100,26 @@ public class AutoRoutines {
                 .deadlineFor(
                     m_drivetrain.pidToPose(
                         () -> preloadG.getFinalPose().orElse(CoralTargets.BLUE_G.location)))
+                .andThen(m_superstructure.setState(StructureState.PREHOME)));
+    return routine;
+  }
+
+  public AutoRoutine l4PreloadF() {
+    final AutoRoutine routine = m_factory.newRoutine("l4PreloadF");
+    final AutoTrajectory preloadF = routine.trajectory("RIGHT-F");
+    routine
+        .active()
+        .onTrue(preloadF.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadF.cmd()));
+    preloadF.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
+    preloadF
+        .done()
+        .onTrue(
+            m_superstructure
+                .setState(StructureState.SCORE_CORAL)
+                .withTimeout(1.0)
+                .deadlineFor(
+                    m_drivetrain.pidToPose(
+                        () -> preloadF.getFinalPose().orElse(CoralTargets.BLUE_F.location)))
                 .andThen(m_superstructure.setState(StructureState.PREHOME)));
     return routine;
   }
