@@ -201,7 +201,6 @@ public class RobotContainer {
   }
 
   private void configureOperatorBinds() {
-      
 
     // stow everything
     m_operatorController
