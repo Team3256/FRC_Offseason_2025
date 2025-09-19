@@ -37,6 +37,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.drivers.QuestNav;
 import frc.robot.subsystems.swerve.generated.TunerConstants;
 import frc.robot.subsystems.swerve.generated.TunerConstants.TunerSwerveDrivetrain;
 import java.util.function.DoubleSupplier;
@@ -92,6 +93,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
       new SwerveRequest.SysIdSwerveSteerGains();
   private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization =
       new SwerveRequest.SysIdSwerveRotation();
+
+  @AutoLogOutput private boolean questNavZeroed = false;
 
   /*
    * SysId routine for characterizing translation. This is used to find PID gains
@@ -153,6 +156,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   /* The SysId routine to test */
   private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
+  public final QuestNav questNav =
+      new QuestNav(
+          new Transform3d(
+              new Translation3d(-0.277, -0.251, 0), new Rotation3d(Rotation2d.fromDegrees(217.5))));
+
   private Translation2d _calculatedOffsetToRobotCenter = new Translation2d();
   private int _calculatedOffsetToRobotCenterCount = 0;
 
@@ -162,6 +170,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
           SwerveConstants.frontRight,
           SwerveConstants.backLeft,
           SwerveConstants.backRight);
+  /* WPILib Alerts start */
+
+  private final Alert a_questNavNotConnected =
+      new Alert("QuestNav failure (no data within 250ms)", AlertType.kError);
 
   /* WPILib Alerts end */
   /**
@@ -179,6 +191,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     if (Utils.isSimulation()) {
       startSimThread();
     }
+    questNav.resetPose(
+        new Pose3d(
+            0.4273998737335205, 6.396022319793701, 0, new Rotation3d(Rotation2d.fromDegrees(0))));
   }
 
   /**
@@ -410,13 +425,44 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
               });
     }
+
+    if (!Utils.isSimulation() && questNav.connected()) {
+      Logger.recordOutput("QuestNav/pose", questNav.getRobotPose());
+      Logger.recordOutput("QuestNav/x", questNav.calculateOffsetToRobotCenter().getX());
+      Logger.recordOutput("QuestNav/y", questNav.calculateOffsetToRobotCenter().getY());
+      // if (!DriverStation.isDisabled()) {
+      // super.addVisionMeasurement(
+      // questNav.getRobotPose().toPose2d(),
+      // Utils.getCurrentTimeSeconds(),
+      // VecBuilder.fill(0.0001, 0.0001, .99999));
+      // }
+
+    } else {
+      a_questNavNotConnected.set(true);
+    }
+    Logger.recordOutput("QuestNav/connected", questNav.connected());
+
+    // if ((!questNavZeroed || DriverStation.isDisabled())&&questNav.connected()) {
+    // if
+    // (this.getState().Pose.getTranslation().getDistance(Pose2d.kZero.getTranslation())
+    // >1)
+    // {
+    // questNav.softReset(new Pose3d(this.getState().Pose));
+    //// questNavZeroed = true;
+    // }}
+    LoggedTracer.record(this.getClass().getSimpleName());
   }
 
   public void addPhotonEstimate(
       Pose2d visionRobotPoseMeters,
       double timestampSeconds,
       Matrix<N3, N1> visionMeasurementStdDevs) {
+    // if (!questNav.connected()) {
+    // if (DriverStation.isDisabled() || !questNav.connected()) {
     this.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
+    // }
+
+    // }
   }
 
   /**
