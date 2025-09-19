@@ -55,12 +55,18 @@ public class EndEffector extends DisableSubsystem {
 
   public Command setAlgaeIntakeVoltage() {
     return setEEVoltage(() -> EndEffectorConstants.algaeIntakeVoltage)
-        .withName("setAlgaeIntakeVoltage");
+        .withName("setAlgaeIntakeVoltage")
+        .until(
+            new Trigger(
+                (() ->
+                    endEffectorIOInputsAutoLogged.canRangeDistance
+                        < EndEffectorConstants.coralIntakeIn)));
   }
 
   public Command setAlgaeOuttakeVoltage() {
     return setEEVoltage(() -> EndEffectorConstants.algaeOuttakeVoltage)
         .withName("setAlgaeOuttakeVoltage");
+        
   }
 
   public Command setSourceVelocity() {
