@@ -50,16 +50,9 @@ public class AutoRoutines {
         .active()
         .onTrue(preloadI.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadI.cmd()));
     preloadI.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
-    preloadI
-        .done()
-        .onTrue(
-            m_superstructure
-                .setState(StructureState.SCORE_CORAL)
-                .withTimeout(1.0)
-                .deadlineFor(
-                    m_drivetrain.pidToPose(
-                        () -> preloadI.getFinalPose().orElse(CoralTargets.BLUE_I.location)))
-                .andThen(m_superstructure.setState(StructureState.PREHOME)));
+    preloadI.done().onTrue(m_superstructure.setState(StructureState.SCORE_CORAL));
+            m_drivetrain.pidToPose(
+                () -> preloadI.getFinalPose().orElse(CoralTargets.BLUE_I.location));
 
     return routine;
   }
@@ -71,16 +64,9 @@ public class AutoRoutines {
         .active()
         .onTrue(preloadH.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadH.cmd()));
     preloadH.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
-    preloadH
-        .done()
-        .onTrue(
-            m_superstructure
-                .setState(StructureState.SCORE_CORAL)
-                .withTimeout(1.0)
-                .deadlineFor(
-                    m_drivetrain.pidToPose(
-                        () -> preloadH.getFinalPose().orElse(CoralTargets.BLUE_H.location)))
-                .andThen(m_superstructure.setState(StructureState.PREHOME)));
+    preloadH.done().onTrue(m_superstructure.setState(StructureState.SCORE_CORAL));
+            m_drivetrain.pidToPose(
+                () -> preloadH.getFinalPose().orElse(CoralTargets.BLUE_H.location));
     return routine;
   }
 
@@ -91,16 +77,9 @@ public class AutoRoutines {
         .active()
         .onTrue(preloadG.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadG.cmd()));
     preloadG.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
-    preloadG
-        .done()
-        .onTrue(
-            m_superstructure
-                .setState(StructureState.SCORE_CORAL)
-                .withTimeout(1.0)
-                .deadlineFor(
-                    m_drivetrain.pidToPose(
-                        () -> preloadG.getFinalPose().orElse(CoralTargets.BLUE_G.location)))
-                .andThen(m_superstructure.setState(StructureState.PREHOME)));
+    preloadG.done().onTrue(m_superstructure.setState(StructureState.SCORE_CORAL));
+            m_drivetrain.pidToPose(
+                () -> preloadG.getFinalPose().orElse(CoralTargets.BLUE_G.location));
     return routine;
   }
 
@@ -111,16 +90,10 @@ public class AutoRoutines {
         .active()
         .onTrue(preloadF.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadF.cmd()));
     preloadF.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
-    preloadF
-        .done()
-        .onTrue(
-            m_superstructure
-                .setState(StructureState.SCORE_CORAL)
-                .withTimeout(1.0)
-                .deadlineFor(
-                    m_drivetrain.pidToPose(
-                        () -> preloadF.getFinalPose().orElse(CoralTargets.BLUE_F.location)))
-                .andThen(m_superstructure.setState(StructureState.PREHOME)));
+    preloadF.done().onTrue(m_superstructure.setState(StructureState.SCORE_CORAL));
+    m_drivetrain.pidToPose(
+        () -> preloadF.getFinalPose().orElse(CoralTargets.BLUE_F.location));
     return routine;
   }
+
 }
