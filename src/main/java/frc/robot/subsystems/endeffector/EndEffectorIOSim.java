@@ -70,7 +70,6 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
     RoboRioSim.setVInVoltage(
         BatterySim.calculateDefaultBatteryLoadedVoltage(
             eeSimModel.getCurrentDrawAmps(), eeSimModel.getCurrentDrawAmps()));
-            eeSimModel.getCurrentDrawAmps(), eeSimModel.getCurrentDrawAmps()));
     super.updateInputs(inputs);
 
     SimMechs.getInstance()
