@@ -17,14 +17,9 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sim.SimMechs;
 import frc.robot.utils.LoggedTunableNumber;
 import org.littletonrobotics.junction.LoggedRobot;
-
-import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 
 public class EndEffectorIOSim extends EndEffectorIOTalonFX {
 
@@ -39,7 +34,8 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
 
   private final CANrangeSimState eeCanRangeSim;
 
-  private final LoggedTunableNumber canRangeDistance = new LoggedTunableNumber("EECanRangeDistance", 0.0);
+  private final LoggedTunableNumber canRangeDistance =
+      new LoggedTunableNumber("EECanRangeDistance", 0.0);
 
   public EndEffectorIOSim() {
     super();
@@ -47,7 +43,8 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
     eeMotorSim = super.getEEMotor().getSimState();
     eeCanRangeSim = super.getCanRange().getSimState();
 
-    LoggedTunableNumber.ifChanged(canRangeDistance.hashCode(), this::updateCanRangeDistance, canRangeDistance);
+    LoggedTunableNumber.ifChanged(
+        canRangeDistance.hashCode(), this::updateCanRangeDistance, canRangeDistance);
   }
 
   public void updateCanRangeDistance(double[] distanceMeters) {

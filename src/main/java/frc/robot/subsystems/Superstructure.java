@@ -127,8 +127,8 @@ public class Superstructure {
         .and(arm.reachedPosition)
         .debounce(.025)
         .onTrue(endEffector.setCoralOuttakeVoltage())
-            .debounce(.1)
-            .onTrue(this.setState(StructureState.PREHOME));
+        .debounce(.1)
+        .onTrue(this.setState(StructureState.PREHOME));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L3))
@@ -136,8 +136,8 @@ public class Superstructure {
         .and(arm.reachedPosition)
         .debounce(.025)
         .onTrue(endEffector.setCoralOuttakeVoltage())
-            .debounce(.1)
-            .onTrue(this.setState(StructureState.PREHOME));
+        .debounce(.1)
+        .onTrue(this.setState(StructureState.PREHOME));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
@@ -145,8 +145,8 @@ public class Superstructure {
         .and(arm.reachedPosition)
         .debounce(.025)
         .onTrue(endEffector.setCoralOuttakeVoltage())
-            .debounce(.1)
-    .onTrue(this.setState(StructureState.PREHOME));
+        .debounce(.1)
+        .onTrue(this.setState(StructureState.PREHOME));
 
     // Dealgae Levels
     stateTriggers
@@ -235,7 +235,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.GROUND_INTAKE)
         .and(endEffector.gamePieceIntaken.negate())
-            .and(intakeRollers.coralIntakeIn)
+        .and(intakeRollers.coralIntakeIn)
         .onTrue(this.setState(StructureState.PRE_HANDOFF));
 
     stateTriggers

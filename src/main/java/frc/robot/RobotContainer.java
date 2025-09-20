@@ -93,7 +93,9 @@ public class RobotContainer {
               ? new GroundIntakeRollersIOSim()
               : new GroundIntakeRollersIOTalonFX());
 
-  private final IntakePivot intakePivot = new IntakePivot(true, Utils.isSimulation()? new IntakePivotIOSim() : new IntakePivotIOTalonFX());
+  private final IntakePivot intakePivot =
+      new IntakePivot(
+          true, Utils.isSimulation() ? new IntakePivotIOSim() : new IntakePivotIOTalonFX());
 
   /// sim file for intakepivot needs to be added -- seems like its not been merged yet
 

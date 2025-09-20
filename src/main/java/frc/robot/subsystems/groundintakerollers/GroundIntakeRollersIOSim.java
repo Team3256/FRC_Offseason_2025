@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sim.SimMechs;
 import frc.robot.utils.LoggedTunableNumber;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -40,9 +38,8 @@ public class GroundIntakeRollersIOSim extends GroundIntakeRollersIOTalonFX {
 
   private final CANrangeSimState canRangeSimState;
 
-  private final LoggedTunableNumber canRangeDistance = new LoggedTunableNumber("GIRCanRangeDistance", 0.0);
-
-
+  private final LoggedTunableNumber canRangeDistance =
+      new LoggedTunableNumber("GIRCanRangeDistance", 0.0);
 
   public GroundIntakeRollersIOSim() {
     super();
@@ -51,12 +48,11 @@ public class GroundIntakeRollersIOSim extends GroundIntakeRollersIOTalonFX {
 
     LoggedTunableNumber.ifChanged(
         canRangeDistance.hashCode(), this::updateCanRangeDistance, canRangeDistance);
-
   }
 
-    public void updateCanRangeDistance(double[] distanceMeters) {
-        canRangeSimState.setDistance(distanceMeters[0]);
-    }
+  public void updateCanRangeDistance(double[] distanceMeters) {
+    canRangeSimState.setDistance(distanceMeters[0]);
+  }
 
   @Override
   public void updateInputs(GroundIntakeRollersIOInputs inputs) {

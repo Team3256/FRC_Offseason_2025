@@ -20,8 +20,11 @@ public class EndEffector extends DisableSubsystem {
   private final EndEffectorIOInputsAutoLogged endEffectorIOInputsAutoLogged =
       new EndEffectorIOInputsAutoLogged();
 
-
-  public final Trigger gamePieceIntaken = new Trigger(()->endEffectorIOInputsAutoLogged.canRangeDistance<EndEffectorConstants.gamePieceIntakenIn);
+  public final Trigger gamePieceIntaken =
+      new Trigger(
+          () ->
+              endEffectorIOInputsAutoLogged.canRangeDistance
+                  < EndEffectorConstants.gamePieceIntakenIn);
 
   public EndEffector(boolean enabled, EndEffectorIO endEffectorIO) {
     super(enabled);
@@ -58,7 +61,6 @@ public class EndEffector extends DisableSubsystem {
   public Command setAlgaeOuttakeVoltage() {
     return setEEVoltage(() -> EndEffectorConstants.algaeOuttakeVoltage)
         .withName("setAlgaeOuttakeVoltage");
-        
   }
 
   public Command setSourceVelocity() {
@@ -71,9 +73,8 @@ public class EndEffector extends DisableSubsystem {
   }
 
   public Command intakeCoral() {
-    return setEEVoltage(() -> EndEffectorConstants.coralIntakeVoltage).until(
-                    gamePieceIntaken)
-        .withName("setCoralIntakeVoltage")
-        ;
+    return setEEVoltage(() -> EndEffectorConstants.coralIntakeVoltage)
+        .until(gamePieceIntaken)
+        .withName("setCoralIntakeVoltage");
   }
 }
