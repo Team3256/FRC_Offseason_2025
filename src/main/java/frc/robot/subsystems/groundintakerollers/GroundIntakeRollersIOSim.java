@@ -47,7 +47,6 @@ public class GroundIntakeRollersIOSim extends GroundIntakeRollersIOTalonFX {
     canRangeSimState = super.getCanRange().getSimState();
   }
 
-
   @Override
   public void updateInputs(GroundIntakeRollersIOInputs inputs) {
 

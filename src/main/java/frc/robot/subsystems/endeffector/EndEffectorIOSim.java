@@ -42,13 +42,10 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
 
     eeMotorSim = super.getEEMotor().getSimState();
     eeCanRangeSim = super.getCanRange().getSimState();
-
-
   }
 
   @Override
   public void updateInputs(EndEffectorIOInputs inputs) {
-
 
     // Update battery voltage
     eeMotorSim.setSupplyVoltage(RobotController.getBatteryVoltage());
