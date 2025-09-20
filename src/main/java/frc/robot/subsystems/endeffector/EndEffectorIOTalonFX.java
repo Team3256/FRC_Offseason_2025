@@ -85,4 +85,9 @@ public class EndEffectorIOTalonFX implements EndEffectorIO {
   public TalonFX getEEMotor() {
     return coralMotor;
   }
+
+  @Override
+  public CANrange getCanRange() {
+    return canRange;
+  }
 }

@@ -125,14 +125,6 @@ public final class ElevatorConstants {
     public static final boolean kSimulateGravity = true;
     // Drivebase to minHeight
     public static final Distance kStartingHeight = Inches.of(1.75);
-    // Elevator extension length
-    // TODO: re calculate this lol. Should be relative to minHeight
-    public static final Distance[] kReefPositions = {
-      Inches.of(18 - 7.07).minus(kStartingHeight),
-      Inches.of(47.625 - 3).minus(kStartingHeight),
-      Inches.of(31.875 - 3).minus(kStartingHeight),
-      Inches.of(72 - 7.07).minus(kStartingHeight)
-    };
   }
 
   public static Distance convertRotationsToMeters(Angle rotations) {

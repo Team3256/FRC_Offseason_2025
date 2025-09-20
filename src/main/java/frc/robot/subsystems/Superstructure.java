@@ -124,27 +124,20 @@ public class Superstructure {
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L2))
         .and(elevator.reachedPosition)
-        .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
-        .and(arm.reachedPosition)
-        .debounce(.025)
-        .onTrue(endEffector.setCoralOuttakeVoltage())
-        .debounce(.1)
-        .onTrue(this.setState(StructureState.PREHOME));
+        .onTrue(arm.toScoringPosition(1, rightManipulatorSide));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L3))
         .and(elevator.reachedPosition)
-        .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
-        .and(arm.reachedPosition)
-        .debounce(.025)
-        .onTrue(endEffector.setCoralOuttakeVoltage())
-        .debounce(.1)
-        .onTrue(this.setState(StructureState.PREHOME));
+        .onTrue(arm.toScoringPosition(1, rightManipulatorSide));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
         .and(elevator.reachedPosition)
-        .onTrue(arm.toScoringPosition(2, rightManipulatorSide))
+        .onTrue(arm.toScoringPosition(2, rightManipulatorSide));
+
+    stateTriggers
+        .get(StructureState.SCORE_CORAL)
         .and(arm.reachedPosition)
         .debounce(.025)
         .onTrue(endEffector.setCoralOuttakeVoltage())
@@ -185,23 +178,13 @@ public class Superstructure {
 
     // Turn coral motor off (helpful for transitioning from SCORE_CORAL), do not turn algae motor
     // off since you might be holding one
-    stateTriggers.get(StructureState.PREHOME).onTrue(endEffector.off());
+    stateTriggers.get(StructureState.PREHOME).onTrue(endEffector.off()).onTrue(intakeRollers.off());
 
     stateTriggers
         .get(StructureState.PREHOME)
-        .and(prevStateTriggers.get(StructureState.SCORE_CORAL))
         .onTrue(arm.toHome())
         .and(arm.reachedPosition)
         .debounce(0.025)
-        .onTrue(this.setState(StructureState.HOME));
-
-    // Since everything else is non-source and arm doesn't need to be towards the bellypan, you can
-    // assume that moving the arm towards home is safe and that you don't need to move the elevator.
-    stateTriggers
-        .get(StructureState.PREHOME)
-        .and(prevStateTriggers.get(StructureState.SCORE_CORAL).negate())
-        .onTrue(arm.toHome())
-        .and(arm.isSafePosition)
         .onTrue(this.setState(StructureState.HOME));
 
     // Once arm is safe, the elevator can also home, once everything is done we can go to the IDLE
@@ -211,10 +194,10 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.HOME)
         .and(prevStateTriggers.get(StructureState.PREHOME))
-        .onTrue(intakePivot.goToStow())
         .onTrue(elevator.toHome())
         .onTrue(arm.toHome())
         .and(arm.reachedPosition)
+        .onTrue(intakePivot.goToStow())
         .and(elevator.reachedPosition)
         .onTrue(this.setState(StructureState.IDLE));
 
@@ -247,8 +230,9 @@ public class Superstructure {
         .onTrue(elevator.toHandoffPosition())
         .and(elevator.reachedPosition)
         .debounce(0.025)
-        .onTrue(arm.toHandoffLevel())
+        .onTrue(arm.toHandoffPosition())
         .and(arm.reachedPosition)
+        .debounce(.025)
         .onTrue(this.setState(StructureState.HANDOFF));
 
     stateTriggers

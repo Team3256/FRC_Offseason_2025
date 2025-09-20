@@ -58,8 +58,12 @@ public class GroundIntakeRollers extends DisableSubsystem {
 
   public Command intakeCoral() {
     return setVoltage(GroundIntakeRollersConstants.kIntakeRollerMotorVoltage)
-        .until(motorStalled)
+        .until(coralIntakeIn)
         .finallyDo(groundIntakeRollersIO::off);
+  }
+
+  public double getDetectedCanRangeDistance() {
+    return intakeIOAutoLogged.canRangeDistance;
   }
 
   public Command handoffCoral() {

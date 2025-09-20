@@ -37,7 +37,7 @@ public class GroundIntakeRollersConstants {
           .withSlot0(new Slot0Configs().withKS(0).withKV(0.12).withKP(1).withKI(0).withKD(0))
           .withMotorOutput(
               new MotorOutputConfigs()
-                  .withNeutralMode(NeutralModeValue.Coast)
+                  .withNeutralMode(NeutralModeValue.Brake)
                   .withInverted(InvertedValue.Clockwise_Positive))
           .withCurrentLimits(
               new CurrentLimitsConfigs()
@@ -46,7 +46,7 @@ public class GroundIntakeRollersConstants {
   public static int flashConfigRetries = 5;
 
   public static final int motorCoralStall = 40;
-  public static final double coralIntakeIn = 0.2;
+  public static final double coralIntakeIn = 4;
 
   public static final class SimulationConstants {
     public static double rollerGearingRatio = 1.0;

@@ -75,6 +75,7 @@ public class EndEffector extends DisableSubsystem {
   public Command intakeCoral() {
     return setEEVoltage(() -> EndEffectorConstants.coralIntakeVoltage)
         .until(gamePieceIntaken)
+        .finallyDo(endEffectorIO::eeOff)
         .withName("setCoralIntakeVoltage");
   }
 }

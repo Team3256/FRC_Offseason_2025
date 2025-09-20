@@ -35,20 +35,13 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
   private final CANrangeSimState eeCanRangeSim;
 
   private final LoggedTunableNumber canRangeDistance =
-      new LoggedTunableNumber("EECanRangeDistance", 0.0);
+      new LoggedTunableNumber("EECanRangeDistance", 10.0);
 
   public EndEffectorIOSim() {
     super();
 
     eeMotorSim = super.getEEMotor().getSimState();
     eeCanRangeSim = super.getCanRange().getSimState();
-
-    LoggedTunableNumber.ifChanged(
-        canRangeDistance.hashCode(), this::updateCanRangeDistance, canRangeDistance);
-  }
-
-  public void updateCanRangeDistance(double[] distanceMeters) {
-    eeCanRangeSim.setDistance(distanceMeters[0]);
   }
 
   @Override
@@ -57,6 +50,8 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
     // Update battery voltage
     eeMotorSim.setSupplyVoltage(RobotController.getBatteryVoltage());
     eeCanRangeSim.setSupplyVoltage(RobotController.getBatteryVoltage());
+
+    eeCanRangeSim.setDistance(canRangeDistance.getAsDouble());
 
     // Update physics models
     eeSimModel.setInput(eeMotorSim.getMotorVoltage());

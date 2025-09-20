@@ -96,4 +96,9 @@ public class GroundIntakeRollersIOTalonFX implements GroundIntakeRollersIO {
   public TalonFX getIntakeRollerMotor() {
     return intakeMotor;
   }
+
+  @Override
+  public CANrange getCanRange() {
+    return canRange;
+  }
 }
