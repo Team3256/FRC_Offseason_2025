@@ -20,11 +20,11 @@ public class EndEffector extends DisableSubsystem {
   private final EndEffectorIOInputsAutoLogged endEffectorIOInputsAutoLogged =
       new EndEffectorIOInputsAutoLogged();
 
-  public final Trigger motorStalled =
+  public final Trigger gamePieceIntaken =
       new Trigger(
           () ->
-              endEffectorIOInputsAutoLogged.eeMotorStatorCurrent
-                  > EndEffectorConstants.stallStatorCurrent);
+              endEffectorIOInputsAutoLogged.canRangeDistance
+                  < EndEffectorConstants.gamePieceIntakenIn);
 
   public EndEffector(boolean enabled, EndEffectorIO endEffectorIO) {
     super(enabled);
@@ -70,5 +70,11 @@ public class EndEffector extends DisableSubsystem {
 
   public Command off() {
     return this.runOnce(endEffectorIO::eeOff).withName("eeOff");
+  }
+
+  public Command intakeCoral() {
+    return setEEVoltage(() -> EndEffectorConstants.coralIntakeVoltage)
+        .until(gamePieceIntaken)
+        .withName("setCoralIntakeVoltage");
   }
 }
