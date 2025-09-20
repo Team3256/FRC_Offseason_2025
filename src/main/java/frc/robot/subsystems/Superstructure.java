@@ -126,21 +126,27 @@ public class Superstructure {
         .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
         .and(arm.reachedPosition)
         .debounce(.025)
-        .onTrue(endEffector.setCoralOuttakeVoltage());
+        .onTrue(endEffector.setCoralOuttakeVoltage())
+        .debounce(.1)
+        .onTrue(this.setState(StructureState.PREHOME));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L3))
         .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
         .and(arm.reachedPosition)
         .debounce(.025)
-        .onTrue(endEffector.setCoralOuttakeVoltage());
+        .onTrue(endEffector.setCoralOuttakeVoltage())
+        .debounce(.1)
+        .onTrue(this.setState(StructureState.PREHOME));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
         .onTrue(arm.toScoringPosition(2, rightManipulatorSide))
         .and(arm.reachedPosition)
         .debounce(.025)
-        .onTrue(endEffector.setCoralOuttakeVoltage());
+        .onTrue(endEffector.setCoralOuttakeVoltage())
+        .debounce(.1)
+        .onTrue(this.setState(StructureState.PREHOME));
 
     // Dealgae Levels
     stateTriggers
@@ -219,17 +225,17 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.GROUND_INTAKE)
         .onTrue(intakePivot.goToGroundIntake())
-        .onTrue(intakeRollers.intakeCoral())
-        .and(intakeRollers.motorStalled);
+        .onTrue(intakeRollers.intakeCoral());
 
     stateTriggers
         .get(StructureState.GROUND_INTAKE)
-        .and(endEffector.motorStalled)
+        .and(endEffector.gamePieceIntaken)
         .onTrue(this.setState(StructureState.PREHOME));
 
     stateTriggers
         .get(StructureState.GROUND_INTAKE)
-        .and(endEffector.motorStalled.negate())
+        .and(endEffector.gamePieceIntaken.negate())
+        .and(intakeRollers.coralIntakeIn)
         .onTrue(this.setState(StructureState.PRE_HANDOFF));
 
     stateTriggers
@@ -246,13 +252,9 @@ public class Superstructure {
         .get(StructureState.HANDOFF)
         .onTrue(intakeRollers.handoffCoral())
         .onTrue(endEffector.intakeCoral())
-        .and(endEffector.motorStalled)
+        .and(endEffector.gamePieceIntaken)
         .onTrue(this.setState(StructureState.PREHOME));
     ;
-  }
-
-  public Trigger eeHasGamePiece() {
-    return endEffector.motorStalled;
   }
 
   // call manually

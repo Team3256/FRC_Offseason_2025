@@ -44,6 +44,7 @@ import frc.robot.subsystems.groundintakerollers.GroundIntakeRollers;
 import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOSim;
 import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOTalonFX;
 import frc.robot.subsystems.intakepivot.IntakePivot;
+import frc.robot.subsystems.intakepivot.IntakePivotIOSim;
 import frc.robot.subsystems.intakepivot.IntakePivotIOTalonFX;
 import frc.robot.subsystems.led.IndicatorAnimation;
 import frc.robot.subsystems.led.LED;
@@ -92,7 +93,9 @@ public class RobotContainer {
               ? new GroundIntakeRollersIOSim()
               : new GroundIntakeRollersIOTalonFX());
 
-  private final IntakePivot intakePivot = new IntakePivot(true, new IntakePivotIOTalonFX());
+  private final IntakePivot intakePivot =
+      new IntakePivot(
+          true, Utils.isSimulation() ? new IntakePivotIOSim() : new IntakePivotIOTalonFX());
 
   /// sim file for intakepivot needs to be added -- seems like its not been merged yet
 
@@ -173,11 +176,6 @@ public class RobotContainer {
   // sets up LEDs & rumble
   private void configureLEDs() {
     leds.setDefaultCommand(leds.animate(IndicatorAnimation.Default));
-    superstructure
-        .eeHasGamePiece()
-        .and(autoAlignRunning.negate())
-        .and(autoAlignedTrigger.negate())
-        .whileTrue(leds.animate(IndicatorAnimation.CoralIntaken));
     autoAlignedTrigger.whileTrue(
         Commands.run(
                 () -> {
