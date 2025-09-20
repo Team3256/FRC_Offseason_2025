@@ -10,33 +10,22 @@ package frc.robot.commands;
 import choreo.auto.AutoFactory;
 import choreo.auto.AutoRoutine;
 import choreo.auto.AutoTrajectory;
-import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.elevator.Elevator;
-import frc.robot.subsystems.endeffector.EndEffector;
+import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.Superstructure.StructureState;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
+import frc.robot.utils.autoaim.CoralTargets;
 
 public class AutoRoutines {
   private final AutoFactory m_factory;
-
-  private final AutoCommands m_autoCommands;
-
-  private final Elevator m_elevator;
   private final CommandSwerveDrivetrain m_drivetrain;
-  private final Arm m_arm;
-  private final EndEffector m_endEffector;
+  private final Superstructure m_superstructure;
 
   public AutoRoutines(
-      AutoFactory factory,
-      Elevator elevator,
-      Arm arm,
-      EndEffector endEffector,
-      CommandSwerveDrivetrain drivetrain) {
+      AutoFactory factory, CommandSwerveDrivetrain drivetrain, Superstructure superstructure) {
     m_factory = factory;
-    m_elevator = elevator;
-    m_arm = arm;
     m_drivetrain = drivetrain;
-    m_endEffector = endEffector;
-    m_autoCommands = new AutoCommands(elevator, arm, endEffector);
+    m_superstructure = superstructure;
   }
 
   public AutoRoutine mobilityLeft() {
@@ -53,17 +42,85 @@ public class AutoRoutines {
     return routine;
   }
 
-  private static class AutoCommands {
+  public AutoRoutine l4PreloadI() {
+    final AutoRoutine routine = m_factory.newRoutine("l4PreloadI");
+    final AutoTrajectory preloadI = routine.trajectory("LEFT-I");
 
-    private final Elevator m_elevator;
-    private final Arm m_arm;
-    private final EndEffector m_endEffector;
+    routine
+        .active()
+        .onTrue(preloadI.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadI.cmd()));
+    preloadI.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
+    preloadI
+        .done()
+        .onTrue(
+            m_superstructure
+                .setState(StructureState.SCORE_CORAL)
+                .withTimeout(1.0)
+                .deadlineFor(
+                    m_drivetrain.pidToPose(
+                        () -> preloadI.getFinalPose().orElse(CoralTargets.BLUE_I.location)))
+                .andThen(m_superstructure.setState(StructureState.PREHOME)));
 
-    public AutoCommands(Elevator elevator, Arm arm, EndEffector endEffector) {
+    return routine;
+  }
 
-      m_elevator = elevator;
-      m_arm = arm;
-      m_endEffector = endEffector;
-    }
+  public AutoRoutine l4PreloadH() {
+    final AutoRoutine routine = m_factory.newRoutine("l4PreloadH");
+    final AutoTrajectory preloadH = routine.trajectory("MID-H");
+    routine
+        .active()
+        .onTrue(preloadH.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadH.cmd()));
+    preloadH.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
+    preloadH
+        .done()
+        .onTrue(
+            m_superstructure
+                .setState(StructureState.SCORE_CORAL)
+                .withTimeout(1.0)
+                .deadlineFor(
+                    m_drivetrain.pidToPose(
+                        () -> preloadH.getFinalPose().orElse(CoralTargets.BLUE_H.location)))
+                .andThen(m_superstructure.setState(StructureState.PREHOME)));
+    return routine;
+  }
+
+  public AutoRoutine l4PreloadG() {
+    final AutoRoutine routine = m_factory.newRoutine("l4PreloadG");
+    final AutoTrajectory preloadG = routine.trajectory("MID-G");
+    routine
+        .active()
+        .onTrue(preloadG.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadG.cmd()));
+    preloadG.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
+    preloadG
+        .done()
+        .onTrue(
+            m_superstructure
+                .setState(StructureState.SCORE_CORAL)
+                .withTimeout(1.0)
+                .deadlineFor(
+                    m_drivetrain.pidToPose(
+                        () -> preloadG.getFinalPose().orElse(CoralTargets.BLUE_G.location)))
+                .andThen(m_superstructure.setState(StructureState.PREHOME)));
+    return routine;
+  }
+
+  public AutoRoutine l4PreloadF() {
+    final AutoRoutine routine = m_factory.newRoutine("l4PreloadF");
+    final AutoTrajectory preloadF = routine.trajectory("RIGHT-F");
+    routine
+        .active()
+        .onTrue(preloadF.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadF.cmd()));
+    preloadF.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
+    preloadF
+        .done()
+        .onTrue(
+            m_superstructure
+                .setState(StructureState.SCORE_CORAL)
+                .withTimeout(1.0)
+                .deadlineFor(
+                    m_drivetrain.pidToPose(
+                        () -> preloadF.getFinalPose().orElse(CoralTargets.BLUE_F.location)))
+                .andThen(m_superstructure.setState(StructureState.PREHOME)));
+    return routine;
   }
 }
