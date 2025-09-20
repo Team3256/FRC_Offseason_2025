@@ -123,6 +123,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L2))
+        .and(elevator.reachedPosition)
         .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
         .and(arm.reachedPosition)
         .debounce(.025)
@@ -132,6 +133,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L3))
+        .and(elevator.reachedPosition)
         .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
         .and(arm.reachedPosition)
         .debounce(.025)
@@ -141,6 +143,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
+        .and(elevator.reachedPosition)
         .onTrue(arm.toScoringPosition(2, rightManipulatorSide))
         .and(arm.reachedPosition)
         .debounce(.025)
