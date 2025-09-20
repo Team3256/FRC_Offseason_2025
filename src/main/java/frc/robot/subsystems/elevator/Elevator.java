@@ -99,6 +99,11 @@ public class Elevator extends DisableSubsystem {
         .withName("toGroundAlgaePosition");
   }
 
+  public Command toHandoffPosition() {
+    return this.setPosition(ElevatorConstants.handoffPosition.in(Rotations))
+        .withName("toHandoffPosition");
+  }
+
   @AutoLogOutput
   public boolean isAtPosition() {
     return Util.epsilonEquals(motorIOAutoLogged.motorPosition, requestedPosition, 0.1);

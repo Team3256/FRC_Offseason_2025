@@ -43,6 +43,11 @@ import frc.robot.subsystems.endeffector.EndEffectorIOTalonFX;
 import frc.robot.subsystems.groundintakerollers.GroundIntakeRollers;
 import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOSim;
 import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOTalonFX;
+
+import frc.robot.subsystems.intakepivot.IntakePivot;
+import frc.robot.subsystems.intakepivot.IntakePivotIOSim;
+import frc.robot.subsystems.intakepivot.IntakePivotIOTalonFX;
+
 import frc.robot.subsystems.led.IndicatorAnimation;
 import frc.robot.subsystems.led.LED;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
@@ -94,7 +99,21 @@ public class RobotContainer {
       new EndEffector(
           true, Utils.isSimulation() ? new EndEffectorIOSim() : new EndEffectorIOTalonFX());
 
-  private final Superstructure superstructure = new Superstructure(elevator, endEffector, arm);
+  private final GroundIntakeRollers intakeRollers =
+      new GroundIntakeRollers(
+          true,
+          Utils.isSimulation()
+              ? new GroundIntakeRollersIOSim()
+              : new GroundIntakeRollersIOTalonFX());
+
+  private final IntakePivot intakePivot =
+      new IntakePivot(
+          true, Utils.isSimulation() ? new IntakePivotIOSim() : new IntakePivotIOTalonFX());
+
+  /// sim file for intakepivot needs to be added -- seems like its not been merged yet
+
+  private final Superstructure superstructure =
+      new Superstructure(elevator, endEffector, arm, intakeRollers, intakePivot);
   private final LED leds = new LED();
 
   private final Vision vision =
@@ -174,11 +193,6 @@ public class RobotContainer {
   // sets up LEDs & rumble
   private void configureLEDs() {
     leds.setDefaultCommand(leds.animate(IndicatorAnimation.Default));
-    superstructure
-        .eeHasGamePiece()
-        .and(autoAlignRunning.negate())
-        .and(autoAlignedTrigger.negate())
-        .whileTrue(leds.animate(IndicatorAnimation.CoralIntaken));
     autoAlignedTrigger.whileTrue(
         Commands.run(
                 () -> {

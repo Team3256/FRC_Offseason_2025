@@ -116,6 +116,11 @@ public class Arm extends DisableSubsystem {
         .withName("toProcessorLevel");
   }
 
+  public Command toHandoffLevel() {
+    return this.setPosition(() -> ArmConstants.handoffPosition, true, () -> 0)
+        .withName("toHandoffLevel");
+  }
+
   public Command toScoringPosition(int level, BooleanSupplier rightSide) {
     return this.setPosition(
             () ->

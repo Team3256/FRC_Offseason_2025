@@ -66,4 +66,8 @@ public class GroundIntakeRollers extends DisableSubsystem {
   public DoubleSupplier getDetectedCanRangeDistance() {
     return () -> intakeIOAutoLogged.canRangeDistance;
   }
+  public Command handoffCoral() {
+    return setVoltage(GroundIntakeRollersConstants.kIntakeRollerMotorHandoffVoltage)
+        .finallyDo(groundIntakeRollersIO::off);
+  }
 }
