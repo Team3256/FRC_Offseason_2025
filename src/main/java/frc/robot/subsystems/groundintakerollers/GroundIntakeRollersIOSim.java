@@ -45,14 +45,8 @@ public class GroundIntakeRollersIOSim extends GroundIntakeRollersIOTalonFX {
     super();
     motorSim = super.getIntakeRollerMotor().getSimState();
     canRangeSimState = super.getCanRange().getSimState();
-
-    LoggedTunableNumber.ifChanged(
-        canRangeDistance.hashCode(), this::updateCanRangeDistance, canRangeDistance);
   }
 
-  public void updateCanRangeDistance(double[] distanceMeters) {
-    canRangeSimState.setDistance(distanceMeters[0]);
-  }
 
   @Override
   public void updateInputs(GroundIntakeRollersIOInputs inputs) {
@@ -60,6 +54,8 @@ public class GroundIntakeRollersIOSim extends GroundIntakeRollersIOTalonFX {
     // Update battery voltage
     motorSim.setSupplyVoltage(RobotController.getBatteryVoltage());
     canRangeSimState.setSupplyVoltage(RobotController.getBatteryVoltage());
+
+    canRangeSimState.setDistance(canRangeDistance.getAsDouble());
 
     // Update physics models
     rollerSimModel.setInput(motorSim.getMotorVoltage());
