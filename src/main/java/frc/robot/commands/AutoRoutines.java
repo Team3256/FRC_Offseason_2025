@@ -51,8 +51,7 @@ public class AutoRoutines {
         .onTrue(preloadI.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadI.cmd()));
     preloadI.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
     preloadI.done().onTrue(m_superstructure.setState(StructureState.SCORE_CORAL));
-            m_drivetrain.pidToPose(
-                () -> preloadI.getFinalPose().orElse(CoralTargets.BLUE_I.location));
+    m_drivetrain.pidToPose(() -> preloadI.getFinalPose().orElse(CoralTargets.BLUE_I.location));
 
     return routine;
   }
@@ -65,8 +64,7 @@ public class AutoRoutines {
         .onTrue(preloadH.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadH.cmd()));
     preloadH.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
     preloadH.done().onTrue(m_superstructure.setState(StructureState.SCORE_CORAL));
-            m_drivetrain.pidToPose(
-                () -> preloadH.getFinalPose().orElse(CoralTargets.BLUE_H.location));
+    m_drivetrain.pidToPose(() -> preloadH.getFinalPose().orElse(CoralTargets.BLUE_H.location));
     return routine;
   }
 
@@ -78,8 +76,7 @@ public class AutoRoutines {
         .onTrue(preloadG.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadG.cmd()));
     preloadG.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
     preloadG.done().onTrue(m_superstructure.setState(StructureState.SCORE_CORAL));
-            m_drivetrain.pidToPose(
-                () -> preloadG.getFinalPose().orElse(CoralTargets.BLUE_G.location));
+    m_drivetrain.pidToPose(() -> preloadG.getFinalPose().orElse(CoralTargets.BLUE_G.location));
     return routine;
   }
 
@@ -91,9 +88,7 @@ public class AutoRoutines {
         .onTrue(preloadF.resetOdometry().andThen(Commands.waitSeconds(2)).andThen(preloadF.cmd()));
     preloadF.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
     preloadF.done().onTrue(m_superstructure.setState(StructureState.SCORE_CORAL));
-    m_drivetrain.pidToPose(
-        () -> preloadF.getFinalPose().orElse(CoralTargets.BLUE_F.location));
+    m_drivetrain.pidToPose(() -> preloadF.getFinalPose().orElse(CoralTargets.BLUE_F.location));
     return routine;
   }
-
 }
