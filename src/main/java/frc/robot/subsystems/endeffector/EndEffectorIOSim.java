@@ -9,6 +9,7 @@ package frc.robot.subsystems.endeffector;
 
 import static edu.wpi.first.units.Units.Degrees;
 
+import com.ctre.phoenix6.sim.CANrangeSimState;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -16,8 +17,14 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sim.SimMechs;
+import frc.robot.utils.LoggedTunableNumber;
 import org.littletonrobotics.junction.LoggedRobot;
+
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 public class EndEffectorIOSim extends EndEffectorIOTalonFX {
 
@@ -30,10 +37,21 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
           EndEffectorConstants.kUseFOC ? DCMotor.getKrakenX60Foc(1) : DCMotor.getKrakenX60(1));
   private final TalonFXSimState eeMotorSim;
 
+  private final CANrangeSimState eeCanRangeSim;
+
+  private final LoggedTunableNumber canRangeDistance = new LoggedTunableNumber("EECanRangeDistance", 0.0);
+
   public EndEffectorIOSim() {
     super();
 
     eeMotorSim = super.getEEMotor().getSimState();
+    eeCanRangeSim = super.getCanRange().getSimState();
+
+    LoggedTunableNumber.ifChanged(canRangeDistance.hashCode(), this::updateCanRangeDistance, canRangeDistance);
+  }
+
+  public void updateCanRangeDistance(double[] distanceMeters) {
+    eeCanRangeSim.setDistance(distanceMeters[0]);
   }
 
   @Override
@@ -41,6 +59,8 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
 
     // Update battery voltage
     eeMotorSim.setSupplyVoltage(RobotController.getBatteryVoltage());
+    eeCanRangeSim.setSupplyVoltage(RobotController.getBatteryVoltage());
+
     // Update physics models
     eeSimModel.setInput(eeMotorSim.getMotorVoltage());
     eeSimModel.update(LoggedRobot.defaultPeriodSecs);
