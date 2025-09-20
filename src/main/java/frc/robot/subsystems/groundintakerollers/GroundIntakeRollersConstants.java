@@ -46,7 +46,7 @@ public class GroundIntakeRollersConstants {
   public static int flashConfigRetries = 5;
 
   public static final int motorCoralStall = 40;
-  public static final double coralIntakeIn = 0.2;
+  public static final double coralIntakeIn = 4;
 
   public static final class SimulationConstants {
     public static double rollerGearingRatio = 1.0;

@@ -44,6 +44,13 @@ public final class ArmConstants {
     Rotations.of(0.18), Rotations.of(0.18), Rotations.of(0.157)
   };
 
+  public static final Angle[] reefRightScoringPosition = {
+    Rotations.of(.45), Rotations.of(.45), Rotations.of(.5)
+  };
+  public static final Angle[] reefLeftScoringPosition = {
+    Rotations.of(.22), Rotations.of(0.22), Rotations.of(0.2)
+  };
+
   // Dealgae L2, Daalgae L3
   public static final Angle[] dealgaeRightPosition = {Rotations.of(.376), Rotations.of(.361)};
   public static final Angle[] dealgaeLeftPosition = {Rotations.of(.124), Rotations.of(.139)};
@@ -53,7 +60,7 @@ public final class ArmConstants {
   public static final Angle bargeLeftPosition = Rotations.of(.17);
   public static final Angle bargeRightPosition = Rotations.of(.33);
 
-  public static final Angle homePosition = Rotations.of(.285);
+  public static final Angle homePosition = Rotations.of(.25);
 
   public static final double safeRightPosition = .37;
   public static final double safeLeftPosition = .25;
@@ -110,17 +117,10 @@ public final class ArmConstants {
 
   public static final Angle groundAlgaeRightPosition = Rotations.of(.62);
 
-  public static final Angle[] reefRightScoringPosition = {
-    Rotations.of(.32), Rotations.of(.56), Rotations.of(.67)
-  };
-  public static final Angle[] reefLeftScoringPosition = {
-    Rotations.of(0.18), Rotations.of(0.18), Rotations.of(0.157)
-  };
-
-  public static final Angle armAngleCoralLeft = Rotations.of(0.18);
-  public static final Angle armAngleCoralRight = Rotations.of(0.32);
-  public static final double coralDistanceLeft = 2; // inches
-  public static final double coralDistanceRight = 2; // inches
+  public static final Angle armAngleCoralLeft = Rotations.of(0.65);
+  public static final Angle armAngleCoralRight = Rotations.of(0.85);
+  public static final double coralDistanceLeft = 1; // inches
+  public static final double coralDistanceRight = 3; // inches
 
   public static final class Sim {
     public static final double simGearing = 142.22;

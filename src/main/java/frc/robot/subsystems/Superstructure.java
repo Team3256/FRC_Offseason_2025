@@ -123,25 +123,18 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L2))
-        .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
-        .and(arm.reachedPosition)
-        .debounce(.025)
-        .onTrue(endEffector.setCoralOuttakeVoltage())
-        .debounce(.1)
-        .onTrue(this.setState(StructureState.PREHOME));
+        .onTrue(arm.toScoringPosition(1, rightManipulatorSide));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L3))
-        .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
-        .and(arm.reachedPosition)
-        .debounce(.025)
-        .onTrue(endEffector.setCoralOuttakeVoltage())
-        .debounce(.1)
-        .onTrue(this.setState(StructureState.PREHOME));
+        .onTrue(arm.toScoringPosition(1, rightManipulatorSide));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
-        .onTrue(arm.toScoringPosition(2, rightManipulatorSide))
+        .onTrue(arm.toScoringPosition(2, rightManipulatorSide));
+
+    stateTriggers
+        .get(StructureState.SCORE_CORAL)
         .and(arm.reachedPosition)
         .debounce(.025)
         .onTrue(endEffector.setCoralOuttakeVoltage())

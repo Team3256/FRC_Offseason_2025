@@ -81,18 +81,6 @@ public class RobotContainer {
   private final Elevator elevator =
       new Elevator(true, Utils.isSimulation() ? new ElevatorIOSim() : new ElevatorIOTalonFX());
 
-  private final GroundIntakeRollers groundIntakeRollers =
-      new GroundIntakeRollers(
-          true,
-          Utils.isSimulation()
-              ? new GroundIntakeRollersIOSim()
-              : new GroundIntakeRollersIOTalonFX());
-
-  private final Arm arm =
-      new Arm(
-          true,
-          Utils.isSimulation() ? new ArmIOSim() : new ArmIOTalonFX(),
-          groundIntakeRollers::getDetectedCanRangeDistance);
   private final EndEffector endEffector =
       new EndEffector(
           true, Utils.isSimulation() ? new EndEffectorIOSim() : new EndEffectorIOTalonFX());
@@ -107,6 +95,12 @@ public class RobotContainer {
   private final IntakePivot intakePivot =
       new IntakePivot(
           true, Utils.isSimulation() ? new IntakePivotIOSim() : new IntakePivotIOTalonFX());
+
+  private final Arm arm =
+      new Arm(
+          true,
+          Utils.isSimulation() ? new ArmIOSim() : new ArmIOTalonFX(),
+          intakeRollers::getDetectedCanRangeDistance);
 
   /// sim file for intakepivot needs to be added -- seems like its not been merged yet
 
@@ -230,6 +224,9 @@ public class RobotContainer {
 
     // stow everything
     m_operatorController.a().onTrue(superstructure.setState(StructureState.GROUND_INTAKE));
+    m_operatorController.x().onTrue(superstructure.setState(StructureState.L4));
+    m_operatorController.b().onTrue(superstructure.setState(StructureState.PREHOME));
+    m_operatorController.y().onTrue(superstructure.setState(StructureState.SCORE_CORAL));
 
     // reef states
     m_operatorController.povUp("L4 Preset").onTrue(superstructure.setState(StructureState.L4));
