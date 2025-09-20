@@ -17,6 +17,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 
 public final class ArmConstants {
+
   public static final int armMotorId = 42;
 
   public static final int armMotorEncoderId = 40;
@@ -56,6 +57,8 @@ public final class ArmConstants {
 
   public static final double safeRightPosition = .37;
   public static final double safeLeftPosition = .25;
+
+  public static final double handoffPosition = 0.5;
 
   public static final TalonFXConfiguration motorConfigs =
       new TalonFXConfiguration()

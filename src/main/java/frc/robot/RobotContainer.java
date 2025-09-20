@@ -40,6 +40,11 @@ import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
 import frc.robot.subsystems.endeffector.EndEffector;
 import frc.robot.subsystems.endeffector.EndEffectorIOSim;
 import frc.robot.subsystems.endeffector.EndEffectorIOTalonFX;
+import frc.robot.subsystems.groundintakerollers.GroundIntakeRollers;
+import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOSim;
+import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOTalonFX;
+import frc.robot.subsystems.intakepivot.IntakePivot;
+import frc.robot.subsystems.intakepivot.IntakePivotIOTalonFX;
 import frc.robot.subsystems.led.IndicatorAnimation;
 import frc.robot.subsystems.led.LED;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
@@ -80,7 +85,19 @@ public class RobotContainer {
       new EndEffector(
           true, Utils.isSimulation() ? new EndEffectorIOSim() : new EndEffectorIOTalonFX());
 
-  private final Superstructure superstructure = new Superstructure(elevator, endEffector, arm);
+  private final GroundIntakeRollers intakeRollers =
+      new GroundIntakeRollers(
+          true,
+          Utils.isSimulation()
+              ? new GroundIntakeRollersIOSim()
+              : new GroundIntakeRollersIOTalonFX());
+
+  private final IntakePivot intakePivot = new IntakePivot(true, new IntakePivotIOTalonFX());
+
+  /// sim file for intakepivot needs to be added -- seems like its not been merged yet
+
+  private final Superstructure superstructure =
+      new Superstructure(elevator, endEffector, arm, intakeRollers, intakePivot);
   private final LED leds = new LED();
 
   private final Vision vision =
@@ -126,7 +143,7 @@ public class RobotContainer {
     configureOperatorBinds();
     m_autoRoutines =
         new AutoRoutines(
-            drivetrain.createAutoFactory(drivetrain::trajLogger), drivetrain, superstructure);
+            drivetrain.createAutoFactory(drivetrain::trajLogger), elevator, arm, endEffector, drivetrain);
     configureChoreoAutoChooser();
     CommandScheduler.getInstance().registerSubsystem(drivetrain);
     configureSwerve();

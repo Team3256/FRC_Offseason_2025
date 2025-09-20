@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.endeffector.EndEffector;
+import frc.robot.subsystems.groundintakerollers.GroundIntakeRollers;
+import frc.robot.subsystems.intakepivot.IntakePivot;
 import frc.robot.utils.LoggedTracer;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +37,9 @@ public class Superstructure {
     PROCESSOR,
     SCORE_ALGAE,
     SCORE_CORAL,
+    GROUND_INTAKE,
+    PRE_HANDOFF,
+    HANDOFF
   }
 
   public enum ManipulatorSide {
@@ -59,11 +64,20 @@ public class Superstructure {
   private final Elevator elevator;
   private final EndEffector endEffector;
   private final Arm arm;
+  private final GroundIntakeRollers intakeRollers;
+  private final IntakePivot intakePivot;
 
-  public Superstructure(Elevator elevator, EndEffector endEffector, Arm arm) {
+  public Superstructure(
+      Elevator elevator,
+      EndEffector endEffector,
+      Arm arm,
+      GroundIntakeRollers intakeRollers,
+      IntakePivot intakePivot) {
     this.elevator = elevator;
     this.endEffector = endEffector;
     this.arm = arm;
+    this.intakeRollers = intakeRollers;
+    this.intakePivot = intakePivot;
 
     stateTimer.start();
 
@@ -98,7 +112,7 @@ public class Superstructure {
         .get(StructureState.L4)
         .onTrue(elevator.toReefLevel(3))
         .and(elevator.reachedPosition)
-        .debounce(.03)
+        .debounce(.025)
         .onTrue(arm.toReefLevel(2, rightManipulatorSide));
 
     // Scoring coral, depending on previous state it changes endEffector velocity
@@ -111,21 +125,21 @@ public class Superstructure {
         .and(prevStateTriggers.get(StructureState.L2))
         .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
         .and(arm.reachedPosition)
-        .debounce(.02)
+        .debounce(.025)
         .onTrue(endEffector.setCoralOuttakeVoltage());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L3))
         .onTrue(arm.toScoringPosition(1, rightManipulatorSide))
         .and(arm.reachedPosition)
-        .debounce(.02)
+        .debounce(.025)
         .onTrue(endEffector.setCoralOuttakeVoltage());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
         .onTrue(arm.toScoringPosition(2, rightManipulatorSide))
         .and(arm.reachedPosition)
-        .debounce(.02)
+        .debounce(.025)
         .onTrue(endEffector.setCoralOuttakeVoltage());
 
     // Dealgae Levels
@@ -154,7 +168,7 @@ public class Superstructure {
         .get(StructureState.PROCESSOR)
         .onTrue(elevator.toProcessorPosition())
         .and(elevator.reachedPosition)
-        .debounce(.04) // wait 2 loop times
+        .debounce(.025) // wait 2 loop times
         .onTrue(arm.toProcessorLevel());
 
     // Outtake
@@ -169,7 +183,7 @@ public class Superstructure {
         .and(prevStateTriggers.get(StructureState.SCORE_CORAL))
         .onTrue(arm.toHome())
         .and(arm.reachedPosition)
-        .debounce(.025)
+        .debounce(0.025)
         .onTrue(this.setState(StructureState.HOME));
 
     // Since everything else is non-source and arm doesn't need to be towards the bellypan, you can
@@ -188,6 +202,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.HOME)
         .and(prevStateTriggers.get(StructureState.PREHOME))
+        .onTrue(intakePivot.goToStow())
         .onTrue(elevator.toHome())
         .onTrue(arm.toHome())
         .and(arm.reachedPosition)
@@ -200,6 +215,40 @@ public class Superstructure {
         .onTrue(elevator.off())
         .onTrue(arm.off())
         .onTrue(endEffector.off());
+
+    stateTriggers
+        .get(StructureState.GROUND_INTAKE)
+        .onTrue(intakePivot.goToGroundIntake())
+        .onTrue(intakeRollers.intakeCoral())
+        .and(intakeRollers.motorStalled);
+
+    stateTriggers
+        .get(StructureState.GROUND_INTAKE)
+        .and(endEffector.motorStalled)
+        .onTrue(this.setState(StructureState.PREHOME));
+
+    stateTriggers
+        .get(StructureState.GROUND_INTAKE)
+        .and(endEffector.motorStalled.negate())
+        .onTrue(this.setState(StructureState.PRE_HANDOFF));
+
+    stateTriggers
+        .get(StructureState.PRE_HANDOFF)
+        .onTrue(intakePivot.goToHandoff())
+        .onTrue(elevator.toHandoffPosition())
+        .and(elevator.reachedPosition)
+        .debounce(0.025)
+        .onTrue(arm.toHandoffLevel())
+        .and(arm.reachedPosition)
+        .onTrue(this.setState(StructureState.HANDOFF));
+
+    stateTriggers
+        .get(StructureState.HANDOFF)
+        .onTrue(intakeRollers.handoffCoral())
+        .onTrue(endEffector.intakeCoral())
+        .and(endEffector.motorStalled)
+        .onTrue(this.setState(StructureState.PREHOME));
+    ;
   }
 
   public Trigger eeHasGamePiece() {

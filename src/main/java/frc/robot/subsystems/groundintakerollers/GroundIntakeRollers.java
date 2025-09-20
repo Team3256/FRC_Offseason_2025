@@ -28,8 +28,8 @@ public class GroundIntakeRollers extends DisableSubsystem {
       new Trigger(
           () -> (intakeIOAutoLogged.canRangeDistance < GroundIntakeRollersConstants.coralIntakeIn));
 
-  public GroundIntakeRollers(boolean disabled, GroundIntakeRollersIO groundIntakeRollersIO) {
-    super(disabled);
+  public GroundIntakeRollers(boolean enabled, GroundIntakeRollersIO groundIntakeRollersIO) {
+    super(enabled);
     this.groundIntakeRollersIO = groundIntakeRollersIO;
   }
 
@@ -59,6 +59,11 @@ public class GroundIntakeRollers extends DisableSubsystem {
   public Command intakeCoral() {
     return setVoltage(GroundIntakeRollersConstants.kIntakeRollerMotorVoltage)
         .until(motorStalled)
+        .finallyDo(groundIntakeRollersIO::off);
+  }
+
+  public Command handoffCoral() {
+    return setVoltage(GroundIntakeRollersConstants.kIntakeRollerMotorHandoffVoltage)
         .finallyDo(groundIntakeRollersIO::off);
   }
 }
