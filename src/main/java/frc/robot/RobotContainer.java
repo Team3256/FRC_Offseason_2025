@@ -151,11 +151,7 @@ public class RobotContainer {
     configureOperatorBinds();
     m_autoRoutines =
         new AutoRoutines(
-            drivetrain.createAutoFactory(drivetrain::trajLogger),
-            elevator,
-            arm,
-            endEffector,
-            drivetrain);
+            drivetrain.createAutoFactory(drivetrain::trajLogger), drivetrain, superstructure);
     configureChoreoAutoChooser();
     CommandScheduler.getInstance().registerSubsystem(drivetrain);
     configureSwerve();
@@ -277,6 +273,10 @@ public class RobotContainer {
     autoChooser.addCmd("Wheel Radius Change", () -> drivetrain.wheelRadiusCharacterization(1));
     autoChooser.addRoutine("Mobility Left", m_autoRoutines::mobilityLeft);
     autoChooser.addRoutine("Mobility Right", m_autoRoutines::mobilityRight);
+    autoChooser.addRoutine("L4 Preload I", m_autoRoutines::l4PreloadI);
+    autoChooser.addRoutine("L4 Preload H", m_autoRoutines::l4PreloadH);
+    autoChooser.addRoutine("L4 Preload G", m_autoRoutines::l4PreloadG);
+    autoChooser.addRoutine("L4 Preload F", m_autoRoutines::l4PreloadF);
 
     SmartDashboard.putData("auto chooser", autoChooser);
 
