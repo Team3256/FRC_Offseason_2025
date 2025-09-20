@@ -24,7 +24,7 @@ public final class IntakePivotConstants {
 
   public static final double stowPosition = 0;
   public static final double handoffPosition = 0.25;
-  public static final double groundIntakePosition = 0.27;
+  public static final double groundIntakePosition = 0.5;
 
   public static final TalonFXConfiguration motorConfigs =
       new TalonFXConfiguration()

@@ -39,7 +39,7 @@ public class GroundIntakeRollersIOSim extends GroundIntakeRollersIOTalonFX {
   private final CANrangeSimState canRangeSimState;
 
   private final LoggedTunableNumber canRangeDistance =
-      new LoggedTunableNumber("GIRCanRangeDistance", 0.0);
+      new LoggedTunableNumber("GIRCanRangeDistance", 10.0);
 
   public GroundIntakeRollersIOSim() {
     super();

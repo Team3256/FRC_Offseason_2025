@@ -231,13 +231,7 @@ public class RobotContainer {
   private void configureOperatorBinds() {
 
     // stow everything
-    m_operatorController
-        .b("Home everything")
-        .onTrue(superstructure.setState(StructureState.PREHOME));
-
-    // dealgae states
-    m_operatorController.a("Dealgae L2").onTrue(superstructure.setState(StructureState.DEALGAE_L2));
-    m_operatorController.y("Dealgae L3").onTrue(superstructure.setState(StructureState.DEALGAE_L3));
+    m_operatorController.a().onTrue(superstructure.setState(StructureState.GROUND_INTAKE));
 
     // reef states
     m_operatorController.povUp("L4 Preset").onTrue(superstructure.setState(StructureState.L4));

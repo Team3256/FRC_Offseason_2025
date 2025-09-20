@@ -35,7 +35,7 @@ public class EndEffectorIOSim extends EndEffectorIOTalonFX {
   private final CANrangeSimState eeCanRangeSim;
 
   private final LoggedTunableNumber canRangeDistance =
-      new LoggedTunableNumber("EECanRangeDistance", 0.0);
+      new LoggedTunableNumber("EECanRangeDistance", 10.0);
 
   public EndEffectorIOSim() {
     super();
