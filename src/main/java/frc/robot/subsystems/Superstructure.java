@@ -234,7 +234,7 @@ public class Superstructure {
         .onTrue(elevator.toHandoffPosition())
         .and(elevator.reachedPosition)
         .debounce(0.025)
-        .onTrue(arm.toHandoffLevel())
+        .onTrue(arm.toHandoffPosition())
         .and(arm.reachedPosition)
         .debounce(.025)
         .onTrue(this.setState(StructureState.HANDOFF));

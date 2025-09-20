@@ -43,11 +43,9 @@ import frc.robot.subsystems.endeffector.EndEffectorIOTalonFX;
 import frc.robot.subsystems.groundintakerollers.GroundIntakeRollers;
 import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOSim;
 import frc.robot.subsystems.groundintakerollers.GroundIntakeRollersIOTalonFX;
-
 import frc.robot.subsystems.intakepivot.IntakePivot;
 import frc.robot.subsystems.intakepivot.IntakePivotIOSim;
 import frc.robot.subsystems.intakepivot.IntakePivotIOTalonFX;
-
 import frc.robot.subsystems.led.IndicatorAnimation;
 import frc.robot.subsystems.led.LED;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
@@ -94,7 +92,7 @@ public class RobotContainer {
       new Arm(
           true,
           Utils.isSimulation() ? new ArmIOSim() : new ArmIOTalonFX(),
-          groundIntakeRollers.getDetectedCanRangeDistance());
+          groundIntakeRollers::getDetectedCanRangeDistance);
   private final EndEffector endEffector =
       new EndEffector(
           true, Utils.isSimulation() ? new EndEffectorIOSim() : new EndEffectorIOTalonFX());
