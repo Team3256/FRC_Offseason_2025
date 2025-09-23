@@ -20,7 +20,7 @@ public final class ArmConstants {
 
   public static final int armMotorId = 42;
 
-  public static final int armMotorEncoderId = 40;
+  public static final int armMotorEncoderId = 0;
 
   // max value is 8, min is 0
 
@@ -111,7 +111,7 @@ public final class ArmConstants {
           .withMagnetSensor(
               new MagnetSensorConfigs()
                   .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
-                  .withMagnetOffset(-0.6601640625)
+                  .withMagnetOffset(-0.60205078125)
                   .withAbsoluteSensorDiscontinuityPoint(Rotations.of(1)));
   public static final Angle processorRightPosition = Rotations.of(.576);
 

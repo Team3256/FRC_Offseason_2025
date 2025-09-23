@@ -13,6 +13,8 @@ import frc.robot.utils.LoggedTracer;
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
+import static edu.wpi.first.units.Units.Rotations;
+
 public class IntakePivot extends DisableSubsystem {
 
   private final IntakePivotIO intakePivotIO;
@@ -25,6 +27,8 @@ public class IntakePivot extends DisableSubsystem {
     super(enabled);
 
     this.intakePivotIO = intakePivotIO;
+
+    this.intakePivotIO.resetPosition(Rotations.of(.427));
   }
 
   @Override

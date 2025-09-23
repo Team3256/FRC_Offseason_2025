@@ -25,7 +25,7 @@ public class GroundIntakeRollersConstants {
   // Configure the CANrange for basic use
   public static final CANrangeConfiguration canRangeConfigs = new CANrangeConfiguration();
 
-  public static final int kIntakeRollerMotorID = 46;
+  public static final int kIntakeRollerMotorID = 45;
   public static final double kIntakeRollerMotorVoltage = 12;
 
   public static final double kIntakeRollerMotorHandoffVoltage = -4;

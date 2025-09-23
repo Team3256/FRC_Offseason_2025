@@ -16,7 +16,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 
 public final class IntakePivotConstants {
-  public static final int pivotMotorId = 36;
+  public static final int pivotMotorId = 37;
 
   public static final boolean kUseFOC = false; // do we need this??????
   public static final boolean kUseMotionMagic = true; // idk if pivot needs motion magic
@@ -41,7 +41,7 @@ public final class IntakePivotConstants {
           .withMotorOutput(
               new MotorOutputConfigs()
                   .withNeutralMode(NeutralModeValue.Brake)
-                  .withInverted(InvertedValue.Clockwise_Positive))
+                  .withInverted(InvertedValue.CounterClockwise_Positive))
           .withMotionMagic(
               new MotionMagicConfigs()
                   .withMotionMagicAcceleration(30)
@@ -50,7 +50,7 @@ public final class IntakePivotConstants {
               new CurrentLimitsConfigs()
                   .withStatorCurrentLimitEnable(true)
                   .withStatorCurrentLimit(80))
-          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(10));
+          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(37.93));
 
   public static final class PivotSim {
     // not sure about what gearing means and not sure if its equal to gear ratio

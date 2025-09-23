@@ -21,7 +21,7 @@ public final class EndEffectorConstants {
   // Configure the CANrange for basic use
   public static final CANrangeConfiguration canRangeConfigs = new CANrangeConfiguration();
 
-  public static final int coralMotorID = 43;
+  public static final int coralMotorID = 36;
 
   public static final double coralOuttakeVoltage = 3;
   public static final double coralIntakeVoltage = 12;
