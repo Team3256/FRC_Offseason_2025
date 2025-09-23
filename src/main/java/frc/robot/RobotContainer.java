@@ -393,23 +393,6 @@ public class RobotContainer {
                             .withTargetDirection(bargeFar))
                 .withTimeout(aziTimeout));
 
-    // barge auto align - don't use
-    m_driverController
-        .rightBumper("Auto Align Barge Close")
-        .whileTrue(
-            drivetrain.pidXLocked(
-                () -> bargeCloseX,
-                () -> -m_driverController.getLeftX() * MaxSpeed,
-                () -> -m_driverController.getTriggerAxes() * MaxAngularRate));
-
-    m_driverController
-        .a("Auto Align Barge Far")
-        .whileTrue(
-            drivetrain.pidXLocked(
-                () -> bargeFarX,
-                () -> -m_driverController.getLeftX() * MaxSpeed,
-                () -> -m_driverController.getTriggerAxes() * MaxAngularRate));
-
     // sets the heading to wherever the robot is facing
     // do this with the elevator side of the robot facing YOU
     m_driverController.y("Zero Heading").onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
