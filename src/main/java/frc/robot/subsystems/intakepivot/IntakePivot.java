@@ -7,13 +7,13 @@
 
 package frc.robot.subsystems.intakepivot;
 
+import static edu.wpi.first.units.Units.Rotations;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.utils.DisableSubsystem;
 import frc.robot.utils.LoggedTracer;
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
-
-import static edu.wpi.first.units.Units.Rotations;
 
 public class IntakePivot extends DisableSubsystem {
 

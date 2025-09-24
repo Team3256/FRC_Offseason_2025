@@ -22,7 +22,7 @@ public final class SwerveConstants {
   public static final double SlowMaxSpeed = MaxSpeed * 0.3;
   public static final double SlowMaxAngular = MaxAngularRate * 0.3;
 
-  // source 1, 5 degree overshoot for weight drag from elevator //TODO: determine overshoot if time
+  // source 1, 5 degree overshoot for weight drag from elevator
   // overshoot if weight concentrated: 5 deg = 0.0872665 rad
   public static final Rotation2d sourceLeft1 = new Rotation2d(0.559);
   public static final Rotation2d sourceRight2 = new Rotation2d(2.46091);
