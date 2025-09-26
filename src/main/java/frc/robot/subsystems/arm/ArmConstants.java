@@ -100,18 +100,18 @@ public final class ArmConstants {
                   .withSensorToMechanismRatio(1.33333)
                   .withRotorToSensorRatio(69.9999975));
 
-  public static final TalonFXConfiguration simMotorConfigs =
-      motorConfigs.withFeedback(
-          new FeedbackConfigs()
-              .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor)
-              .withSensorToMechanismRatio(142.22));
+  //  public static final TalonFXConfiguration simMotorConfigs =
+  //      motorConfigs.withFeedback(
+  //          new FeedbackConfigs()
+  //              .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor)
+  //              .withSensorToMechanismRatio(142.22));
 
   public static final CANcoderConfiguration cancoderConfiguration =
       new CANcoderConfiguration()
           .withMagnetSensor(
               new MagnetSensorConfigs()
                   .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
-                  .withMagnetOffset(-0.60205078125)
+                  .withMagnetOffset(-0.263916015625)
                   .withAbsoluteSensorDiscontinuityPoint(Rotations.of(1)));
   public static final Angle processorRightPosition = Rotations.of(.576);
 

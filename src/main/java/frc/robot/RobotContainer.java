@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.InternalButton;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
@@ -29,10 +28,8 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.AutoRoutines;
 import frc.robot.sim.SimMechs;
 import frc.robot.subsystems.Superstructure;
-import frc.robot.subsystems.Superstructure.ManipulatorSide;
 import frc.robot.subsystems.Superstructure.StructureState;
 import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.arm.ArmIOSim;
 import frc.robot.subsystems.arm.ArmIOTalonFX;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIOSim;
@@ -97,10 +94,7 @@ public class RobotContainer {
           true, Utils.isSimulation() ? new IntakePivotIOSim() : new IntakePivotIOTalonFX());
 
   private final Arm arm =
-      new Arm(
-          true,
-          Utils.isSimulation() ? new ArmIOSim() : new ArmIOTalonFX(),
-          intakeRollers::getDetectedCanRangeDistance);
+      new Arm(true, new ArmIOTalonFX(), intakeRollers::getDetectedCanRangeDistance);
 
   /// sim file for intakepivot needs to be added -- seems like its not been merged yet
 
@@ -220,51 +214,7 @@ public class RobotContainer {
 
     // stow everything
     m_operatorController.a().onTrue(superstructure.setState(StructureState.GROUND_INTAKE));
-    m_operatorController.x().onTrue(superstructure.setState(StructureState.L4));
-    m_operatorController.b().onTrue(superstructure.setState(StructureState.PREHOME));
-    m_operatorController.y().onTrue(superstructure.setState(StructureState.SCORE_CORAL));
-
-    // reef states
-    m_operatorController.povUp("L4 Preset").onTrue(superstructure.setState(StructureState.L4));
-    m_operatorController.povRight("L3 Preset").onTrue(superstructure.setState(StructureState.L3));
-    m_operatorController.povDown("L2 Preset").onTrue(superstructure.setState(StructureState.L2));
-    m_operatorController.povLeft("L1 Preset").onTrue(superstructure.setState(StructureState.L1));
-
-    // change end effector side
-    m_operatorController
-        .rightBumper("Manipulator Side Right")
-        .onTrue(superstructure.setManipulatorSide(ManipulatorSide.RIGHT));
-    m_operatorController
-        .leftBumper("Manipulator Side Left")
-        .onTrue(superstructure.setManipulatorSide(ManipulatorSide.LEFT));
-
-    // outtake coral
-    m_operatorController
-        .rightTrigger("Score Coral")
-        .onTrue(superstructure.setState(StructureState.SCORE_CORAL));
-
-    // outtake algae
-    m_operatorController
-        .leftTrigger("Score Algae")
-        .onTrue(superstructure.setState(StructureState.SCORE_ALGAE));
-
-    // set state BARGE
-    new Trigger(() -> -m_operatorController.getLeftY() > .5)
-        .onTrue(superstructure.setState(StructureState.BARGE));
-
-    // set state PROCESSOR
-    new Trigger(() -> -m_operatorController.getLeftY() < -.5)
-        .onTrue(superstructure.setState(StructureState.PROCESSOR));
-
-    // elevator manual up
-    new Trigger(() -> -m_operatorController.getRightY() > .5)
-        .whileTrue(new ScheduleCommand(elevator.setPosition(() -> elevator.getPosition() + .1)))
-        .toggleOnFalse(elevator.setPosition(elevator::getPosition));
-
-    // elevator manual down
-    new Trigger(() -> -m_operatorController.getRightY() < -.5)
-        .whileTrue(new ScheduleCommand(elevator.setPosition(() -> elevator.getPosition() - .1)))
-        .toggleOnFalse(elevator.setPosition(elevator::getPosition));
+    m_operatorController.y().onTrue(superstructure.setState(StructureState.PREHOME));
   }
 
   private void configureChoreoAutoChooser() {

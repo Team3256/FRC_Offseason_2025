@@ -30,13 +30,13 @@ public final class IntakePivotConstants {
       new TalonFXConfiguration()
           .withSlot0(
               new Slot0Configs()
-                  .withKS(0)
-                  .withKV(1.2)
-                  .withKP(20)
+                  .withKS(.150390625)
+                  .withKV(6.01396)
+                  .withKP(1)
                   .withKI(0)
-                  .withKD(1)
+                  .withKD(0)
                   .withKA(0)
-                  .withKG(1.8)
+                  .withKG(0.34)
                   .withGravityType(GravityTypeValue.Arm_Cosine))
           .withMotorOutput(
               new MotorOutputConfigs()

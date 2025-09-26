@@ -10,7 +10,6 @@ package frc.robot.subsystems.arm;
 import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.sim.CANcoderSimState;
-import com.ctre.phoenix6.sim.ChassisReference;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -19,7 +18,6 @@ import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import frc.robot.sim.SimMechs;
-import frc.robot.utils.PhoenixUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 
 public class ArmIOSim extends ArmIOTalonFX {
@@ -40,11 +38,11 @@ public class ArmIOSim extends ArmIOTalonFX {
 
   public ArmIOSim() {
     super();
-    PhoenixUtil.applyMotorConfigs(super.getMotor(), ArmConstants.simMotorConfigs, 1);
-    armSimState = super.getMotor().getSimState();
-    cancoderSimState = super.getEncoder().getSimState();
-    cancoderSimState.Orientation = ChassisReference.Clockwise_Positive;
-    armSimState.Orientation = ChassisReference.CounterClockwise_Positive;
+    //    PhoenixUtil.applyMotorConfigs(super.getMotor(), ArmConstants.simMotorConfigs, 1);
+    //    armSimState = super.getMotor().getSimState();
+    //    cancoderSimState = super.getEncoder().getSimState();
+    //    cancoderSimState.Orientation = ChassisReference.Clockwise_Positive;
+    //    armSimState.Orientation = ChassisReference.CounterClockwise_Positive;
   }
 
   @Override
