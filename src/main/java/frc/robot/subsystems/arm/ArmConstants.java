@@ -48,17 +48,20 @@ public final class ArmConstants {
     Rotations.of(.45), Rotations.of(.45), Rotations.of(.5)
   };
   public static final Angle[] reefLeftScoringPosition = {
-    Rotations.of(.1), Rotations.of(0.1), Rotations.of(0.2)
+    Rotations.of(.1), Rotations.of(0.07), Rotations.of(0.05)
   };
 
   // Dealgae L2, Daalgae L3
   public static final Angle[] dealgaeRightPosition = {Rotations.of(.376), Rotations.of(.361)};
-  public static final Angle[] dealgaeLeftPosition = {Rotations.of(.124), Rotations.of(.139)};
+  public static final Angle[] dealgaeLeftPosition = {Rotations.of(.1), Rotations.of(.1)};
 
   public static final Angle sourcePosition = Rotations.of(.285);
 
   public static final Angle bargeLeftPosition = Rotations.of(.17);
   public static final Angle bargeRightPosition = Rotations.of(.33);
+
+  public static final Angle prebargeLeftPosition = Rotations.of(.33);
+  public static final Angle prebargeRightPosition = Rotations.of(.17);
 
   public static final Angle homePosition = Rotations.of(.25);
 
@@ -111,16 +114,16 @@ public final class ArmConstants {
           .withMagnetSensor(
               new MagnetSensorConfigs()
                   .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
-                  .withMagnetOffset(-0.263916015625)
+                  .withMagnetOffset(-0.9375)
                   .withAbsoluteSensorDiscontinuityPoint(Rotations.of(1)));
   public static final Angle processorRightPosition = Rotations.of(.576);
 
   public static final Angle groundAlgaeRightPosition = Rotations.of(.62);
 
-  public static final Angle armAngleCoralLeft = Rotations.of(0.745);
-  public static final Angle armAngleCoralRight = Rotations.of(0.755);
-  public static final double coralDistanceLeft = 0.1; // inches
-  public static final double coralDistanceRight = .5; // inches
+  public static final Angle armAngleCoralLeft = Rotations.of(0.77);
+  public static final Angle armAngleCoralRight = Rotations.of(0.73);
+  public static final double coralDistanceLeft = 0.05; // inches
+  public static final double coralDistanceRight = .26; // inches
 
   public static final class Sim {
     public static final double simGearing = 142.22;

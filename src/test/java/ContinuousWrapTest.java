@@ -39,4 +39,9 @@ public class ContinuousWrapTest {
         assertEquals(.66, Arm.continuousWrapAtHome(.66, .84, -1));
     }
 
+    @Test
+    public void ttest() {
+        assertEquals(.77, Arm.continuousWrapAtHome(.77, .73, 0));
+    }
+
 }

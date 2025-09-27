@@ -62,7 +62,7 @@ public final class EndEffectorConstants {
                   .withSupplyCurrentLowerLimit(40));
 
   public static final double stallStatorCurrent = 50;
-  public static final double algaeIntakeVoltage = 3;
+  public static final double algaeIntakeVoltage = -6;
   public static double algaeOuttakeVoltage = 4;
 
   public static final class SimulationConstants {
