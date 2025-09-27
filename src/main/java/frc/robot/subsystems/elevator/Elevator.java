@@ -104,6 +104,11 @@ public class Elevator extends DisableSubsystem {
         .withName("toHandoffPosition");
   }
 
+  public Command toPreHandoffHome() {
+    return this.setPosition(ElevatorConstants.preHomeHandoff.in(Rotations))
+        .withName("toPreHandoffHome");
+  }
+
   @AutoLogOutput
   public boolean isAtPosition() {
     return Util.epsilonEquals(motorIOAutoLogged.motorPosition, requestedPosition, 0.1);

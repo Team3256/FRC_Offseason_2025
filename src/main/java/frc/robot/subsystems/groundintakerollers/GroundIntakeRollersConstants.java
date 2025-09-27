@@ -7,28 +7,36 @@
 
 package frc.robot.subsystems.groundintakerollers;
 
-import com.ctre.phoenix6.configs.CANrangeConfiguration;
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.UpdateModeValue;
 
 public class GroundIntakeRollersConstants {
 
   public static final boolean kUseFOC = false;
 
   // Constants used in CANrange construction
-  public static final int kCANrangeId = 0;
+  public static final int kCANrangeId = 1;
 
   // Configure the CANrange for basic use
-  public static final CANrangeConfiguration canRangeConfigs = new CANrangeConfiguration();
+  public static final CANrangeConfiguration canRangeConfigs =
+      new CANrangeConfiguration()
+          .withFovParams(
+              new FovParamsConfigs()
+                  .withFOVRangeX(7)
+                  .withFOVRangeY(7)
+                  .withFOVCenterY(-.7)
+                  .withFOVCenterX(-.7))
+          .withToFParams(
+              new ToFParamsConfigs()
+                  .withUpdateMode(UpdateModeValue.ShortRangeUserFreq)
+                  .withUpdateFrequency(50));
 
   public static final int kIntakeRollerMotorID = 45;
-  public static final double kIntakeRollerMotorVoltage = 12;
+  public static final double kIntakeRollerMotorVoltage = -6;
 
-  public static final double kIntakeRollerMotorHandoffVoltage = -4;
+  public static final double kIntakeRollerMotorHandoffVoltage = 4;
 
   public static double updateFrequency = 50;
 
@@ -46,7 +54,7 @@ public class GroundIntakeRollersConstants {
   public static int flashConfigRetries = 5;
 
   public static final int motorCoralStall = 40;
-  public static final double coralIntakeIn = 4;
+  public static final double coralIntakeIn = .4;
 
   public static final class SimulationConstants {
     public static double rollerGearingRatio = 1.0;

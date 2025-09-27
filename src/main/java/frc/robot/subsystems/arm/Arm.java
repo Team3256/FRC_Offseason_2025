@@ -157,7 +157,7 @@ public class Arm extends DisableSubsystem {
   @AutoLogOutput
   public boolean isAtPosition() {
     return Util.epsilonEquals(
-        armIOAutoLogged.armMotorPosition, requestedPosition.in(Rotations), 0.01);
+        armIOAutoLogged.armMotorPosition, requestedPosition.in(Rotations), 0.005);
   }
 
   public Command toHome() {

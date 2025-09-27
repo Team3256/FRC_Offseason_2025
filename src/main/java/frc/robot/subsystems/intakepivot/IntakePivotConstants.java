@@ -22,21 +22,21 @@ public final class IntakePivotConstants {
   public static final boolean kUseMotionMagic = true; // idk if pivot needs motion magic
   public static final int flashConfigRetries = 5;
 
-  public static final double stowPosition = .15;
-  public static final double handoffPosition = 0.25;
-  public static final double groundIntakePosition = 0.5;
+  public static final double stowPosition = .4;
+  public static final double handoffPosition = 0.303;
+  public static final double groundIntakePosition = -.09;
 
   public static final TalonFXConfiguration motorConfigs =
       new TalonFXConfiguration()
           .withSlot0(
               new Slot0Configs()
-                  .withKS(.150390625)
-                  .withKV(6.01396)
-                  .withKP(1)
+                  .withKS(.05)
+                  .withKV(4)
+                  .withKP(150)
                   .withKI(0)
-                  .withKD(0)
+                  .withKD(8)
                   .withKA(0)
-                  .withKG(0.34)
+                  .withKG(.45)
                   .withGravityType(GravityTypeValue.Arm_Cosine))
           .withMotorOutput(
               new MotorOutputConfigs()
@@ -44,13 +44,13 @@ public final class IntakePivotConstants {
                   .withInverted(InvertedValue.CounterClockwise_Positive))
           .withMotionMagic(
               new MotionMagicConfigs()
-                  .withMotionMagicAcceleration(30)
+                  .withMotionMagicAcceleration(10)
                   .withMotionMagicCruiseVelocity(2))
           .withCurrentLimits(
               new CurrentLimitsConfigs()
                   .withStatorCurrentLimitEnable(true)
                   .withStatorCurrentLimit(80))
-          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(37.93));
+          .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(27.32));
 
   public static final class PivotSim {
     // not sure about what gearing means and not sure if its equal to gear ratio

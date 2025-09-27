@@ -18,12 +18,6 @@ public class GroundIntakeRollers extends DisableSubsystem {
   private final GroundIntakeRollersIOInputsAutoLogged intakeIOAutoLogged =
       new GroundIntakeRollersIOInputsAutoLogged();
 
-  public final Trigger motorStalled =
-      new Trigger(
-          () ->
-              (intakeIOAutoLogged.intakeRollerMotorStatorCurrent
-                  > GroundIntakeRollersConstants.motorCoralStall));
-
   public final Trigger coralIntakeIn =
       new Trigger(
           () -> (intakeIOAutoLogged.canRangeDistance < GroundIntakeRollersConstants.coralIntakeIn));
@@ -38,6 +32,8 @@ public class GroundIntakeRollers extends DisableSubsystem {
     super.periodic();
     groundIntakeRollersIO.updateInputs(intakeIOAutoLogged);
     Logger.processInputs("GroundIntake", intakeIOAutoLogged);
+
+    Logger.recordOutput("GroundIntake/coral", coralIntakeIn.getAsBoolean());
 
     LoggedTracer.record("GroundIntake");
   }

@@ -214,7 +214,13 @@ public class RobotContainer {
 
     // stow everything
     m_operatorController.a().onTrue(superstructure.setState(StructureState.GROUND_INTAKE));
+    m_operatorController.b().onTrue(superstructure.setState(StructureState.L3));
+    m_operatorController.x().onTrue(superstructure.setState(StructureState.SCORE_CORAL));
     m_operatorController.y().onTrue(superstructure.setState(StructureState.PREHOME));
+
+    m_operatorController
+        .leftBumper()
+        .onTrue(superstructure.setManipulatorSide(Superstructure.ManipulatorSide.LEFT));
   }
 
   private void configureChoreoAutoChooser() {

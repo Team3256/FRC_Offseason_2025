@@ -37,6 +37,8 @@ public class EndEffector extends DisableSubsystem {
     endEffectorIO.updateInputs(endEffectorIOInputsAutoLogged);
     Logger.processInputs("EndEffector", endEffectorIOInputsAutoLogged);
 
+    Logger.recordOutput("EndEffector/gamePieceIntaken", gamePieceIntaken.getAsBoolean());
+
     LoggedTracer.record("EndEffector");
   }
 

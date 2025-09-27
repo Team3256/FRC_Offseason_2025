@@ -136,13 +136,13 @@ public class Superstructure {
         .and(elevator.reachedPosition)
         .onTrue(arm.toScoringPosition(2, rightManipulatorSide));
 
-    stateTriggers
-        .get(StructureState.SCORE_CORAL)
-        .and(arm.reachedPosition)
-        .debounce(.025)
-        .onTrue(endEffector.setCoralOuttakeVoltage())
-        .debounce(.1)
-        .onTrue(this.setState(StructureState.PREHOME));
+    //    stateTriggers
+    //        .get(StructureState.SCORE_CORAL)
+    //        .and(arm.reachedPosition)
+    //        .debounce(.025)
+    //        .onTrue(endEffector.setCoralOuttakeVoltage())
+    //        .debounce(.1)
+    //        .onTrue(this.setState(StructureState.PREHOME));
 
     // Dealgae Levels
     stateTriggers
@@ -182,9 +182,21 @@ public class Superstructure {
 
     stateTriggers
         .get(StructureState.PREHOME)
+        .and(prevStateTriggers.get(StructureState.HANDOFF).negate())
         .onTrue(arm.toHome())
         .and(arm.reachedPosition)
         .debounce(0.025)
+        .onTrue(this.setState(StructureState.HOME));
+
+    stateTriggers
+        .get(StructureState.PREHOME)
+        .and(prevStateTriggers.get(StructureState.HANDOFF))
+        .onTrue(elevator.toPreHandoffHome())
+        .and(elevator.reachedPosition)
+        .debounce(.025)
+        .onTrue(arm.toHome())
+        .and(arm.isSafePosition)
+        .debounce(.025)
         .onTrue(this.setState(StructureState.HOME));
 
     // Once arm is safe, the elevator can also home, once everything is done we can go to the IDLE
@@ -229,16 +241,18 @@ public class Superstructure {
         .onTrue(intakePivot.goToHandoff())
         .onTrue(elevator.toHandoffPosition())
         .and(elevator.reachedPosition)
-        .debounce(0.025)
+        .debounce(0.05)
         .onTrue(arm.toHandoffPosition())
         .and(arm.reachedPosition)
-        .debounce(.025)
+        .and(intakePivot.reachedPosition)
+        .debounce(.05)
         .onTrue(this.setState(StructureState.HANDOFF));
 
     stateTriggers
         .get(StructureState.HANDOFF)
         .onTrue(intakeRollers.handoffCoral())
         .onTrue(endEffector.intakeCoral())
+        .and(intakeRollers.coralIntakeIn.negate())
         .and(endEffector.gamePieceIntaken)
         .onTrue(this.setState(StructureState.PREHOME));
     ;

@@ -10,8 +10,10 @@ package frc.robot.subsystems.intakepivot;
 import static edu.wpi.first.units.Units.Rotations;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.utils.DisableSubsystem;
 import frc.robot.utils.LoggedTracer;
+import frc.robot.utils.Util;
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
@@ -21,6 +23,8 @@ public class IntakePivot extends DisableSubsystem {
   private final IntakePivotIOInputsAutoLogged intakePivotIOInputsAutoLogged =
       new IntakePivotIOInputsAutoLogged();
 
+  public final Trigger reachedPosition = new Trigger(this::reachedPosition);
+
   private double reqPosition = 0.0;
 
   public IntakePivot(boolean enabled, IntakePivotIO intakePivotIO) {
@@ -28,7 +32,7 @@ public class IntakePivot extends DisableSubsystem {
 
     this.intakePivotIO = intakePivotIO;
 
-    this.intakePivotIO.resetPosition(Rotations.of(.427));
+    this.intakePivotIO.resetPosition(Rotations.of(.4267));
   }
 
   @Override
@@ -76,5 +80,9 @@ public class IntakePivot extends DisableSubsystem {
 
   public Command goToGroundIntake() {
     return this.setPosition(IntakePivotConstants.groundIntakePosition);
+  }
+
+  public boolean reachedPosition() {
+    return Util.epsilonEquals(intakePivotIOInputsAutoLogged.pivotMotorPosition, reqPosition, 0.01);
   }
 }

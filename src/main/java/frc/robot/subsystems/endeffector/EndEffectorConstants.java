@@ -12,19 +12,30 @@ import com.ctre.phoenix6.signals.*;
 
 public final class EndEffectorConstants {
 
-  public static final double gamePieceIntakenIn = 0.2;
+  public static final double gamePieceIntakenIn = 0.12;
   public static final boolean kUseFOC = true;
 
   // Constants used in CANrange construction
   public static final int kCANrangeId = 0;
 
   // Configure the CANrange for basic use
-  public static final CANrangeConfiguration canRangeConfigs = new CANrangeConfiguration();
+  public static final CANrangeConfiguration canRangeConfigs =
+      new CANrangeConfiguration()
+          .withFovParams(
+              new FovParamsConfigs()
+                  .withFOVCenterX(.7)
+                  .withFOVCenterY(.7)
+                  .withFOVRangeX(7)
+                  .withFOVRangeY(7))
+          .withToFParams(
+              new ToFParamsConfigs()
+                  .withUpdateFrequency(50)
+                  .withUpdateMode(UpdateModeValue.LongRangeUserFreq));
 
   public static final int coralMotorID = 36;
 
   public static final double coralOuttakeVoltage = 3;
-  public static final double coralIntakeVoltage = 12;
+  public static final double coralIntakeVoltage = -6;
 
   // algae first then coral
   public static final double sourceVelocityRps = 30;
