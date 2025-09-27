@@ -59,9 +59,7 @@ public class Arm extends DisableSubsystem {
   public Command setPosition(Supplier<Angle> position, boolean continuous, IntSupplier direction) {
     return this.run(
             () -> {
-              cachedArmMotorPosition =
-
-                       armIOAutoLogged.armMotorPosition;
+              cachedArmMotorPosition = armIOAutoLogged.armMotorPosition;
               requestedPosition.mut_replace(
                   continuous
                       ? continuousWrapAtHome(position.get(), direction.getAsInt())
@@ -150,16 +148,16 @@ public class Arm extends DisableSubsystem {
         .withName("toBargeLevel");
   }
 
-    public Command toPreBargeLevel(BooleanSupplier rightSide) {
-        return this.setPosition(
-                        () ->
-                                rightSide.getAsBoolean()
-                                        ? ArmConstants.prebargeRightPosition
-                                        : ArmConstants.prebargeLeftPosition,
-                        true,
-                        () -> 0)
-                .withName("toBargeLevel");
-    }
+  public Command toPreBargeLevel(BooleanSupplier rightSide) {
+    return this.setPosition(
+            () ->
+                rightSide.getAsBoolean()
+                    ? ArmConstants.prebargeRightPosition
+                    : ArmConstants.prebargeLeftPosition,
+            true,
+            () -> 0)
+        .withName("toBargeLevel");
+  }
 
   public Command toGroundAlgaeLevel() {
     return this.setPosition(() -> ArmConstants.groundAlgaeRightPosition, true, () -> 0)

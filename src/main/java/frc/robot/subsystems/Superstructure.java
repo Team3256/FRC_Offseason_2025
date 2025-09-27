@@ -159,19 +159,20 @@ public class Superstructure {
         .get(StructureState.DEALGAE_L2)
         .or(stateTriggers.get(StructureState.DEALGAE_L3))
         .onTrue(endEffector.setAlgaeIntakeVoltage())
-            .and(endEffector.gamePieceIntaken)
-            .onTrue(this.setState(StructureState.PREHOME));
+        .and(endEffector.gamePieceIntaken)
+        .onTrue(this.setState(StructureState.PREHOME));
 
     // Barge level
-    stateTriggers.get(StructureState.BARGE)
-                    .onTrue(elevator.toBargePosition())
-                            .onTrue(arm.toPreBargeLevel(rightManipulatorSide));
+    stateTriggers
+        .get(StructureState.BARGE)
+        .onTrue(elevator.toBargePosition())
+        .onTrue(arm.toPreBargeLevel(rightManipulatorSide));
     stateTriggers
         .get(StructureState.SCORE_ALGAE)
-            .and(prevStateTriggers.get(StructureState.BARGE))
+        .and(prevStateTriggers.get(StructureState.BARGE))
         .onTrue(arm.toBargeLevel(rightManipulatorSide))
-                .debounce(0.1)
-                        .onTrue(endEffector.setAlgaeOuttakeVoltage());
+        .debounce(0.1)
+        .onTrue(endEffector.setAlgaeOuttakeVoltage());
 
     // Processor state
     stateTriggers
@@ -186,11 +187,24 @@ public class Superstructure {
 
     // Turn coral motor off (helpful for transitioning from SCORE_CORAL), do not turn algae motor
     // off since you might be holding one
-    stateTriggers.get(StructureState.PREHOME).and(prevStateTriggers.get(StructureState.DEALGAE_L2).or(prevStateTriggers.get(StructureState.DEALGAE_L3)).negate()).onTrue(endEffector.off()).onTrue(intakeRollers.off());
+    stateTriggers
+        .get(StructureState.PREHOME)
+        .and(
+            prevStateTriggers
+                .get(StructureState.DEALGAE_L2)
+                .or(prevStateTriggers.get(StructureState.DEALGAE_L3))
+                .negate())
+        .onTrue(endEffector.off())
+        .onTrue(intakeRollers.off());
 
     stateTriggers
         .get(StructureState.PREHOME)
-            .and(prevStateTriggers.get(StructureState.HANDOFF).or(prevStateTriggers.get(StructureState.PRE_HANDOFF)).or(prevStateTriggers.get(StructureState.GROUND_INTAKE)).negate())
+        .and(
+            prevStateTriggers
+                .get(StructureState.HANDOFF)
+                .or(prevStateTriggers.get(StructureState.PRE_HANDOFF))
+                .or(prevStateTriggers.get(StructureState.GROUND_INTAKE))
+                .negate())
         .onTrue(arm.toHome())
         .and(arm.reachedPosition)
         .debounce(0.05)
@@ -198,7 +212,11 @@ public class Superstructure {
 
     stateTriggers
         .get(StructureState.PREHOME)
-        .and(prevStateTriggers.get(StructureState.HANDOFF).or(prevStateTriggers.get(StructureState.PRE_HANDOFF)).or(prevStateTriggers.get(StructureState.GROUND_INTAKE)))
+        .and(
+            prevStateTriggers
+                .get(StructureState.HANDOFF)
+                .or(prevStateTriggers.get(StructureState.PRE_HANDOFF))
+                .or(prevStateTriggers.get(StructureState.GROUND_INTAKE)))
         .onTrue(elevator.toPreHandoffHome())
         .and(elevator.reachedPosition)
         .debounce(.05)
@@ -232,10 +250,10 @@ public class Superstructure {
         .get(StructureState.GROUND_INTAKE)
         .onTrue(intakePivot.goToGroundIntake())
         .onTrue(intakeRollers.intakeCoral())
-            .onTrue(elevator.toPreHandoffHome())
-            .and(elevator.reachedPosition)
-            .debounce(0.05)
-            .onTrue(arm.toHandoffPosition());
+        .onTrue(elevator.toPreHandoffHome())
+        .and(elevator.reachedPosition)
+        .debounce(0.05)
+        .onTrue(arm.toHandoffPosition());
 
     stateTriggers
         .get(StructureState.GROUND_INTAKE)
@@ -250,13 +268,13 @@ public class Superstructure {
 
     stateTriggers
         .get(StructureState.PRE_HANDOFF)
-            .onTrue(intakePivot.goToHandoff())
-            .and(intakePivot.reachedPosition)
-            .debounce(.05)
-            .onTrue(elevator.toHandoffPosition())
+        .onTrue(intakePivot.goToHandoff())
+        .and(intakePivot.reachedPosition)
+        .debounce(.05)
+        .onTrue(elevator.toHandoffPosition())
         .and(elevator.reachedPosition)
-            .and(arm.reachedPosition)
-            .and(intakePivot.reachedPosition)
+        .and(arm.reachedPosition)
+        .and(intakePivot.reachedPosition)
         .debounce(0.05)
         .onTrue(this.setState(StructureState.HANDOFF));
 
