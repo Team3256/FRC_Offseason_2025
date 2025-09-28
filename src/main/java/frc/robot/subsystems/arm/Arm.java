@@ -34,6 +34,8 @@ public class Arm extends DisableSubsystem {
   public final Trigger reachedPosition = new Trigger(this::isAtPosition);
   public final Trigger isSafePosition = new Trigger(this::isSafePosition);
 
+  public final Trigger isAtHome = new Trigger(this::isAtHome);
+
   private double cachedArmMotorPosition = 0.0;
   private int cachedDirection = 0;
   private final MutAngle requestedPosition = Rotations.of(0.0).mutableCopy();
@@ -168,6 +170,10 @@ public class Arm extends DisableSubsystem {
   public boolean isAtPosition() {
     return Util.epsilonEquals(
         armIOAutoLogged.armMotorPosition, requestedPosition.in(Rotations), 0.005);
+  }
+
+  public boolean isAtHome() {
+      return Util.epsilonEquals(armIOAutoLogged.armMotorPosition, ArmConstants.homePosition.in(Rotations), 0.005);
   }
 
   public Command toHome() {

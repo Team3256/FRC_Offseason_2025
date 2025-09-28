@@ -85,6 +85,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
       new SwerveRequest.ApplyFieldSpeeds()
           .withDriveRequestType(SwerveModule.DriveRequestType.Velocity);
 
+  private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds =
+      new SwerveRequest.ApplyRobotSpeeds()
+          .withDriveRequestType(SwerveModule.DriveRequestType.Velocity);
+
   private final PIDController xController = new PIDController(5.0, 0.0, 0);
   private final PIDController yController = new PIDController(5.0, 0.0, 0);
   private final PIDController headingController = new PIDController(5, 0, 0);
@@ -96,8 +100,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
       new SwerveRequest.SysIdSwerveSteerGains();
   private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization =
       new SwerveRequest.SysIdSwerveRotation();
-
-  @AutoLogOutput private boolean questNavZeroed = false;
 
   /*
    * SysId routine for characterizing translation. This is used to find PID gains
@@ -159,11 +161,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   /* The SysId routine to test */
   private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
-  public final QuestNav questNav =
-      new QuestNav(
-          new Transform3d(
-              new Translation3d(-0.277, -0.251, 0), new Rotation3d(Rotation2d.fromDegrees(217.5))));
-
   private Translation2d _calculatedOffsetToRobotCenter = new Translation2d();
   private int _calculatedOffsetToRobotCenterCount = 0;
 
@@ -194,9 +191,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     if (Utils.isSimulation()) {
       startSimThread();
     }
-    questNav.resetPose(
-        new Pose3d(
-            0.4273998737335205, 6.396022319793701, 0, new Rotation3d(Rotation2d.fromDegrees(0))));
   }
 
   /**
@@ -257,8 +251,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
       System.out.println("**** pidToPose disabled because of null target");
       return Commands.none();
     }
-    xController.setTolerance(.1);
-    yController.setTolerance(.1);
+    xController.setTolerance(.05);
+    yController.setTolerance(.05);
     headingController.setTolerance(Math.toRadians(.1));
     return run(() -> {
           Logger.recordOutput("AutoAlign/Target", target.get());
@@ -277,6 +271,24 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
               Logger.recordOutput("AutoAlign/Running", false);
             });
   }
+    public Command pidToCoral(Supplier<Double> xTarget, Supplier<Double> yTarget) {
+        xController.setTolerance(.1);
+        yController.setTolerance(.1);
+        headingController.setTolerance(Math.toRadians(.1));
+        return run(() -> {
+            Logger.recordOutput("AutoAlignCoral/Running", true);
+            this.setControl(
+                    m_pathApplyRobotSpeeds.withSpeeds(
+                            new ChassisSpeeds(
+                                    xController.calculate(-xTarget.get(),0 ),
+                                    yController.calculate(yTarget.get(), 0),
+                                    0)));
+        })
+                .finallyDo(
+                        () -> {
+                            Logger.recordOutput("AutoAlignCoral/Running", false);
+                        });
+    }
 
   public Command pidXLocked(
       Supplier<Double> targetX,
@@ -429,30 +441,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
               });
     }
 
-    if (!Utils.isSimulation() && questNav.connected()) {
-      Logger.recordOutput("QuestNav/pose", questNav.getRobotPose());
-      Logger.recordOutput("QuestNav/x", questNav.calculateOffsetToRobotCenter().getX());
-      Logger.recordOutput("QuestNav/y", questNav.calculateOffsetToRobotCenter().getY());
-      // if (!DriverStation.isDisabled()) {
-      // super.addVisionMeasurement(
-      // questNav.getRobotPose().toPose2d(),
-      // Utils.getCurrentTimeSeconds(),
-      // VecBuilder.fill(0.0001, 0.0001, .99999));
-      // }
 
-    } else {
-      a_questNavNotConnected.set(true);
-    }
-    Logger.recordOutput("QuestNav/connected", questNav.connected());
 
-    // if ((!questNavZeroed || DriverStation.isDisabled())&&questNav.connected()) {
-    // if
-    // (this.getState().Pose.getTranslation().getDistance(Pose2d.kZero.getTranslation())
-    // >1)
-    // {
-    // questNav.softReset(new Pose3d(this.getState().Pose));
-    //// questNavZeroed = true;
-    // }}
+
     LoggedTracer.record(this.getClass().getSimpleName());
   }
 

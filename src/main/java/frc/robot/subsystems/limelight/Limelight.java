@@ -14,35 +14,22 @@ import frc.robot.utils.LimelightHelpers;
 
 public class Limelight {
 
-  static final String sanitizeName(String name) {
-    if ("".equals(name) || name == null) {
-      return "limelight";
+    private final String name;
+
+    public Limelight(String name) {
+        this.name = name;
     }
-    return name;
+
+
+
+
+
+  public  double getTX() {
+    return LimelightHelpers.getTX(name);
   }
 
-  public static NetworkTable getLimelightNTTable(String tableName) {
-    return NetworkTableInstance.getDefault().getTable(sanitizeName(tableName));
+  public  double getTY() {
+    return LimelightHelpers.getTY(name);
   }
-
-  public static NetworkTableEntry getLimelightNTTableEntry(String tableName, String entryName) {
-    return getLimelightNTTable(tableName).getEntry(entryName);
-  }
-
-  public static double getLimelightNTDouble(String tableName, String entryName) {
-    return getLimelightNTTableEntry(tableName, entryName).getDouble(0.0);
-  }
-
-  public static double getTX(String limelightName) {
-    return getLimelightNTDouble(limelightName, "tx");
-  }
-
-  public static double getTY(String limelightName) {
-    return getLimelightNTDouble(limelightName, "ty");
-  }
-
-  double tx = LimelightHelpers.getTX("limelight");
-  double ty = LimelightHelpers.getTY("limelight");
-  // boolean hasTarget = LimelightHelpers.getTV("limelight");
 
 }

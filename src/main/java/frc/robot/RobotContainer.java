@@ -45,6 +45,7 @@ import frc.robot.subsystems.intakepivot.IntakePivotIOSim;
 import frc.robot.subsystems.intakepivot.IntakePivotIOTalonFX;
 import frc.robot.subsystems.led.IndicatorAnimation;
 import frc.robot.subsystems.led.LED;
+import frc.robot.subsystems.limelight.Limelight;
 import frc.robot.subsystems.swerve.CommandSwerveDrivetrain;
 import frc.robot.subsystems.swerve.generated.TunerConstants;
 import frc.robot.subsystems.vision.Vision;
@@ -139,6 +140,8 @@ public class RobotContainer {
 
   private final InternalButton autoAlignRunning = new InternalButton();
 
+  private final Limelight limelight = new Limelight("limelight");
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -213,10 +216,16 @@ public class RobotContainer {
   private void configureOperatorBinds() {
 
     // stow everything
-    m_operatorController.a().onTrue(superstructure.setState(StructureState.DEALGAE_L3));
-    m_operatorController.b().onTrue(superstructure.setState(StructureState.BARGE));
-    m_operatorController.x().onTrue(superstructure.setState(StructureState.SCORE_ALGAE));
-    m_operatorController.y().onTrue(superstructure.setState(StructureState.PREHOME));
+    m_operatorController.a().onTrue(superstructure.setState(StructureState.GROUND_INTAKE));
+    m_operatorController.b().onTrue(superstructure.setState(StructureState.PREHOME));
+    m_operatorController.povUp().onTrue(superstructure.setState(StructureState.L4));
+    m_operatorController.povRight().onTrue(superstructure.setState(StructureState.L3));
+    m_operatorController.povDown().onTrue(superstructure.setState(StructureState.L2));
+    m_operatorController.y().onTrue(superstructure.setState(StructureState.SCORE_CORAL));
+    m_operatorController.rightTrigger().onTrue(superstructure.setState(StructureState.DEALGAE_L3));
+    m_operatorController.leftTrigger().onTrue(superstructure.setState(StructureState.SCORE_ALGAE));
+    m_operatorController.rightBumper().onTrue(superstructure.setState(StructureState.BARGE));
+    m_driverController.a().whileTrue(drivetrain.pidToCoral(limelight::getTX, limelight::getTY));
 
     m_operatorController
         .leftBumper()
@@ -357,14 +366,14 @@ public class RobotContainer {
                 () -> bargeCloseX,
                 () -> -m_driverController.getLeftX() * MaxSpeed,
                 () -> -m_driverController.getTriggerAxes() * MaxAngularRate));
-
-    m_driverController
-        .a("Auto Align Barge Far")
-        .whileTrue(
-            drivetrain.pidXLocked(
-                () -> bargeFarX,
-                () -> -m_driverController.getLeftX() * MaxSpeed,
-                () -> -m_driverController.getTriggerAxes() * MaxAngularRate));
+//
+//    m_driverController
+//        .a("Auto Align Barge Far")
+//        .whileTrue(
+//            drivetrain.pidXLocked(
+//                () -> bargeFarX,
+//                () -> -m_driverController.getLeftX() * MaxSpeed,
+//                () -> -m_driverController.getTriggerAxes() * MaxAngularRate));
 
     // sets the heading to wherever the robot is facing
     // do this with the elevator side of the robot facing YOU

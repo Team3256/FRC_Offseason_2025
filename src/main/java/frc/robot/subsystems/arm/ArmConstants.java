@@ -36,7 +36,7 @@ public final class ArmConstants {
   // "arm level 0" is L1, "arm level 1" is L2-L3, "arm level 2" is L4
   // 3 sig figs of acc
   public static final Angle[] reefRightPrepPositions = {
-    Rotations.of(0.32), Rotations.of(0.316), Rotations.of(0.3408)
+    Rotations.of(0.3), Rotations.of(0.3), Rotations.of(0.343)
   };
 
   // @deprecated
@@ -45,10 +45,10 @@ public final class ArmConstants {
   };
 
   public static final Angle[] reefRightScoringPosition = {
-    Rotations.of(.45), Rotations.of(.45), Rotations.of(.5)
+    Rotations.of(.4), Rotations.of(.5), Rotations.of(.45)
   };
   public static final Angle[] reefLeftScoringPosition = {
-    Rotations.of(.1), Rotations.of(0.07), Rotations.of(0.05)
+    Rotations.of(.1), Rotations.of(0), Rotations.of(0.05)
   };
 
   // Dealgae L2, Daalgae L3

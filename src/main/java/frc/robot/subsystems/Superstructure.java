@@ -206,8 +206,7 @@ public class Superstructure {
                 .or(prevStateTriggers.get(StructureState.GROUND_INTAKE))
                 .negate())
         .onTrue(arm.toHome())
-        .and(arm.reachedPosition)
-        .debounce(0.05)
+        .and(arm.isAtHome)
         .onTrue(this.setState(StructureState.HOME));
 
     stateTriggers
@@ -221,8 +220,7 @@ public class Superstructure {
         .and(elevator.reachedPosition)
         .debounce(.05)
         .onTrue(arm.toHome())
-        .and(arm.reachedPosition)
-        .debounce(.05)
+        .and(arm.isAtHome)
         .onTrue(this.setState(StructureState.HOME));
 
     // Once arm is safe, the elevator can also home, once everything is done we can go to the IDLE
