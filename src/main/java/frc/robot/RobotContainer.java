@@ -366,14 +366,14 @@ public class RobotContainer {
                 () -> bargeCloseX,
                 () -> -m_driverController.getLeftX() * MaxSpeed,
                 () -> -m_driverController.getTriggerAxes() * MaxAngularRate));
-//
-//    m_driverController
-//        .a("Auto Align Barge Far")
-//        .whileTrue(
-//            drivetrain.pidXLocked(
-//                () -> bargeFarX,
-//                () -> -m_driverController.getLeftX() * MaxSpeed,
-//                () -> -m_driverController.getTriggerAxes() * MaxAngularRate));
+    //
+    //    m_driverController
+    //        .a("Auto Align Barge Far")
+    //        .whileTrue(
+    //            drivetrain.pidXLocked(
+    //                () -> bargeFarX,
+    //                () -> -m_driverController.getLeftX() * MaxSpeed,
+    //                () -> -m_driverController.getTriggerAxes() * MaxAngularRate));
 
     // sets the heading to wherever the robot is facing
     // do this with the elevator side of the robot facing YOU

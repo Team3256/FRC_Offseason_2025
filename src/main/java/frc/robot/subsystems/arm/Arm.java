@@ -173,7 +173,8 @@ public class Arm extends DisableSubsystem {
   }
 
   public boolean isAtHome() {
-      return Util.epsilonEquals(armIOAutoLogged.armMotorPosition, ArmConstants.homePosition.in(Rotations), 0.005);
+    return Util.epsilonEquals(
+        armIOAutoLogged.armMotorPosition, ArmConstants.homePosition.in(Rotations), 0.005);
   }
 
   public Command toHome() {

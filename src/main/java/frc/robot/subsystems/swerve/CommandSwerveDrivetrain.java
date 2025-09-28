@@ -39,7 +39,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.drivers.QuestNav;
 import frc.robot.subsystems.swerve.generated.TunerConstants;
 import frc.robot.subsystems.swerve.generated.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.utils.LoggedTracer;
@@ -271,24 +270,25 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
               Logger.recordOutput("AutoAlign/Running", false);
             });
   }
-    public Command pidToCoral(Supplier<Double> xTarget, Supplier<Double> yTarget) {
-        xController.setTolerance(.1);
-        yController.setTolerance(.1);
-        headingController.setTolerance(Math.toRadians(.1));
-        return run(() -> {
-            Logger.recordOutput("AutoAlignCoral/Running", true);
-            this.setControl(
-                    m_pathApplyRobotSpeeds.withSpeeds(
-                            new ChassisSpeeds(
-                                    xController.calculate(-xTarget.get(),0 ),
-                                    yController.calculate(yTarget.get(), 0),
-                                    0)));
+
+  public Command pidToCoral(Supplier<Double> xTarget, Supplier<Double> yTarget) {
+    xController.setTolerance(.1);
+    yController.setTolerance(.1);
+    headingController.setTolerance(Math.toRadians(.1));
+    return run(() -> {
+          Logger.recordOutput("AutoAlignCoral/Running", true);
+          this.setControl(
+              m_pathApplyRobotSpeeds.withSpeeds(
+                  new ChassisSpeeds(
+                      xController.calculate(-xTarget.get(), 0),
+                      yController.calculate(yTarget.get(), 0),
+                      0)));
         })
-                .finallyDo(
-                        () -> {
-                            Logger.recordOutput("AutoAlignCoral/Running", false);
-                        });
-    }
+        .finallyDo(
+            () -> {
+              Logger.recordOutput("AutoAlignCoral/Running", false);
+            });
+  }
 
   public Command pidXLocked(
       Supplier<Double> targetX,
@@ -440,9 +440,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
               });
     }
-
-
-
 
     LoggedTracer.record(this.getClass().getSimpleName());
   }
