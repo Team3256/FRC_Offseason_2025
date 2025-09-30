@@ -41,7 +41,7 @@ public class ContinuousWrapTest {
 
     @Test
     public void ttest() {
-        assertEquals(.77, Arm.continuousWrapAtHome(.77, .73, 0));
+        assertEquals(.25, Arm.toAbsoluteAngle(-0.75));
     }
 
 }

@@ -278,6 +278,7 @@ public class Superstructure {
 
     stateTriggers
         .get(StructureState.HANDOFF)
+            .debounce(.03)
         .onTrue(intakeRollers.handoffCoral())
         .onTrue(endEffector.intakeCoral())
         .and(intakeRollers.coralIntakeIn.negate())

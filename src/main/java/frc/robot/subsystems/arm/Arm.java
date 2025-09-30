@@ -169,12 +169,12 @@ public class Arm extends DisableSubsystem {
   @AutoLogOutput
   public boolean isAtPosition() {
     return Util.epsilonEquals(
-        armIOAutoLogged.armMotorPosition, requestedPosition.in(Rotations), 0.005);
+        armIOAutoLogged.armMotorPosition, requestedPosition.in(Rotations), 0.01);
   }
 
   public boolean isAtHome() {
     return Util.epsilonEquals(
-        armIOAutoLogged.armMotorPosition, ArmConstants.homePosition.in(Rotations), 0.005);
+            toAbsoluteAngle(armIOAutoLogged.armMotorPosition), ArmConstants.homePosition.in(Rotations), 0.01);
   }
 
   public Command toHome() {
@@ -227,4 +227,15 @@ public class Arm extends DisableSubsystem {
     nLong = Math.min(n_max, Math.max(n_min, nLong));
     return reqAbsAngle + nLong;
   }
+    public static double toAbsoluteAngle(double angle) {
+        // Use modulo to wrap around
+        double normalized = angle % 1.0;
+
+        // Handle negative results (Java % can return negative)
+        if (normalized < 0) {
+            normalized += 1.0;
+        }
+
+        return normalized;
+    }
 }
