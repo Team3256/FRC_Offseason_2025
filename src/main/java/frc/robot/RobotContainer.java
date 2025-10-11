@@ -277,6 +277,7 @@ public class RobotContainer {
     autoChooser.addRoutine("L4 Preload H", m_autoRoutines::l4PreloadH);
     autoChooser.addRoutine("L4 Preload G", m_autoRoutines::l4PreloadG);
     autoChooser.addRoutine("L4 Preload F", m_autoRoutines::l4PreloadF);
+    autoChooser.addRoutine("L4 Preload A to Lollipop to C", m_autoRoutines::l4PreloadALollipop);
 
     SmartDashboard.putData("auto chooser", autoChooser);
 

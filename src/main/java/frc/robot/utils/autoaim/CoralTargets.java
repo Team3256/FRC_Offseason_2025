@@ -32,6 +32,7 @@ public enum CoralTargets {
   BLUE_J(new Pose2d(4.98, 5.20, Rotation2d.fromDegrees(-30)), false), // did
   BLUE_K(new Pose2d(4.03, 5.22, Rotation2d.fromDegrees(30)), true), // did
   BLUE_L(new Pose2d(3.70, 5.02, Rotation2d.fromDegrees(30)), false), // did
+  BLUE_L1(new Pose2d(1.58, 2.19, Rotation2d.fromDegrees(0)), true), // i don't get the degrees
 
   //  RED_A(new Pose2d(3.22, 4.20, Rotation2d.fromDegrees(90)), true),
   //  RED_B(new Pose2d(3.18, 3.85, Rotation2d.fromDegrees(90)), false),

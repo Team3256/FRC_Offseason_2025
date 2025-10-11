@@ -91,4 +91,52 @@ public class AutoRoutines {
     m_drivetrain.pidToPose(() -> preloadF.getFinalPose().orElse(CoralTargets.BLUE_F.location));
     return routine;
   }
+
+  public AutoRoutine l4PreloadALollipop() {
+    // far right --> a --> lollipop 1 (far left) --> c
+    final AutoRoutine routine = m_factory.newRoutine("l4PreloadALollipop");
+    final AutoTrajectory preloadA = routine.trajectory("FarRight-A");
+    final AutoTrajectory AToL1 = routine.trajectory("A-L1");
+    final AutoTrajectory L1ToC = routine.trajectory("L1-C");
+    routine
+        .active()
+        .onTrue(
+            preloadA
+                .resetOdometry()
+                .andThen(Commands.waitSeconds(2))
+                .andThen(preloadA.cmd())
+                .andThen(AToL1.cmd())
+                .andThen(L1ToC.cmd()));
+
+    // go to A with preload and score L4
+    // robot goes home --> prepare to intake (prehandoff?) -- while moving to L1
+    preloadA.atTimeBeforeEnd(0.5).onTrue(m_superstructure.setState(StructureState.L4));
+    preloadA
+        .done()
+        .onTrue(
+            m_superstructure
+                .setState(StructureState.SCORE_CORAL)
+                .andThen(
+                    m_superstructure.setState(
+                        StructureState.PREHOME)) // not too sure about the next few lines of code...
+                .andThen(
+                    m_superstructure.setState(
+                        StructureState.HOME)) // does it have to go home to ground intake??
+                .andThen(m_superstructure.setState(StructureState.GROUND_INTAKE)));
+    m_drivetrain.pidToPose(() -> preloadA.getFinalPose().orElse(CoralTargets.BLUE_A.location));
+
+    // when L1 is reached --> intake coral
+    AToL1.done()
+        .onTrue(
+            m_superstructure
+                .setState(StructureState.PRE_HANDOFF)
+                .andThen(m_superstructure.setState(StructureState.HANDOFF)));
+    m_drivetrain.pidToPose(() -> AToL1.getFinalPose().orElse(CoralTargets.BLUE_L1.location));
+
+    // go to C with new coral and score L4
+    L1ToC.done().onTrue(m_superstructure.setState(StructureState.SCORE_CORAL));
+    m_drivetrain.pidToPose(() -> preloadA.getFinalPose().orElse(CoralTargets.BLUE_C.location));
+
+    return routine;
+  }
 }
