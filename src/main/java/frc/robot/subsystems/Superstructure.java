@@ -247,11 +247,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.GROUND_INTAKE)
         .onTrue(intakePivot.goToGroundIntake())
-        .onTrue(intakeRollers.intakeCoral())
-        .onTrue(elevator.toPreHandoffHome())
-        .and(elevator.reachedPosition)
-        .debounce(0.05)
-        .onTrue(arm.toHandoffPosition());
+        .onTrue(intakeRollers.intakeCoral());
 
     stateTriggers
         .get(StructureState.GROUND_INTAKE)
@@ -269,7 +265,8 @@ public class Superstructure {
         .onTrue(intakePivot.goToHandoff())
         .and(intakePivot.reachedPosition)
         .debounce(.05)
-        .onTrue(elevator.toHandoffPosition())
+        .onTrue(elevator.toPreHandoffHome())
+        .onTrue(arm.toHandoffPosition())
         .and(elevator.reachedPosition)
         .and(arm.reachedPosition)
         .and(intakePivot.reachedPosition)
@@ -279,6 +276,8 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.HANDOFF)
         .debounce(.03)
+        .onTrue(elevator.toHandoffPosition())
+        .and(elevator.reachedPosition)
         .onTrue(intakeRollers.handoffCoral())
         .onTrue(endEffector.intakeCoral())
         .and(intakeRollers.coralIntakeIn.negate())
