@@ -160,19 +160,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
   /* The SysId routine to test */
   private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
-  private Translation2d _calculatedOffsetToRobotCenter = new Translation2d();
-  private int _calculatedOffsetToRobotCenterCount = 0;
-
-  private final SwerveDriveKinematics kinematics =
-      new SwerveDriveKinematics(
-          SwerveConstants.frontLeft,
-          SwerveConstants.frontRight,
-          SwerveConstants.backLeft,
-          SwerveConstants.backRight);
-  /* WPILib Alerts start */
-
-  private final Alert a_questNavNotConnected =
-      new Alert("QuestNav failure (no data within 250ms)", AlertType.kError);
 
   /* WPILib Alerts end */
   /**

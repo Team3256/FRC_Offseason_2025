@@ -65,8 +65,8 @@ public final class ArmConstants {
 
   public static final Angle homePosition = Rotations.of(.25);
 
-  public static final double safeRightPosition = .35;
-  public static final double safeLeftPosition = .15;
+  public static final double safeRightPosition = .4;
+  public static final double safeLeftPosition = .1;
 
   public static final double handoffPosition = 0.75;
 
@@ -89,7 +89,7 @@ public final class ArmConstants {
                   .withInverted(InvertedValue.CounterClockwise_Positive))
           .withMotionMagic(
               new MotionMagicConfigs()
-                  .withMotionMagicJerk(75)
+                  .withMotionMagicJerk(50)
                   .withMotionMagicAcceleration(7.5)
                   .withMotionMagicCruiseVelocity(1.2))
           .withCurrentLimits(

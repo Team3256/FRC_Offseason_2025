@@ -63,7 +63,7 @@ public final class ElevatorConstants {
   public static final int kEncoderATeethCount = 29;
   public static final int kEncoderBTeethCount = 31;
 
-  public static final Angle armSafePosition = Rotations.of(2);
+  public static final Angle armSafePosition = Rotations.of(1.5);
 
   public static final CANcoderConfiguration kEncoderAConfig =
       new CANcoderConfiguration()
@@ -114,7 +114,7 @@ public final class ElevatorConstants {
   public static final Angle groundAlgaePosition = Rotations.of(2.4);
   public static final Angle handoffPosition = Rotations.of(3.89);
 
-  public static final Angle preHomeHandoff = Rotations.of(4.5);
+  public static final Angle preHomeHandoff = Rotations.of(4.6);
 
   public static class SimulationConstants {
     public static final Mass kCarriageMass = Pounds.of(2.5).plus(ArmConstants.Sim.armMass);

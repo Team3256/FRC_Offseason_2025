@@ -40,7 +40,8 @@ public class Superstructure {
     SCORE_CORAL,
     GROUND_INTAKE,
     PRE_HANDOFF,
-    HANDOFF
+    HANDOFF,
+
   }
 
   public enum ManipulatorSide {
@@ -203,7 +204,6 @@ public class Superstructure {
             prevStateTriggers
                 .get(StructureState.HANDOFF)
                 .or(prevStateTriggers.get(StructureState.PRE_HANDOFF))
-                .or(prevStateTriggers.get(StructureState.GROUND_INTAKE))
                 .negate())
         .onTrue(arm.toHome())
         .and(arm.isAtHome)
@@ -214,13 +214,12 @@ public class Superstructure {
         .and(
             prevStateTriggers
                 .get(StructureState.HANDOFF)
-                .or(prevStateTriggers.get(StructureState.PRE_HANDOFF))
-                .or(prevStateTriggers.get(StructureState.GROUND_INTAKE)))
+                .or(prevStateTriggers.get(StructureState.PRE_HANDOFF)))
         .onTrue(elevator.toPreHandoffHome())
         .and(elevator.reachedPosition)
         .debounce(.05)
         .onTrue(arm.toHome())
-        .and(arm.isAtHome)
+        .and(arm.isSafePosition)
         .onTrue(this.setState(StructureState.HOME));
 
     // Once arm is safe, the elevator can also home, once everything is done we can go to the IDLE
@@ -247,29 +246,20 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.GROUND_INTAKE)
         .onTrue(intakePivot.goToGroundIntake())
-        .onTrue(intakeRollers.intakeCoral());
+        .onTrue(intakeRollers.intakeCoral())
+            .and(intakeRollers.coralIntakeIn)
+            .onTrue(this.setState(StructureState.PREHOME));
 
-    stateTriggers
-        .get(StructureState.GROUND_INTAKE)
-        .and(endEffector.gamePieceIntaken)
-        .onTrue(this.setState(StructureState.PREHOME));
-
-    stateTriggers
-        .get(StructureState.GROUND_INTAKE)
-        .and(endEffector.gamePieceIntaken.negate())
-        .and(intakeRollers.coralIntakeIn)
-        .onTrue(this.setState(StructureState.PRE_HANDOFF));
 
     stateTriggers
         .get(StructureState.PRE_HANDOFF)
         .onTrue(intakePivot.goToHandoff())
-        .and(intakePivot.reachedPosition)
-        .debounce(.05)
         .onTrue(elevator.toPreHandoffHome())
+            .and(elevator.isSafeForArm)
+            .and(intakePivot.reachedPosition).debounce(.03)
         .onTrue(arm.toHandoffPosition())
         .and(elevator.reachedPosition)
         .and(arm.reachedPosition)
-        .and(intakePivot.reachedPosition)
         .debounce(0.05)
         .onTrue(this.setState(StructureState.HANDOFF));
 
