@@ -41,7 +41,6 @@ public class Superstructure {
     GROUND_INTAKE,
     PRE_HANDOFF,
     HANDOFF,
-
   }
 
   public enum ManipulatorSide {
@@ -251,16 +250,16 @@ public class Superstructure {
         .get(StructureState.GROUND_INTAKE)
         .onTrue(intakePivot.goToGroundIntake())
         .onTrue(intakeRollers.intakeCoral())
-            .and(intakeRollers.coralIntakeIn)
-            .onTrue(this.setState(StructureState.PREHOME));
-
+        .and(intakeRollers.coralIntakeIn)
+        .onTrue(this.setState(StructureState.PREHOME));
 
     stateTriggers
         .get(StructureState.PRE_HANDOFF)
         .onTrue(intakePivot.goToHandoff())
         .onTrue(elevator.toPreHandoffHome())
-            .and(elevator.isSafeForArm)
-            .and(intakePivot.reachedPosition).debounce(.03)
+        .and(elevator.isSafeForArm)
+        .and(intakePivot.reachedPosition)
+        .debounce(.03)
         .onTrue(arm.toHandoffPosition())
         .and(elevator.reachedPosition)
         .and(arm.reachedPosition)
