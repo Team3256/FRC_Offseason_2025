@@ -22,7 +22,7 @@ import frc.robot.utils.PhoenixUtil;
 
 public class GroundIntakeRollersIOTalonFX implements GroundIntakeRollersIO {
   private final TalonFX intakeMotor =
-      new TalonFX(GroundIntakeRollersConstants.kIntakeRollerMotorID);
+      new TalonFX(GroundIntakeRollersConstants.kIntakeRollerMotorID, "bruh");
   private final CANrange canRange = new CANrange(GroundIntakeRollersConstants.kCANrangeId);
   final VelocityVoltage intakeRequest = new VelocityVoltage(0).withSlot(0);
 
