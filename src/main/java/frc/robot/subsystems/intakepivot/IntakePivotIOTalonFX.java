@@ -23,7 +23,7 @@ import frc.robot.utils.PhoenixUtil;
 
 public class IntakePivotIOTalonFX implements IntakePivotIO {
 
-  private final TalonFX pivotMotor = new TalonFX(IntakePivotConstants.pivotMotorId);
+  private final TalonFX pivotMotor = new TalonFX(IntakePivotConstants.pivotMotorId, "bruh");
   private final PositionVoltage positionRequest =
       new PositionVoltage(0).withSlot(0).withEnableFOC(IntakePivotConstants.kUseFOC);
   private final MotionMagicVoltage motionMagicRequest =
