@@ -320,8 +320,6 @@ public class RobotContainer {
                             .withTargetDirection(processorFar))
                 .withTimeout(aziTimeout));
 
-    // Azimuth Barge Close
-
     // sets the heading to wherever the robot is facing
     // do this with the elevator side of the robot facing YOU
     m_driverController.y("Zero Heading").onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
