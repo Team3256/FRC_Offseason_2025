@@ -21,9 +21,6 @@ import frc.robot.subsystems.arm.ArmConstants;
 public final class ElevatorConstants {
   public static final int kMotorID = 44;
 
-  public static final int kEncoderAID = 23;
-  public static final int kEncoderBID = 24;
-
   public static final TalonFXConfiguration kMotorConfig =
       new TalonFXConfiguration()
           .withSlot0(
@@ -59,26 +56,7 @@ public final class ElevatorConstants {
 
   public static final boolean kUseFOC = true;
   public static final int kFlashConfigRetries = 5;
-
-  public static final int kEncoderATeethCount = 29;
-  public static final int kEncoderBTeethCount = 31;
-
   public static final Angle armSafePosition = Rotations.of(1.5);
-
-  public static final CANcoderConfiguration kEncoderAConfig =
-      new CANcoderConfiguration()
-          .withMagnetSensor(
-              new MagnetSensorConfigs()
-                  .withAbsoluteSensorDiscontinuityPoint(Rotations.of(1))
-                  .withMagnetOffset(Rotations.of(0))
-                  .withSensorDirection(SensorDirectionValue.Clockwise_Positive));
-  public static final CANcoderConfiguration kEncoderBConfig =
-      new CANcoderConfiguration()
-          .withMagnetSensor(
-              new MagnetSensorConfigs()
-                  .withAbsoluteSensorDiscontinuityPoint(Rotations.of(1))
-                  .withMagnetOffset(Rotations.of(0))
-                  .withSensorDirection(SensorDirectionValue.CounterClockwise_Positive));
 
   // Coral positions
   // Please tune

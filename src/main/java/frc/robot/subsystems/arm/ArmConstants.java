@@ -29,7 +29,7 @@ public final class ArmConstants {
   public static final boolean kUseMotionMagic = true; // idk
   public static final int flashConfigRetries = 5;
 
-  public static final Angle maxRotations = Rotations.of(2);
+  public static final Angle maxRotations = Rotations.of(1.5);
 
   // Arm positions
   // L1, L2-L3 (since same arm angle), L4
@@ -65,8 +65,8 @@ public final class ArmConstants {
 
   public static final Angle homePosition = Rotations.of(.25);
 
-  public static final double safeRightPosition = .4;
-  public static final double safeLeftPosition = .1;
+  public static final double safeRightPosition = .45;
+  public static final double safeLeftPosition = .05;
 
   public static final double handoffPosition = 0.75;
 
@@ -114,7 +114,7 @@ public final class ArmConstants {
           .withMagnetSensor(
               new MagnetSensorConfigs()
                   .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
-                  .withMagnetOffset(-0.949462890625)
+                  .withMagnetOffset(-0.33544921875)
                   .withAbsoluteSensorDiscontinuityPoint(Rotations.of(1)));
   public static final Angle processorRightPosition = Rotations.of(.576);
 

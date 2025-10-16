@@ -43,7 +43,7 @@ public class ElevatorIOTalonFX implements ElevatorIO {
         motorSupplyCurrent);
     PhoenixUtil.registerSignals(
         false, motorVoltage, motorPosition, motorStatorCurrent, motorSupplyCurrent);
-    motor.optimizeBusUtilization(4, 0.100);
+    //    motor.optimizeBusUtilization(4, 0.100);
   }
 
   @Override

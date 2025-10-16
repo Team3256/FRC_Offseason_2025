@@ -42,7 +42,7 @@ public class IntakePivotIOTalonFX implements IntakePivotIO {
         pivotMotor, IntakePivotConstants.motorConfigs, IntakePivotConstants.flashConfigRetries);
 
     PhoenixUtil.registerSignals(
-        false,
+        true,
         pivotMotorVoltage,
         pivotMotorVelocity,
         pivotMotorPosition,

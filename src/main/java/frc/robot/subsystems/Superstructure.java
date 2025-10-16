@@ -120,25 +120,25 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L1))
-        .onTrue(intakeRollers.off());
+        .onTrue(endEffector.off())
         .onTrue(endEffector.setCoralOuttakeVoltage());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L2))
         .and(elevator.reachedPosition)
-        .onTrue(intakeRollers.off());
+        .onTrue(endEffector.off())
         .onTrue(arm.toScoringPosition(1, rightManipulatorSide));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L3))
         .and(elevator.reachedPosition)
-        .onTrue(intakeRollers.off());
+        .onTrue(endEffector.off())
         .onTrue(arm.toScoringPosition(1, rightManipulatorSide));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
         .and(elevator.reachedPosition)
-        .onTrue(intakeRollers.off());
+        .onTrue(endEffector.off())
         .onTrue(arm.toScoringPosition(2, rightManipulatorSide));
 
     //    stateTriggers
@@ -198,7 +198,6 @@ public class Superstructure {
                 .get(StructureState.DEALGAE_L2)
                 .or(prevStateTriggers.get(StructureState.DEALGAE_L3))
                 .negate())
-        .onTrue(endEffector.off())
         .onTrue(intakeRollers.off());
 
     stateTriggers
@@ -259,11 +258,11 @@ public class Superstructure {
         .onTrue(elevator.toPreHandoffHome())
         .and(elevator.isSafeForArm)
         .and(intakePivot.reachedPosition)
-        .debounce(.03)
+        .debounce(.025)
         .onTrue(arm.toHandoffPosition())
         .and(elevator.reachedPosition)
         .and(arm.reachedPosition)
-        .debounce(0.05)
+        .debounce(0.025)
         .onTrue(this.setState(StructureState.HANDOFF));
 
     stateTriggers
@@ -275,7 +274,7 @@ public class Superstructure {
         .onTrue(endEffector.intakeCoral())
         .and(intakeRollers.coralIntakeIn.negate())
         .and(endEffector.gamePieceIntaken)
-        .and(intakeRollers.setVoltage(1))
+        .onTrue(endEffector.setEEVoltage(() -> -1))
         .onTrue(this.setState(StructureState.PREHOME));
     ;
   }
