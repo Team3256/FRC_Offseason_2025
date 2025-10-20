@@ -130,8 +130,8 @@ public class Arm extends DisableSubsystem {
 
   @AutoLogOutput
   public boolean isSafePosition() {
-    return toAbsoluteAngle(armIOAutoLogged.armMotorPosition)>= ArmConstants.safeLeftPosition
-        || toAbsoluteAngle(armIOAutoLogged.armMotorPosition)  <= ArmConstants.safeRightPosition;
+    return toAbsoluteAngle(armIOAutoLogged.armMotorPosition) >= ArmConstants.safeLeftPosition
+        || toAbsoluteAngle(armIOAutoLogged.armMotorPosition) <= ArmConstants.safeRightPosition;
   }
 
   public Command toSourceLevel() {
@@ -182,12 +182,15 @@ public class Arm extends DisableSubsystem {
   public Command toHome() {
     return this.setPosition(ArmConstants.homePosition, true, 0).withName("toHome");
   }
+  public Command toHome(BooleanSupplier rightDirection) {
+      return this.setPosition(ArmConstants.homePosition, true, rightDirection.getAsBoolean()? 1: -1);
+  }
 
   public Command off() {
     return this.runOnce(armIO::off).withName("off");
   }
 
-  public Command toHandoffPosition() {
+  public Command toHandoffPosition(BooleanSupplier rightDirection) {
     return this.setPosition(
             () ->
                 Rotations.of(
@@ -199,7 +202,7 @@ public class Arm extends DisableSubsystem {
                             ArmConstants.coralDistanceRight,
                             coralDistanceSupplier.getAsDouble()))),
             true,
-            () -> 0)
+            () -> rightDirection.getAsBoolean() ? 1: -1)
         .withName("setPositionToHandoff");
   }
 
@@ -210,38 +213,39 @@ public class Arm extends DisableSubsystem {
   public double continuousWrapAtHome(double angle, int direction) {
     return continuousWrapAtHome(angle, cachedArmMotorPosition, direction);
   }
-    public static double continuousWrapAtHome(
-            double reqAbsAngle, double currentAngle, double forcedDirection) {
-        int n_min = (int) Math.ceil(-ArmConstants.maxRotations.in(Rotations) - reqAbsAngle);
-        int n_max = (int) Math.floor(ArmConstants.maxRotations.in(Rotations) - reqAbsAngle);
-        int nIdeal = (int) Math.round(currentAngle - reqAbsAngle);
-        int nCandidate = Math.min(n_max, Math.max(n_min, nIdeal));
-        double candidate = reqAbsAngle + nCandidate;
 
-        // Calculate the distance to the ideal candidate
-        double distToCandidate = Math.abs(candidate - currentAngle);
+  public static double continuousWrapAtHome(
+      double reqAbsAngle, double currentAngle, double forcedDirection) {
+    int n_min = (int) Math.ceil(-ArmConstants.maxRotations.in(Rotations) - reqAbsAngle);
+    int n_max = (int) Math.floor(ArmConstants.maxRotations.in(Rotations) - reqAbsAngle);
+    int nIdeal = (int) Math.round(currentAngle - reqAbsAngle);
+    int nCandidate = Math.min(n_max, Math.max(n_min, nIdeal));
+    double candidate = reqAbsAngle + nCandidate;
 
-        // Calculate the distance to the angle closest to 0 (n = 0)
-        int nZero = 0;
-        double angleZero = reqAbsAngle + nZero;
-        double distToZero = Math.abs(angleZero - currentAngle);
+    // Calculate the distance to the ideal candidate
+    double distToCandidate = Math.abs(candidate - currentAngle);
 
-        // Only switch to the candidate if it's faster by more than the deadband
-        int nSelected = nZero;
-        if (distToCandidate < distToZero - ArmConstants.deadband) {
-            nSelected = nCandidate;
-        }
+    // Calculate the distance to the angle closest to 0 (n = 0)
+    int nZero = 0;
+    double angleZero = reqAbsAngle + nZero;
+    double distToZero = Math.abs(angleZero - currentAngle);
 
-        double selected = reqAbsAngle + nSelected;
-        double diff = selected - currentAngle;
-        int adjustment =
-                (int)
-                        ((1 - Math.max(Math.signum(diff) * Math.signum(forcedDirection), 0))
-                                * Math.signum(forcedDirection));
-        int nLong = nSelected + adjustment;
-        nLong = Math.min(n_max, Math.max(n_min, nLong));
-        return reqAbsAngle + nLong;
+    // Only switch to the candidate if it's faster by more than the deadband
+    int nSelected = nZero;
+    if (distToCandidate < distToZero - ArmConstants.deadband) {
+      nSelected = nCandidate;
     }
+
+    double selected = reqAbsAngle + nSelected;
+    double diff = selected - currentAngle;
+    int adjustment =
+        (int)
+            ((1 - Math.max(Math.signum(diff) * Math.signum(forcedDirection), 0))
+                * Math.signum(forcedDirection));
+    int nLong = nSelected + adjustment;
+    nLong = Math.min(n_max, Math.max(n_min, nLong));
+    return reqAbsAngle + nLong;
+  }
 
   public static double toAbsoluteAngle(double angle) {
     // Use modulo to wrap around

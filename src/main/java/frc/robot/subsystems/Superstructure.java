@@ -7,10 +7,15 @@
 
 package frc.robot.subsystems;
 
+import choreo.util.ChoreoAllianceFlipUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.FieldConstants;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.endeffector.EndEffector;
@@ -19,6 +24,7 @@ import frc.robot.subsystems.intakepivot.IntakePivot;
 import frc.robot.utils.LoggedTracer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 public class Superstructure {
@@ -53,6 +59,10 @@ public class Superstructure {
   private final Trigger rightManipulatorSide =
       new Trigger(() -> this.manipulatorSide == ManipulatorSide.RIGHT);
 
+  private final Trigger reefOnRight;
+
+  private final Trigger bargeOnRight;
+
   private StructureState state = StructureState.IDLE;
   private StructureState prevState = StructureState.IDLE;
 
@@ -68,17 +78,40 @@ public class Superstructure {
   private final GroundIntakeRollers intakeRollers;
   private final IntakePivot intakePivot;
 
+  private final Supplier<Pose2d> robotPoseSupplier;
+
   public Superstructure(
       Elevator elevator,
       EndEffector endEffector,
       Arm arm,
       GroundIntakeRollers intakeRollers,
-      IntakePivot intakePivot) {
+      IntakePivot intakePivot,
+      Supplier<Pose2d> robotPoseSupplier) {
     this.elevator = elevator;
     this.endEffector = endEffector;
     this.arm = arm;
     this.intakeRollers = intakeRollers;
     this.intakePivot = intakePivot;
+    this.robotPoseSupplier = robotPoseSupplier;
+
+    this.reefOnRight =
+        new Trigger(
+            () ->
+                !isStructureOnLeft(
+                    robotPoseSupplier.get(),
+                    DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
+                            == DriverStation.Alliance.Blue
+                        ? FieldConstants.Reef.center
+                        : ChoreoAllianceFlipUtil.flip(FieldConstants.Reef.center)));
+
+    this.bargeOnRight =
+            new Trigger(()->
+                    !isStructureOnLeft(
+                            robotPoseSupplier.get(),DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
+                                    == DriverStation.Alliance.Blue
+                                    ? FieldConstants.Barge.middleCage
+                                    : ChoreoAllianceFlipUtil.flip(FieldConstants.Barge.middleCage)
+                    ));
 
     stateTimer.start();
 
@@ -106,7 +139,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.L2)
         .or(stateTriggers.get(StructureState.L3))
-        .onTrue(arm.toReefLevel(1, rightManipulatorSide));
+        .onTrue(arm.toReefLevel(1, reefOnRight));
 
     // L4 reef level, no safety limits
     stateTriggers
@@ -114,7 +147,7 @@ public class Superstructure {
         .onTrue(elevator.toReefLevel(3))
         .and(elevator.reachedPosition)
         .debounce(.025)
-        .onTrue(arm.toReefLevel(2, rightManipulatorSide));
+        .onTrue(arm.toReefLevel(2, reefOnRight));
 
     // Scoring coral, depending on previous state it changes endEffector velocity
     stateTriggers
@@ -127,19 +160,19 @@ public class Superstructure {
         .and(prevStateTriggers.get(StructureState.L2))
         .and(elevator.reachedPosition)
         .onTrue(endEffector.off())
-        .onTrue(arm.toScoringPosition(1, rightManipulatorSide));
+        .onTrue(arm.toScoringPosition(1, reefOnRight));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L3))
         .and(elevator.reachedPosition)
         .onTrue(endEffector.off())
-        .onTrue(arm.toScoringPosition(1, rightManipulatorSide));
+        .onTrue(arm.toScoringPosition(1, reefOnRight));
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L4))
         .and(elevator.reachedPosition)
         .onTrue(endEffector.off())
-        .onTrue(arm.toScoringPosition(2, rightManipulatorSide));
+        .onTrue(arm.toScoringPosition(2, reefOnRight));
 
     //    stateTriggers
     //        .get(StructureState.SCORE_CORAL)
@@ -153,12 +186,12 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .onTrue(elevator.toDealgaeLevel(0))
-        .onTrue(arm.toDealgaeLevel(0, rightManipulatorSide));
+        .onTrue(arm.toDealgaeLevel(0, reefOnRight));
 
     stateTriggers
         .get(StructureState.DEALGAE_L3)
         .onTrue(elevator.toDealgaeLevel(1))
-        .onTrue(arm.toDealgaeLevel(1, rightManipulatorSide));
+        .onTrue(arm.toDealgaeLevel(1, reefOnRight));
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .or(stateTriggers.get(StructureState.DEALGAE_L3))
@@ -189,14 +222,6 @@ public class Superstructure {
 
     // Turn coral motor off (helpful for transitioning from SCORE_CORAL), do not turn algae motor
     // off since you might be holding one
-    stateTriggers
-        .get(StructureState.PREHOME)
-        .and(
-            prevStateTriggers
-                .get(StructureState.DEALGAE_L2)
-                .or(prevStateTriggers.get(StructureState.DEALGAE_L3))
-                .negate())
-        .onTrue(intakeRollers.off());
 
     stateTriggers
         .get(StructureState.PREHOME)
@@ -217,7 +242,7 @@ public class Superstructure {
                 .or(prevStateTriggers.get(StructureState.PRE_HANDOFF)))
         .onTrue(elevator.toPreHandoffHome())
         .debounce(.05)
-        .onTrue(arm.toHome())
+        .onTrue(arm.toHome(reefOnRight))
         .and(arm.isSafePosition)
         .onTrue(this.setState(StructureState.HOME));
 
@@ -235,10 +260,10 @@ public class Superstructure {
         .and(elevator.reachedPosition)
         .onTrue(this.setState(StructureState.IDLE));
 
-
-    stateTriggers.get(StructureState.IDLE)
-                    .and(endEffector.gamePieceIntaken.negate())
-                            .onTrue(endEffector.off());
+    stateTriggers
+        .get(StructureState.IDLE)
+        .and(endEffector.gamePieceIntaken.negate())
+        .onTrue(endEffector.off());
 
     // Kills all subsystems
     stateTriggers
@@ -261,7 +286,7 @@ public class Superstructure {
         .and(elevator.isSafeForArm)
         .and(intakePivot.reachedPosition)
         .debounce(.025)
-        .onTrue(arm.toHandoffPosition())
+        .onTrue(arm.toHandoffPosition(reefOnRight.negate()))
         .and(elevator.reachedPosition)
         .and(arm.reachedPosition)
         .debounce(0.025)
@@ -271,7 +296,7 @@ public class Superstructure {
         .get(StructureState.HANDOFF)
         .onTrue(elevator.toHandoffPosition())
         .and(elevator.reachedPosition)
-            .debounce(.03)
+        .debounce(.03)
         .onTrue(intakeRollers.handoffCoral())
         .onTrue(endEffector.intakeCoral())
         .and(intakeRollers.coralIntakeIn.negate())
@@ -280,6 +305,19 @@ public class Superstructure {
         .onTrue(this.setState(StructureState.PREHOME));
     ;
   }
+
+  public static boolean isStructureOnLeft(Pose2d robotPose, Translation2d reefPosition) {
+    // Vector from robot to reef
+    double dx = reefPosition.getX() - robotPose.getX();
+    double dy = reefPosition.getY() - robotPose.getY();
+
+    double theta = robotPose.getRotation().getRadians();
+
+    double cross = Math.sin(theta) * dx - Math.cos(theta) * dy;
+
+    return cross < 0;
+  }
+
 
   // call manually
   public void periodic() {

@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public enum CoralTargets {
   // All coordinates are global coordinates from the lower, blue alliance side
@@ -106,6 +107,7 @@ public enum CoralTargets {
                 (CoralTargets targets) -> {
                   return CoralTargets.getRobotTargetLocation(targets.location);
                 })
+                .flatMap(original-> Stream.of(original, new Pose2d(original.getTranslation(),  original.getRotation().plus(Rotation2d.k180deg))))
             .toList());
   }
 

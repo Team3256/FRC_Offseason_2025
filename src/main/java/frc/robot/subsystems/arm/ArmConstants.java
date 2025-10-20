@@ -31,7 +31,7 @@ public final class ArmConstants {
 
   public static final Angle maxRotations = Rotations.of(1.5);
 
-    public static final double deadband = 0.11;
+  public static final double deadband = 0.11;
 
   // Arm positions
   // L1, L2-L3 (since same arm angle), L4

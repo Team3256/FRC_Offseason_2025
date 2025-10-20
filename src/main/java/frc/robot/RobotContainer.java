@@ -101,7 +101,8 @@ public class RobotContainer {
   /// sim file for intakepivot needs to be added -- seems like its not been merged yet
 
   private final Superstructure superstructure =
-      new Superstructure(elevator, endEffector, arm, intakeRollers, intakePivot);
+      new Superstructure(
+          elevator, endEffector, arm, intakeRollers, intakePivot, () -> drivetrain.getState().Pose);
   private final LED leds = new LED();
 
   private final Vision vision =
