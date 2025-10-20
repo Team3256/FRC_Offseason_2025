@@ -25,7 +25,7 @@ public final class IntakePivotConstants {
   public static final double stowPosition = .4;
   public static final double handoffPosition = 0.303;
   public static final double groundIntakePosition = -.09;
-    public static final double l1Position = .2;
+  public static final double l1Position = .2;
 
   public static final TalonFXConfiguration motorConfigs =
       new TalonFXConfiguration()
@@ -53,8 +53,7 @@ public final class IntakePivotConstants {
                   .withStatorCurrentLimit(80))
           .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio(27.32));
 
-
-    public static final class PivotSim {
+  public static final class PivotSim {
     // not sure about what gearing means and not sure if its equal to gear ratio
     public static final double pivotSimGearing = 10;
 

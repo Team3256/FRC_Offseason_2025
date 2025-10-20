@@ -83,7 +83,7 @@ public class IntakePivot extends DisableSubsystem {
   }
 
   public Command goToL1() {
-      return this.setPosition(IntakePivotConstants.l1Position);
+    return this.setPosition(IntakePivotConstants.l1Position);
   }
 
   public boolean reachedPosition() {

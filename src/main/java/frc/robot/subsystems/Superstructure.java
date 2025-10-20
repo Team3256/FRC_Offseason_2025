@@ -29,7 +29,6 @@ import org.littletonrobotics.junction.Logger;
 
 public class Superstructure {
   public enum StructureState {
-    PREBARGE,
     BARGE,
     CANCEL_ALL,
     DEALGAE_L2,
@@ -129,9 +128,7 @@ public class Superstructure {
   public void configStateTransitions() {
     stateTriggers.get(StructureState.IDLE);
     // Move elevator and reef to L1, no safety limits since arm is still safe
-    stateTriggers
-        .get(StructureState.L1)
-            .onTrue(intakePivot.goToL1());
+    stateTriggers.get(StructureState.L1).onTrue(intakePivot.goToL1());
 
     // L2 and L3 are same arm position so they are put together, once again no safety limits
     stateTriggers.get(StructureState.L2).onTrue(elevator.toReefLevel(1));
@@ -153,7 +150,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L1))
-            .onTrue(intakeRollers.outtakeL1());
+        .onTrue(intakeRollers.outtakeL1());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L2))

@@ -204,22 +204,20 @@ public class RobotContainer {
   }
 
   private void configureOperatorBinds() {
-
-    // stow everything
-    m_operatorController.a().onTrue(superstructure.setState(StructureState.GROUND_INTAKE));
+    m_operatorController.a().onTrue(superstructure.setState(StructureState.DEALGAE_L2));
+    m_operatorController.y().onTrue(superstructure.setState(StructureState.DEALGAE_L3));
+    m_operatorController.x().onTrue(superstructure.setState(StructureState.GROUND_INTAKE));
     m_operatorController.b().onTrue(superstructure.setState(StructureState.PREHOME));
-    m_operatorController.povUp().onTrue(superstructure.setState(StructureState.PRE_HANDOFF));
+
+    m_operatorController.povUp().onTrue(superstructure.setState(StructureState.L4));
     m_operatorController.povRight().onTrue(superstructure.setState(StructureState.L3));
     m_operatorController.povDown().onTrue(superstructure.setState(StructureState.L2));
-    m_operatorController.povLeft().onTrue(superstructure.setState(StructureState.L4));
-    m_operatorController.y().onTrue(superstructure.setState(StructureState.SCORE_CORAL));
-    m_operatorController.rightTrigger().onTrue(superstructure.setState(StructureState.DEALGAE_L3));
-    m_operatorController.leftTrigger().onTrue(superstructure.setState(StructureState.SCORE_ALGAE));
-    m_operatorController.rightBumper().onTrue(superstructure.setState(StructureState.BARGE));
+    m_operatorController.povLeft().onTrue(superstructure.setState(StructureState.L1));
 
-    m_operatorController
-        .leftBumper()
-        .onTrue(superstructure.setManipulatorSide(Superstructure.ManipulatorSide.LEFT));
+    m_operatorController.rightTrigger().onTrue(superstructure.setState(StructureState.SCORE_CORAL));
+    m_operatorController.leftTrigger().onTrue(superstructure.setState(StructureState.SCORE_ALGAE));
+    m_operatorController.rightBumper().onTrue(superstructure.setState(StructureState.HANDOFF));
+    m_operatorController.leftBumper().onTrue(superstructure.setState(StructureState.BARGE));
   }
 
   private void configureChoreoAutoChooser() {

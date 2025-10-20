@@ -20,7 +20,9 @@ public class GroundIntakeRollers extends DisableSubsystem {
 
   public final Trigger coralIntakeIn =
       new Trigger(
-          () -> (intakeIOAutoLogged.canRangeDistance < GroundIntakeRollersConstants.canRangeInThreshold));
+          () ->
+              (intakeIOAutoLogged.canRangeDistance
+                  < GroundIntakeRollersConstants.canRangeInThreshold));
 
   public GroundIntakeRollers(boolean enabled, GroundIntakeRollersIO groundIntakeRollersIO) {
     super(enabled);
@@ -68,6 +70,6 @@ public class GroundIntakeRollers extends DisableSubsystem {
   }
 
   public Command outtakeL1() {
-      return setVoltage(GroundIntakeRollersConstants.l1OuttakeVoltage);
+    return setVoltage(GroundIntakeRollersConstants.l1OuttakeVoltage);
   }
 }
