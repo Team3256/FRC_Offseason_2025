@@ -40,6 +40,15 @@ public class ContinuousWrapTest {
     }
 
     @Test
+    public void testDistanceBias() {
+        assertEquals(.25, Arm.continuousWrapAtHome(.25, 0.78, 0));
+    }
+
+    @Test
+    public void testDistanceBias2() {
+        assertEquals(.5, Arm.continuousWrapAtHome(.5, 1.05, 0));
+    }
+    @Test
     public void ttest() {
         assertEquals(.25, Arm.toAbsoluteAngle(-0.75));
     }

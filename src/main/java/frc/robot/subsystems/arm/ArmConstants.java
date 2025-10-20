@@ -31,6 +31,8 @@ public final class ArmConstants {
 
   public static final Angle maxRotations = Rotations.of(1.5);
 
+    public static final double deadband = 0.11;
+
   // Arm positions
   // L1, L2-L3 (since same arm angle), L4
   // "arm level 0" is L1, "arm level 1" is L2-L3, "arm level 2" is L4
@@ -45,15 +47,15 @@ public final class ArmConstants {
   };
 
   public static final Angle[] reefRightScoringPosition = {
-    Rotations.of(.4), Rotations.of(.5), Rotations.of(.45)
+    Rotations.of(.4), Rotations.of(.5), Rotations.of(.55)
   };
   public static final Angle[] reefLeftScoringPosition = {
-    Rotations.of(.1), Rotations.of(0), Rotations.of(0.05)
+    Rotations.of(.1), Rotations.of(0), Rotations.of(0.95)
   };
 
   // Dealgae L2, Daalgae L3
-  public static final Angle[] dealgaeRightPosition = {Rotations.of(.376), Rotations.of(.361)};
-  public static final Angle[] dealgaeLeftPosition = {Rotations.of(.1), Rotations.of(.1)};
+  public static final Angle[] dealgaeRightPosition = {Rotations.of(0.5), Rotations.of(.5)};
+  public static final Angle[] dealgaeLeftPosition = {Rotations.of(0), Rotations.of(0)};
 
   public static final Angle sourcePosition = Rotations.of(.285);
 
@@ -65,8 +67,8 @@ public final class ArmConstants {
 
   public static final Angle homePosition = Rotations.of(.25);
 
-  public static final double safeRightPosition = .45;
-  public static final double safeLeftPosition = .05;
+  public static final double safeRightPosition = .65;
+  public static final double safeLeftPosition = 0.85;
 
   public static final double handoffPosition = 0.75;
 
@@ -89,7 +91,7 @@ public final class ArmConstants {
                   .withInverted(InvertedValue.CounterClockwise_Positive))
           .withMotionMagic(
               new MotionMagicConfigs()
-                  .withMotionMagicJerk(50)
+                  .withMotionMagicJerk(30)
                   .withMotionMagicAcceleration(7.5)
                   .withMotionMagicCruiseVelocity(1.2))
           .withCurrentLimits(
@@ -98,10 +100,10 @@ public final class ArmConstants {
                   .withStatorCurrentLimit(80))
           .withFeedback(
               new FeedbackConfigs()
-                  .withFeedbackSensorSource(FeedbackSensorSourceValue.RemoteCANcoder)
+                  .withFeedbackSensorSource(FeedbackSensorSourceValue.SyncCANcoder)
                   .withFeedbackRemoteSensorID(armMotorEncoderId)
                   .withSensorToMechanismRatio(1.33333)
-                  .withRotorToSensorRatio(56.7));
+                  .withRotorToSensorRatio(48));
 
   //  public static final TalonFXConfiguration simMotorConfigs =
   //      motorConfigs.withFeedback(
@@ -114,16 +116,16 @@ public final class ArmConstants {
           .withMagnetSensor(
               new MagnetSensorConfigs()
                   .withSensorDirection(SensorDirectionValue.Clockwise_Positive)
-                  .withMagnetOffset(-0.33544921875)
+                  .withMagnetOffset(0)
                   .withAbsoluteSensorDiscontinuityPoint(Rotations.of(1)));
   public static final Angle processorRightPosition = Rotations.of(.576);
 
   public static final Angle groundAlgaeRightPosition = Rotations.of(.62);
 
-  public static final Angle armAngleCoralLeft = Rotations.of(0.77);
-  public static final Angle armAngleCoralRight = Rotations.of(0.73);
+  public static final Angle armAngleCoralLeft = Rotations.of(0.76);
+  public static final Angle armAngleCoralRight = Rotations.of(0.72);
   public static final double coralDistanceLeft = 0.05; // inches
-  public static final double coralDistanceRight = .26; // inches
+  public static final double coralDistanceRight = .25; // inches
 
   public static final class Sim {
     public static final double simGearing = 142.22;

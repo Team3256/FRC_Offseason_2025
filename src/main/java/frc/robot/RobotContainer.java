@@ -210,6 +210,7 @@ public class RobotContainer {
     m_operatorController.povUp().onTrue(superstructure.setState(StructureState.PRE_HANDOFF));
     m_operatorController.povRight().onTrue(superstructure.setState(StructureState.L3));
     m_operatorController.povDown().onTrue(superstructure.setState(StructureState.L2));
+    m_operatorController.povLeft().onTrue(superstructure.setState(StructureState.L4));
     m_operatorController.y().onTrue(superstructure.setState(StructureState.SCORE_CORAL));
     m_operatorController.rightTrigger().onTrue(superstructure.setState(StructureState.DEALGAE_L3));
     m_operatorController.leftTrigger().onTrue(superstructure.setState(StructureState.SCORE_ALGAE));

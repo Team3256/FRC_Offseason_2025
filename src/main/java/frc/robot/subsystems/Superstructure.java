@@ -162,9 +162,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.DEALGAE_L2)
         .or(stateTriggers.get(StructureState.DEALGAE_L3))
-        .onTrue(endEffector.setAlgaeIntakeVoltage())
-        .and(endEffector.gamePieceIntaken)
-        .onTrue(this.setState(StructureState.PREHOME));
+        .onTrue(endEffector.setAlgaeIntakeVoltage());
 
     // Barge level
     stateTriggers
@@ -175,7 +173,7 @@ public class Superstructure {
         .get(StructureState.SCORE_ALGAE)
         .and(prevStateTriggers.get(StructureState.BARGE))
         .onTrue(arm.toBargeLevel(rightManipulatorSide))
-        .debounce(0.1)
+        .debounce(0.2)
         .onTrue(endEffector.setAlgaeOuttakeVoltage());
 
     // Processor state
@@ -218,7 +216,6 @@ public class Superstructure {
                 .get(StructureState.HANDOFF)
                 .or(prevStateTriggers.get(StructureState.PRE_HANDOFF)))
         .onTrue(elevator.toPreHandoffHome())
-        .and(elevator.reachedPosition)
         .debounce(.05)
         .onTrue(arm.toHome())
         .and(arm.isSafePosition)
@@ -237,6 +234,11 @@ public class Superstructure {
         .onTrue(intakePivot.goToStow())
         .and(elevator.reachedPosition)
         .onTrue(this.setState(StructureState.IDLE));
+
+
+    stateTriggers.get(StructureState.IDLE)
+                    .and(endEffector.gamePieceIntaken.negate())
+                            .onTrue(endEffector.off());
 
     // Kills all subsystems
     stateTriggers
@@ -267,9 +269,9 @@ public class Superstructure {
 
     stateTriggers
         .get(StructureState.HANDOFF)
-        .debounce(.03)
         .onTrue(elevator.toHandoffPosition())
         .and(elevator.reachedPosition)
+            .debounce(.03)
         .onTrue(intakeRollers.handoffCoral())
         .onTrue(endEffector.intakeCoral())
         .and(intakeRollers.coralIntakeIn.negate())
