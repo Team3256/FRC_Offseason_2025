@@ -182,8 +182,10 @@ public class Arm extends DisableSubsystem {
   public Command toHome() {
     return this.setPosition(ArmConstants.homePosition, true, 0).withName("toHome");
   }
+
   public Command toHome(BooleanSupplier rightDirection) {
-      return this.setPosition(ArmConstants.homePosition, true, rightDirection.getAsBoolean()? 1: -1);
+    return this.setPosition(
+        ArmConstants.homePosition, true, rightDirection.getAsBoolean() ? 1 : -1);
   }
 
   public Command off() {
@@ -202,7 +204,7 @@ public class Arm extends DisableSubsystem {
                             ArmConstants.coralDistanceRight,
                             coralDistanceSupplier.getAsDouble()))),
             true,
-            () -> rightDirection.getAsBoolean() ? 1: -1)
+            () -> rightDirection.getAsBoolean() ? 1 : -1)
         .withName("setPositionToHandoff");
   }
 

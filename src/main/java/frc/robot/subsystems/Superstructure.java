@@ -105,13 +105,14 @@ public class Superstructure {
                         : ChoreoAllianceFlipUtil.flip(FieldConstants.Reef.center)));
 
     this.bargeOnRight =
-            new Trigger(()->
-                    !isStructureOnLeft(
-                            robotPoseSupplier.get(),DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
-                                    == DriverStation.Alliance.Blue
-                                    ? FieldConstants.Barge.middleCage
-                                    : ChoreoAllianceFlipUtil.flip(FieldConstants.Barge.middleCage)
-                    ));
+        new Trigger(
+            () ->
+                !isStructureOnLeft(
+                    robotPoseSupplier.get(),
+                    DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue)
+                            == DriverStation.Alliance.Blue
+                        ? FieldConstants.Barge.middleCage
+                        : ChoreoAllianceFlipUtil.flip(FieldConstants.Barge.middleCage)));
 
     stateTimer.start();
 
@@ -130,8 +131,7 @@ public class Superstructure {
     // Move elevator and reef to L1, no safety limits since arm is still safe
     stateTriggers
         .get(StructureState.L1)
-        .onTrue(elevator.toReefLevel(0))
-        .onTrue(arm.toReefLevel(0, rightManipulatorSide));
+            .onTrue(intakePivot.goToL1());
 
     // L2 and L3 are same arm position so they are put together, once again no safety limits
     stateTriggers.get(StructureState.L2).onTrue(elevator.toReefLevel(1));
@@ -153,8 +153,7 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L1))
-        .onTrue(endEffector.off())
-        .onTrue(endEffector.setCoralOuttakeVoltage());
+            .onTrue(intakeRollers.outtakeL1());
     stateTriggers
         .get(StructureState.SCORE_CORAL)
         .and(prevStateTriggers.get(StructureState.L2))
@@ -201,11 +200,11 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.BARGE)
         .onTrue(elevator.toBargePosition())
-        .onTrue(arm.toPreBargeLevel(rightManipulatorSide));
+        .onTrue(arm.toPreBargeLevel(bargeOnRight));
     stateTriggers
         .get(StructureState.SCORE_ALGAE)
         .and(prevStateTriggers.get(StructureState.BARGE))
-        .onTrue(arm.toBargeLevel(rightManipulatorSide))
+        .onTrue(arm.toBargeLevel(bargeOnRight))
         .debounce(0.2)
         .onTrue(endEffector.setAlgaeOuttakeVoltage());
 
@@ -317,7 +316,6 @@ public class Superstructure {
 
     return cross < 0;
   }
-
 
   // call manually
   public void periodic() {

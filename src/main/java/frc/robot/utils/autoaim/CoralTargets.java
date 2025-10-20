@@ -107,7 +107,13 @@ public enum CoralTargets {
                 (CoralTargets targets) -> {
                   return CoralTargets.getRobotTargetLocation(targets.location);
                 })
-                .flatMap(original-> Stream.of(original, new Pose2d(original.getTranslation(),  original.getRotation().plus(Rotation2d.k180deg))))
+            .flatMap(
+                original ->
+                    Stream.of(
+                        original,
+                        new Pose2d(
+                            original.getTranslation(),
+                            original.getRotation().plus(Rotation2d.k180deg))))
             .toList());
   }
 

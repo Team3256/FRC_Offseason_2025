@@ -34,9 +34,10 @@ public class GroundIntakeRollersConstants {
                   .withUpdateFrequency(50));
 
   public static final int kIntakeRollerMotorID = 45;
-  public static final double kIntakeRollerMotorVoltage = -6;
+  public static final double intakeVoltage = -6;
 
-  public static final double kIntakeRollerMotorHandoffVoltage = 4;
+  public static final double handoffVoltage = 4;
+    public static double l1OuttakeVoltage = 8;
 
   public static double updateFrequency = 50;
 
@@ -54,9 +55,9 @@ public class GroundIntakeRollersConstants {
   public static int flashConfigRetries = 5;
 
   public static final int motorCoralStall = 40;
-  public static final double coralIntakeIn = .4;
+  public static final double canRangeInThreshold = .4;
 
-  public static final class SimulationConstants {
+    public static final class SimulationConstants {
     public static double rollerGearingRatio = 1.0;
     public static double rollerMomentOfInertia = 1;
 

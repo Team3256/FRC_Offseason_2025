@@ -82,6 +82,10 @@ public class IntakePivot extends DisableSubsystem {
     return this.setPosition(IntakePivotConstants.groundIntakePosition);
   }
 
+  public Command goToL1() {
+      return this.setPosition(IntakePivotConstants.l1Position);
+  }
+
   public boolean reachedPosition() {
     return Util.epsilonEquals(intakePivotIOInputsAutoLogged.pivotMotorPosition, reqPosition, 0.01);
   }
