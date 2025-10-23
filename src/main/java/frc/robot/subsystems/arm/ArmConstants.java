@@ -102,7 +102,7 @@ public final class ArmConstants {
               new FeedbackConfigs()
                   .withFeedbackSensorSource(FeedbackSensorSourceValue.SyncCANcoder)
                   .withFeedbackRemoteSensorID(armMotorEncoderId)
-                  .withSensorToMechanismRatio(4/3.0)
+                  .withSensorToMechanismRatio(4 / 3.0)
                   .withRotorToSensorRatio(48));
 
   //  public static final TalonFXConfiguration simMotorConfigs =
