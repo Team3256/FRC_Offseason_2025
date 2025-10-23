@@ -91,7 +91,7 @@ public final class ArmConstants {
                   .withInverted(InvertedValue.CounterClockwise_Positive))
           .withMotionMagic(
               new MotionMagicConfigs()
-                  .withMotionMagicJerk(30)
+                  .withMotionMagicJerk(40)
                   .withMotionMagicAcceleration(7.5)
                   .withMotionMagicCruiseVelocity(1.2))
           .withCurrentLimits(
@@ -102,7 +102,7 @@ public final class ArmConstants {
               new FeedbackConfigs()
                   .withFeedbackSensorSource(FeedbackSensorSourceValue.SyncCANcoder)
                   .withFeedbackRemoteSensorID(armMotorEncoderId)
-                  .withSensorToMechanismRatio(1.33333)
+                  .withSensorToMechanismRatio(4/3.0)
                   .withRotorToSensorRatio(48));
 
   //  public static final TalonFXConfiguration simMotorConfigs =
@@ -124,8 +124,8 @@ public final class ArmConstants {
 
   public static final Angle armAngleCoralLeft = Rotations.of(0.76);
   public static final Angle armAngleCoralRight = Rotations.of(0.72);
-  public static final double coralDistanceLeft = 0.05; // inches
-  public static final double coralDistanceRight = .25; // inches
+  public static final double coralDistanceLeft = 0.07; // inches
+  public static final double coralDistanceRight = .2; // inches
 
   public static final class Sim {
     public static final double simGearing = 142.22;

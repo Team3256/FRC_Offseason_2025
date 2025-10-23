@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import au.grapplerobotics.MitoCANdria;
+import au.grapplerobotics.interfaces.MitoCANdriaInterface;
 import com.ctre.phoenix6.SignalLogger;
 import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
@@ -27,6 +29,7 @@ import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -57,9 +60,19 @@ public class Robot extends LoggedRobot {
       configureEpilogue();
     }
 
+
     Runtime.getRuntime()
         .gc(); // gc is a blocking call; robot constructor will not initialize until this is
     // finished. this will cause "No Robot Code" until gc is finished.
+
+      try (MitoCANdria mito = new MitoCANdria(0)) {
+
+          mito.setChannelVoltage(MitoCANdriaInterface.MITOCANDRIA_CHANNEL_ADJ, 19);
+          // Device operations here
+
+      } catch (Exception e) {
+          System.out.println("An error occurred: " + e.getMessage());
+      }
   }
 
   private void configureEpilogue() {

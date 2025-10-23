@@ -26,8 +26,8 @@ public class GroundIntakeRollersConstants {
               new FovParamsConfigs()
                   .withFOVRangeX(7)
                   .withFOVRangeY(7)
-                  .withFOVCenterY(-.7)
-                  .withFOVCenterX(-.7))
+                  .withFOVCenterY(.7)
+                  .withFOVCenterX(.7))
           .withToFParams(
               new ToFParamsConfigs()
                   .withUpdateMode(UpdateModeValue.ShortRangeUserFreq)

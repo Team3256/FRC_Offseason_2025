@@ -216,7 +216,7 @@ public class RobotContainer {
 
     m_operatorController.rightTrigger().onTrue(superstructure.setState(StructureState.SCORE_CORAL));
     m_operatorController.leftTrigger().onTrue(superstructure.setState(StructureState.SCORE_ALGAE));
-    m_operatorController.rightBumper().onTrue(superstructure.setState(StructureState.HANDOFF));
+    m_operatorController.rightBumper().onTrue(superstructure.setState(StructureState.PRE_HANDOFF));
     m_operatorController.leftBumper().onTrue(superstructure.setState(StructureState.BARGE));
   }
 

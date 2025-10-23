@@ -197,12 +197,10 @@ public class Superstructure {
     stateTriggers
         .get(StructureState.BARGE)
         .onTrue(elevator.toBargePosition())
-        .onTrue(arm.toPreBargeLevel(bargeOnRight));
+        .onTrue(arm.toBargeLevel(bargeOnRight));
     stateTriggers
         .get(StructureState.SCORE_ALGAE)
         .and(prevStateTriggers.get(StructureState.BARGE))
-        .onTrue(arm.toBargeLevel(bargeOnRight))
-        .debounce(0.2)
         .onTrue(endEffector.setAlgaeOuttakeVoltage());
 
     // Processor state
@@ -260,6 +258,7 @@ public class Superstructure {
         .get(StructureState.IDLE)
         .and(endEffector.gamePieceIntaken.negate())
         .onTrue(endEffector.off());
+    stateTriggers.get(StructureState.IDLE).onTrue(intakeRollers.off());
 
     // Kills all subsystems
     stateTriggers

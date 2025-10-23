@@ -22,7 +22,7 @@ public final class IntakePivotConstants {
   public static final boolean kUseMotionMagic = true; // idk if pivot needs motion magic
   public static final int flashConfigRetries = 5;
 
-  public static final double stowPosition = .4;
+  public static final double stowPosition = .4267;
   public static final double handoffPosition = 0.303;
   public static final double groundIntakePosition = -.09;
   public static final double l1Position = .2;
