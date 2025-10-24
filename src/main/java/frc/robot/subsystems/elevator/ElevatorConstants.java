@@ -64,7 +64,7 @@ public final class ElevatorConstants {
   // L1, L2, L3, L4
   // 3 sigfigs of precision
   public static final Angle[] kReefPositionsPracticeField = {
-    Rotations.of(0.7), Rotations.of(1.6), Rotations.of(3.4), Rotations.of(6.076)
+    Rotations.of(0.7), Rotations.of(1.71), Rotations.of(3.61), Rotations.of(6.12)
   };
   public static final Distance[] kReefPositionsMeters = Constants.branchHeights.distances;
 
@@ -84,7 +84,7 @@ public final class ElevatorConstants {
         .plus(kReefPositionsPracticeField[3]),
   };
 
-  public static final Angle[] kDealgaePositions = {Rotations.of(3.5), Rotations.of(5)};
+  public static final Angle[] kDealgaePositions = {Rotations.of(3.6), Rotations.of(5)};
   public static final Angle bargePosition = Rotations.of(6);
 
   public static final Angle homePosition = Rotations.of(0);
